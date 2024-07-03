@@ -732,7 +732,7 @@ var cont_catch = {
               <img src="${stim_list[0]}" style="width: 100px; height: 100px; object-fit: contain; margin-right: 10px;">
               <p>Planet A:</p>
               <img src="img/arrow.jpg" style="width: 100px; height: 100px; object-fit: contain; margin-right: 10px;">
-              <img src="${ship_list[1]}" style="width: 100px; height: 100px; object-fit: contain; margin-right: 10px;">
+              <img src="${ship_list[0]}" style="width: 100px; height: 100px; object-fit: contain; margin-right: 10px;">
             </div>
           </div>
           <div style="display: flex; flex-direction: column; align-items: center;">
@@ -741,7 +741,7 @@ var cont_catch = {
               <img src="${stim_list[1]}" style="width: 100px; height: 100px; object-fit: contain; margin-right: 10px;">
               <p>Planet B:</p>
               <img src="img/arrow.jpg" style="width: 100px; height: 100px; object-fit: contain; margin-right: 10px;">
-              <img src="${ship_list[0]}" style="width: 100px; height: 100px; object-fit: contain; margin-right: 10px;">
+              <img src="${ship_list[1]}" style="width: 100px; height: 100px; object-fit: contain; margin-right: 10px;">
               <img src="img/arrow.jpg" style="width: 100px; height: 100px; object-fit: contain; margin-right: 10px;">
               <div style="margin-top: 5px;">${ship_outcome_1_unshielded}</div>
             </div>
@@ -776,9 +776,9 @@ var cont_catch = {
   ship_option_2: ship_list[1],
   ship_option_3: ship_list[2],
   correct_answers: [
-    'B', // Planet B
-    ship_list[0], // Ship 3
-    'C', // Planet C
+    stim_list[1], // Planet 1
+    ship_list[1], // Ship 3
+    stim_list[2], // Planet 2
     ship_list[2] // Ship 1
   ],
   
