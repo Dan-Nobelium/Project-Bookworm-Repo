@@ -1,0 +1,162 @@
+{
+  "cfi": {
+    "prompt": "Please rate how much you agree with the following statements. There are no right or wrong answers.",
+    "items": [
+      "I am good at \"sizing up\" situations.",
+      "I have a hard time making decisions when faced with difficult situations.",
+      "I consider multiple options making a decision.",
+      "When I encounter difficult situations, I feel like I am losing control.",
+      "I like to look at things from many different angles.",
+      "Seeking additional information not immediately available helps me attribute causes to behavior.",
+      "I avoid looking at things from too many perspectives.",
+      "When encountering difficult situations, I become so stressed that I cannot think of a way to resolve the situation.",
+      "I try to put myself in other people's shoes.",
+      "Having a set routine gives me comfort.",
+      "Clear guidelines on what to do and how to do it make a good job."
+    ],
+    "labels": [
+      "Strongly Disagree",
+      "Disagree",
+      "Somewhat Agree",
+      "Agree",
+      "Strongly Agree"
+    ]
+  },
+  "htq": {
+    "prompt": "Please rate how much you agree with the following statements. There are no right or wrong answers.",
+    "items": [
+      "I tend to dwell on the same issues.",
+      "My mind keeps repeating the same thoughts over and over again.",
+      "I repeatedly double-check things to make sure they are done properly.",
+      "Having a stable and unchanging schedule feels comfortable.",
+      "Following a regular and structured schedule is enjoyable.",
+      "New experiences excite me.",
+      "Life becomes dull if you never take risks and always play it safe.",
+      "Restaurant food tastes better when it's something I haven't tried before."
+    ],
+    "labels": [
+      "Strongly Disagree",
+      "Disagree",
+      "Somewhat Agree",
+      "Agree",
+      "Strongly Agree"
+    ]
+  },
+  "audit": {
+    "prompt": "Please answer the following questions about your alcohol use during the past 12 months.",
+    "items": [
+      {
+        "prompt": "How often do you have a drink containing alcohol?",
+        "name": "item1",
+        "labels": [
+          "Never",
+          "Monthly or Less",
+          "Weekly",
+          "Daily or Almost Daily"
+        ]
+      },
+      {
+        "prompt": "On a typical day when you are drinking, how many drinks containing alcohol do you have?",
+        "name": "item2",
+        "labels": [
+          "1 or 2",
+          "3 or 4",
+          "5 or 6",
+          "7 or 9",
+          "10 or More"
+        ]
+      },
+      {
+        "prompt": "How often do you have six or more standard drinks on one occasion?",
+        "name": "item3",
+        "labels": [
+          "Never",
+          "Less Than Monthly",
+          "Monthly",
+          "Weekly",
+          "Daily or Almost Daily"
+        ]
+      },
+      {
+        "prompt": "How often during the last year have you found that you were not able to stop drinking once you had started?",
+        "name": "item4",
+        "labels": [
+          "Never",
+          "Less Than Monthly",
+          "Monthly",
+          "Weekly",
+          "Daily or Almost Daily"
+        ]
+      },
+      {
+        "prompt": "How often during the last year have you failed to do what was normally expected of you because of drinking?",
+        "name": "item5",
+        "labels": [
+          "Never",
+          "Less Than Monthly",
+          "Monthly",
+          "Weekly",
+          "Daily or Almost Daily"
+        ]
+      },
+      {
+        "prompt": "How often during the last year have you needed a drink first thing in the morning to get yourself going after a heavy drinking session?",
+        "name": "item6",
+        "labels": [
+          "Never",
+          "Less Than Monthly",
+          "Monthly",
+          "Weekly",
+          "Daily or Almost Daily"
+        ]
+      },
+      {
+        "prompt": "",
+        "name": "catch",
+        "labels": [
+          "Weekly"
+        ]
+      },
+      {
+        "prompt": "How often during the last year have you had a feeling of guilt or remorse after drinking?",
+        "name": "item7",
+        "labels": [
+          "Never",
+          "Less Than Monthly",
+          "Monthly",
+          "Weekly",
+          "Daily or Almost Daily"
+        ]
+      },
+      {
+        "prompt": "How often during the last year have you been unable to remember what happened the night before because of your drinking?",
+        "name": "item8",
+        "labels": [
+          "Never",
+          "Less Than Monthly",
+          "Monthly",
+          "Weekly",
+          "Daily or Almost Daily"
+        ]
+      },
+      {
+        "prompt": "Have you or someone else been injured because of your drinking?",
+        "name": "item9",
+        "labels": [
+          "No",
+          "Yes, But Not In The Last Year",
+          "Yes, During The Last Year"
+        ]
+      },
+      {
+        "prompt": "Has a relative, friend, doctor or other health care worker been concerned about your drinking or suggested you cut down?",
+        "name": "item10",
+        "labels": [
+          "No",
+          "Yes, But Not In The Last Year",
+          "Yes, During The Last Year"
+        ]
+      }
+    ]
+  }
+}

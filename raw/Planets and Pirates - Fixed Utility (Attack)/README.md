@@ -1,6 +1,6 @@
 # planets-task
 
-Authors: Jessica C. Lee & Shi Xian Liew 
+Authors: Jessica C. Lee & Shi Xian Liew
 
 Code repo for the planets + pirates task. Participants can click on two planets to receive probabilistic rewards. Clicking on a planet sometimes results in a ship (CS) appearing that either leads to a pirate attack (+) or nothing (-).
 
