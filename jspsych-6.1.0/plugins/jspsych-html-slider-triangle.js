@@ -204,6 +204,7 @@ jsPsych.plugins['html-slider-triangle'] = (function() {
 
     var triangle = display_element.querySelector('#jspsych-html-slider-triangle');
     var handle = display_element.querySelector('#jspsych-html-slider-triangle-handle');
+    handle.style.pointerEvents = 'none'; // ignore mouse events so they occur on the triangle instead
     var pieChart = display_element.querySelector('#jspsych-html-slider-triangle-pie-chart');
     var continueButton = display_element.querySelector('#jspsych-html-slider-triangle-continue');
 
@@ -352,6 +353,7 @@ jsPsych.plugins['html-slider-triangle'] = (function() {
     // Event listener for mousedown event on the triangle
     triangle.addEventListener('mousedown', function(event) {
       if (event.button === 0) {
+        isHovering = true;
         isDragging = true;
         var mouseX = event.clientX;
         var mouseY = event.clientY;
@@ -377,7 +379,11 @@ jsPsych.plugins['html-slider-triangle'] = (function() {
 
     // Event listener for mouseleave event on the triangle
     triangle.addEventListener('mouseleave', function(event) {
-      isDragging = false;
+      isHovering = false;
+    });
+
+    triangle.addEventListener('mouseenter', function(event) {
+      isHovering = true;
     });
 
     // Touch event handling
