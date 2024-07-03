@@ -714,25 +714,6 @@ var p2_q4_triangle = {
 //----------------------------------------------------------------------------
 // --- Phase 3
 
-// 2 planet -> 3 planet conversion:
-// How do we want to raise the 3 levels of pirate attraction
-
-// instructlate = [          // past tense (LATE condition)
-// '<p>Your signals to the ' + planet_side[0]+ ' planet (' + planet_layout[0] + ' side) have been attracting pirate ships (Ship: Type ' + pun_ship + '), that have been stealing your points! </p>' +
-
-// ];
-
-// instructearly = [          // future tense (LATE condition)
-// '<p>Local intel has determined where the pirates are coming from!</p>' +
-// '<p>Your signals to the ' + planet_side[0]+ ' planet (' + planet_layout[0] + ' side) will attract pirate ships (Ship: Type ' + pun_ship + ') and steal your points! </p>' +
-// ];
-
-
-// if (group.includes("early")) {      // EARLY condition
-// 	for (var i=0; i<nBlocks_p2; i++){
-
-// 		if (i === nBlocks_p2-4) {
-
 var contingenciescorrect = false;
 
 var cont_catch = {
@@ -1103,7 +1084,7 @@ let timeline = []; // This is the master timeline, the experiment runs sequentia
 // timeline.push(infer_p1_A);
 // timeline.push(infer_p1_B);
 // timeline.push(infer_p1_C);
-timeline.push(p1_q3_triangle);
+// timeline.push(p1_q3_triangle);
 // timeline.push(p1_q4_triangle);
 
 
@@ -1121,7 +1102,7 @@ timeline.push(p1_q3_triangle);
 // timeline.push(p1_q4_triangle);
 
 // Phase3, contingencies
-// timeline.push(cont_catch);
+timeline.push(cont_catch);
 
 // Phase3, ships
 // addBlocksToTimeline(timeline, planet_ship, nBlocks_p3, nTrialspBlk);
