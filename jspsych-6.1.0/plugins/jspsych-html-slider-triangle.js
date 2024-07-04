@@ -142,6 +142,58 @@ jsPsych.plugins['html-slider-triangle'] = (function() {
     return lambda1 >= 0 && lambda2 >= 0 && lambda3 >= 0;
   }
 
+  /*  Dot product of two 2D vectors
+      Inputs: vectorOne and vectorTwo are coordinate vectors [x, y]
+  */
+  function dotProduct(vectorOne, vectorTwo) {
+    return vectorOne[0] * vectorTwo[0] + vectorOne[1] * vectorTwo[1];
+  }
+
+  // Subtract vectorTwo from vectorOne
+  function vecSub(vectorOne, vectorTwo) {
+    return Array(vectorOne[0] - vectorTwo[0], vectorOne[1] - vectorTwo[1]);
+  }
+
+  // Add vectorTwo and vectorOne
+  function vecAdd(vectorOne, vectorTwo) {
+    return Array(vectorOne[0] + vectorTwo[0], vectorOne[1] + vectorTwo[1]);
+  }
+
+  // Multiply vector by scalar
+  function vecScale(scalar, vector) {
+    return Array(vector[0] * scalar, vector[1] * scalar);
+  }
+
+  /*  Given a point outside a triangle, get closest point inside triangle
+      Inputs: point is an array containing [x, y] coordinates
+              triangle is an array of arrays, each containing [x, y] coordinates of a vertex
+      Returns closest point as an array containing [x, y] coordinates
+  */
+  function closestPointInsideTriangle(point, tri) {
+    console.log(tri);
+    let candidatePoints = [...tri];
+    for (let i = 0; i < 3; i++) {
+      let vertexOne = tri[i];
+      let vertexTwo = tri[(i+1) % 3];
+      let numerator = dotProduct(vecSub(point, vertexOne), vecSub(vertexTwo, vertexOne));
+      let denominator = dotProduct(vecSub(vertexTwo, vertexOne), vecSub(vertexTwo, vertexOne));
+      projection = numerator / denominator;
+      if (projection >= 0 && projection <= 1) {
+        candidatePoints.push(vecAdd(vertexOne, vecScale(projection, vecSub(vertexTwo, vertexOne))));
+      }
+    }
+    let closestDistance = Infinity;
+    let closestPoint = null;
+    for (let candidate of candidatePoints) {
+      let distance = Math.sqrt(Math.pow(candidate[0] - point[0], 2) + Math.pow(candidate[1] - point[1], 2));
+      if (distance < closestDistance) {
+        closestDistance = distance;
+        closestPoint = candidate;
+      }
+    }
+    return closestPoint;
+  }
+
   // Trial function
   // ==============
 
@@ -368,6 +420,21 @@ jsPsych.plugins['html-slider-triangle'] = (function() {
         });
         event.preventDefault();
       }
+    });
+
+    // Listen for mousemove on the window, for dragging the handle with mouse outside triangle
+    window.addEventListener('mousemove', function(event) {
+      if (isDragging && !isHovering) {
+        tri = Array();
+        let bcr = triangle.getBoundingClientRect();
+        tri.push([bcr.x, bcr.y]);
+        tri.push([bcr.right, bcr.y]);
+        tri.push([bcr.x + bcr.width / 2, bcr.y + bcr.height]);
+        console.log(tri);
+        console.log(closestPointInsideTriangle(Array(event.clientX, event.clientY), tri));
+        updateHandlePosition(...closestPointInsideTriangle(Array(event.clientX, event.clientY), tri));
+      }
+
     });
 
     // Event listener for mouseup event on the document

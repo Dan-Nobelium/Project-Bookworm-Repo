@@ -1084,7 +1084,7 @@ let timeline = []; // This is the master timeline, the experiment runs sequentia
 // timeline.push(infer_p1_A);
 // timeline.push(infer_p1_B);
 // timeline.push(infer_p1_C);
-// timeline.push(p1_q3_triangle);
+timeline.push(p1_q3_triangle);
 // timeline.push(p1_q4_triangle);
 
 
@@ -1102,7 +1102,7 @@ let timeline = []; // This is the master timeline, the experiment runs sequentia
 // timeline.push(p1_q4_triangle);
 
 // Phase3, contingencies
-timeline.push(cont_catch);
+// timeline.push(cont_catch);
 
 // Phase3, ships
 // addBlocksToTimeline(timeline, planet_ship, nBlocks_p3, nTrialspBlk);
