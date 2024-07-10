@@ -223,16 +223,14 @@ var i = 1;
 
 
 const valence_p1 = {
-  type: 'valence-check-4',
+  type: 'valence-check',
   prompt: valence_q,
-  stimulus_1: 'img/win100.png',
-  stim_text_1: "Winning $100",
-  stimulus_2: stim_list[0],
-  stim_text_2: 'Planet A (left)',
-  stimulus_3: stim_list[1],
-  stim_text_3: 'Planet B (middle)',
-  stimulus_4: stim_list[2],
-  stim_text_4: 'Planet C (right)',
+  stimuli_and_text: [
+    ['img/win100.png', 'Winning $100'],
+    [stim_list[0], 'Planet A (left)'],
+    [stim_list[1], 'Planet B (middle)'],
+    [stim_list[2], 'Planet C (right)']
+  ],
   labels: valence_labels,
   button_label: 'Continue',
   stimulus_height: inf_stim_height,
@@ -459,26 +457,21 @@ let planet_ship = {
       ];
 
 
-//TODO: create valance check 8 library and use it here
         // value check p2
         var valence_p2 = {
-          type: 'valence-check-9',
+          type: 'valence-check',
           prompt: valence_q,
-          win_100_text: win_100_text,
-          ship_outcome_1_unshielded: ship_outcome_1_unshielded,
-          ship_outcome_2_unshielded: ship_outcome_2_unshielded,
-          stimulus_4: val_img_p2[2].stimulus,
-          stim_text_4: val_img_p2[2].text,
-          stimulus_5: val_img_p2[3].stimulus,
-          stim_text_5: val_img_p2[3].text,
-          stimulus_6: val_img_p2[4].stimulus,
-          stim_text_6: val_img_p2[4].text,
-          stimulus_7: val_img_p2[5].stimulus,
-          stim_text_7: val_img_p2[5].text,
-          stimulus_8: val_img_p2[6].stimulus,
-          stim_text_8: val_img_p2[6].text,
-          stimulus_9: val_img_p2[7].stimulus,
-          stim_text_9: val_img_p2[7].text,
+          stimuli_and_text: [
+            [win_100_text, null],
+            [ship_outcome_1_unshielded, null],
+            [ship_outcome_2_unshielded, null],
+            [val_img_p2[2].stimulus, val_img_p2[2].text],
+            [val_img_p2[3].stimulus, val_img_p2[3].text],
+            [val_img_p2[4].stimulus, val_img_p2[4].text],
+            [val_img_p2[5].stimulus, val_img_p2[5].text],
+            [val_img_p2[6].stimulus, val_img_p2[6].text],
+            [val_img_p2[7].stimulus, val_img_p2[7].text]
+          ],
           labels: valence_labels,
           stimulus_height: inf_stim_height,
           slider_width: inf_slider_width,
@@ -1080,18 +1073,18 @@ let timeline = []; // This is the master timeline, the experiment runs sequentia
 
 // // Phase 1, no ships
 // addBlocksToTimeline(timeline, planet_noship, nBlocks_p1, nTrialspBlk);
-// timeline.push(valence_p1);
+timeline.push(valence_p1);
 // timeline.push(infer_p1_A);
 // timeline.push(infer_p1_B);
 // timeline.push(infer_p1_C);
-timeline.push(p1_q3_triangle);
+// timeline.push(p1_q3_triangle);
 // timeline.push(p1_q4_triangle);
 
 
 // // Phase2, ships
 // timeline.push(phaseTwoInstructions);
 // addBlocksToTimeline(timeline, planet_ship, nBlocks_p2, nTrialspBlk);
-// timeline.push(valence_p2);
+timeline.push(valence_p2);
 // timeline.push(infer_p2_A);
 // timeline.push(infer_p2_B);
 // timeline.push(infer_p2_C);
@@ -1106,7 +1099,7 @@ timeline.push(p1_q3_triangle);
 
 // Phase3, ships
 // addBlocksToTimeline(timeline, planet_ship, nBlocks_p3, nTrialspBlk);
-// timeline.push(valence_p2);
+timeline.push(valence_p2);
 // timeline.push(infer_p2_A);
 // timeline.push(infer_p2_B);
 // timeline.push(infer_p2_C);
