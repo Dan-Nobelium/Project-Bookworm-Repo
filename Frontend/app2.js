@@ -18,21 +18,21 @@ let num_planets = 3;
 let planet_sides = [...Array(num_planets).keys()].map(x => x.toString());
 let planet_side = jsPsych.randomization.sampleWithReplacement(planet_sides, 1)[0];
 // Stimulus and image Initialization
-const stim_list = jsPsych.randomization.repeat(['img/planet_p.png','img/planet_o.png', 'img/planet_b.png'], 1);
-const ship_list = jsPsych.randomization.repeat(['img/ship1.png','img/ship2.png','img/ship3.png'], 1);
-const stim_selector_highlight = 'img/selectring.png';
+const stim_list = jsPsych.randomization.repeat(['assets/planet_p.png','assets/planet_o.png', 'assets/planet_b.png'], 1);
+const ship_list = jsPsych.randomization.repeat(['assets/ship1.png','assets/ship2.png','assets/ship3.png'], 1);
+const stim_selector_highlight = 'assets/selectring.png';
 const images = [
-  'img/signal1.png','img/signal2.png','img/signal3.png','img/signal4.png',
-  'img/ship1.png','img/ship2.png', 'img/planet_p.png',
-  'img/planet_b.png','img/planet_o.png',
-  'img/cursor.png','img/cursordark.png', 'img/selectring.png',
-  'img/win100.png', 'img/lose.png',
-  'img/arrow.jpg', 'img/blank_lose.jpg', 'img/blank_arrow.jpg'
+  'assets/signal1.png','assets/signal2.png','assets/signal3.png','assets/signal4.png',
+  'assets/ship1.png','assets/ship2.png', 'assets/planet_p.png',
+  'assets/planet_b.png','assets/planet_o.png',
+  'assets/cursor.png','assets/cursordark.png', 'assets/selectring.png',
+  'assets/win100.png', 'assets/lose.png',
+  'assets/arrow.jpg', 'assets/blank_lose.jpg', 'assets/blank_arrow.jpg'
 ];
 const planetColors = {
-  'img/planet_p.png': 'pink',
-  'img/planet_o.png': 'orange',
-  'img/planet_b.png': 'blue',
+  'assets/planet_p.png': 'pink',
+  'assets/planet_o.png': 'orange',
+  'assets/planet_b.png': 'blue',
 };
 
 // Independent Variables Definition
@@ -101,7 +101,7 @@ if (continuousResp){
 /* functions */
 
 // Define a function to add blocks to the timeline
-function addBlocksToTimeline(timeline, blockConfig, nBlocks, nTrialsPerBlock) {
+function addBlocksTo(timeline, blockConfig, nBlocks, nTrialsPerBlock) {
   for (let i = 0; i < nBlocks; i++) {
     let block = {
       timeline: [blockConfig],
@@ -198,7 +198,7 @@ let planet_noship = {
       // phase 1, winning $100 image/text
       var inf_img_p1_winning100 = [
         {
-          stimulus: 'img/win100.png',
+          stimulus: 'assets/win100.png',
           text: "Winning $100"
         }
       ];
@@ -206,7 +206,7 @@ let planet_noship = {
       // // phase 1, winning $100 image/text make this loosing
       // var inf_img_p1_winning100 = [
       //   {
-      //     stimulus: 'img/win100.png',
+      //     stimulus: 'assets/win100.png',
       //     text: "Winning $100"
       //   }
       // ];
@@ -226,7 +226,7 @@ const valence_p1 = {
   type: 'valence-check',
   prompt: valence_q,
   stimuli_and_text: [
-    ['img/win100.png', 'Winning $100'],
+    ['assets/win100.png', 'Winning $100'],
     [stim_list[0], 'Planet A (left)'],
     [stim_list[1], 'Planet B (middle)'],
     [stim_list[2], 'Planet C (right)']
@@ -397,11 +397,11 @@ let planet_ship = {
 //p2 valance 8 items
   const val_img_p2 = [
     {
-      stimulus: 'img/win100.png',
+      stimulus: 'assets/win100.png',
       text: "Winning $100"
     },
     {
-      stimulus: 'img/lose.png',
+      stimulus: 'assets/lose.png',
       text: "Losing $"
     },
     {
@@ -417,16 +417,16 @@ let planet_ship = {
       text: "Planet C (right)"
     },
     {
-      stimulus: 'img/ship1.png',
+      stimulus: 'assets/ship1.png',
       text: "Ship 1"
     },
     {
-      stimulus: 'img/ship2.png',
+      stimulus: 'assets/ship2.png',
       text: "Ship 2"
     }
     ,
     {
-      stimulus: 'img/ship3.png',
+      stimulus: 'assets/ship3.png',
       text: "Ship 3"
     }
     ];
@@ -435,11 +435,11 @@ let planet_ship = {
       // phase 2, planet A
       var inf_img_p2_A = [
         {
-          stimulus: 'img/win100.png',
+          stimulus: 'assets/win100.png',
           text: "Winning $100"
         },
         {
-          stimulus: 'img/lose.png',
+          stimulus: 'assets/lose.png',
           text: "Losing $"
         },
         {
@@ -567,7 +567,7 @@ let planet_ship = {
     // inference check p2 (ship 1)
 var infer_p2_ship1 = {
   type: 'inference-check-2',
-  main_stimulus: 'img/ship1.png',
+  main_stimulus: 'assets/ship1.png',
   main_stimulus_height: main_stim_height,
   prompt: inference_prompt[3],
   ship_outcome_1: ship_outcome_1_unshielded,
@@ -590,7 +590,7 @@ var infer_p2_ship1 = {
 // inference check p2 (ship 2)
 var infer_p2_ship2 = {
   type: 'inference-check-2',
-  main_stimulus: 'img/ship2.png',
+  main_stimulus: 'assets/ship2.png',
   main_stimulus_height: main_stim_height,
   prompt: inference_prompt[4],
   ship_outcome_1: ship_outcome_1_unshielded,
@@ -613,7 +613,7 @@ var infer_p2_ship2 = {
 // inference check p2 (ship 3)
 var infer_p2_ship3 = {
   type: 'inference-check-2',
-  main_stimulus: 'img/ship3.png',
+  main_stimulus: 'assets/ship3.png',
   main_stimulus_height: main_stim_height,
   prompt: inference_prompt[5],
   ship_outcome_1: ship_outcome_1_unshielded,
@@ -724,7 +724,7 @@ var cont_catch = {
             <div style="display: flex; flex-direction: row; align-items: center;">
               <img src="${stim_list[0]}" style="width: 100px; height: 100px; object-fit: contain; margin-right: 10px;">
               <p>Planet A:</p>
-              <img src="img/arrow.jpg" style="width: 100px; height: 100px; object-fit: contain; margin-right: 10px;">
+              <img src="assets/arrow.jpg" style="width: 100px; height: 100px; object-fit: contain; margin-right: 10px;">
               <img src="${ship_list[0]}" style="width: 100px; height: 100px; object-fit: contain; margin-right: 10px;">
             </div>
           </div>
@@ -733,9 +733,9 @@ var cont_catch = {
             <div style="display: flex; flex-direction: row; align-items: center;">
               <img src="${stim_list[1]}" style="width: 100px; height: 100px; object-fit: contain; margin-right: 10px;">
               <p>Planet B:</p>
-              <img src="img/arrow.jpg" style="width: 100px; height: 100px; object-fit: contain; margin-right: 10px;">
+              <img src="assets/arrow.jpg" style="width: 100px; height: 100px; object-fit: contain; margin-right: 10px;">
               <img src="${ship_list[1]}" style="width: 100px; height: 100px; object-fit: contain; margin-right: 10px;">
-              <img src="img/arrow.jpg" style="width: 100px; height: 100px; object-fit: contain; margin-right: 10px;">
+              <img src="assets/arrow.jpg" style="width: 100px; height: 100px; object-fit: contain; margin-right: 10px;">
               <div style="margin-top: 5px;">${ship_outcome_1_unshielded}</div>
             </div>
           </div>
@@ -744,9 +744,9 @@ var cont_catch = {
             <div style="display: flex; flex-direction: row; align-items: center;">
               <img src="${stim_list[2]}" style="width: 100px; height: 100px; object-fit: contain; margin-right: 10px;">
               <p>Planet C:</p>
-              <img src="img/arrow.jpg" style="width: 100px; height: 100px; object-fit: contain; margin-right: 10px;">
+              <img src="assets/arrow.jpg" style="width: 100px; height: 100px; object-fit: contain; margin-right: 10px;">
               <img src="${ship_list[2]}" style="width: 100px; height: 100px; object-fit: contain; margin-right: 10px;">
-              <img src="img/arrow.jpg" style="width: 100px; height: 100px; object-fit: contain; margin-right: 10px;">
+              <img src="assets/arrow.jpg" style="width: 100px; height: 100px; object-fit: contain; margin-right: 10px;">
               <div style="margin-top: 5px;">${ship_outcome_2_unshielded}</div>
             </div>
           </div>
@@ -777,8 +777,8 @@ var cont_catch = {
   
   // Object representing the mapping between ships and planets
   ship_planet_mapping: {
-    'img/ship1.png': 'Planet B',
-    'img/ship2.png': 'Planet C'
+    'assets/ship1.png': 'Planet B',
+    'assets/ship2.png': 'Planet C'
   },
   
   // HTML-formatted string representing the text for winning 100 points
