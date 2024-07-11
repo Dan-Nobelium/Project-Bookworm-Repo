@@ -101,7 +101,7 @@ if (continuousResp){
 /* functions */
 
 // Define a function to add blocks to the timeline
-function addBlocksTo(timeline, blockConfig, nBlocks, nTrialsPerBlock) {
+function addBlocksToTimeline(timeline, blockConfig, nBlocks, nTrialsPerBlock) {
   for (let i = 0; i < nBlocks; i++) {
     let block = {
       timeline: [blockConfig],
