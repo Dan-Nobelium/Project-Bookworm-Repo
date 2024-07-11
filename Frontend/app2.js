@@ -17,9 +17,15 @@ let sample = samples[0];
 let num_planets = 3;
 let planet_sides = [...Array(num_planets).keys()].map(x => x.toString());
 let planet_side = jsPsych.randomization.sampleWithReplacement(planet_sides, 1)[0];
+
 // Stimulus and image Initialization
-const stim_list = jsPsych.randomization.repeat(['img/planet_p.png','img/planet_o.png', 'img/planet_b.png'], 1);
-const ship_list = jsPsych.randomization.repeat(['img/ship1.png','img/ship2.png','img/ship3.png'], 1);
+// Ship and stim lists in original order
+const stim_list_original = ['img/planet_p.png','img/planet_o.png', 'img/planet_b.png'];
+const ship_list_original = ['img/ship1.png','img/ship2.png','img/ship3.png'];
+// Ship and stim lists in randomised order
+const stim_list = jsPsych.randomization.repeat(stim_list_original, 1);
+const ship_list = jsPsych.randomization.repeat(ship_list_original, 1);
+
 const stim_selector_highlight = 'img/selectring.png';
 const images = [
   'img/signal1.png','img/signal2.png','img/signal3.png','img/signal4.png',
@@ -764,15 +770,15 @@ var cont_catch = {
     `Which planet leads to this attack? ${ship_outcome_2_unshielded}`,
     `Which ship leads to this attack?  ${ship_outcome_2_unshielded}`,
   ],
-  planet_options: stim_list,
-  ship_option_1: ship_list[0],
-  ship_option_2: ship_list[1],
-  ship_option_3: ship_list[2],
+  planet_options: stim_list_original,
+  ship_option_1: ship_list_original[0],
+  ship_option_2: ship_list_original[1],
+  ship_option_3: ship_list_original[2],
   correct_answers: [
-    stim_list[1], // Planet 1
-    ship_list[1], // Ship 3
-    stim_list[2], // Planet 2
-    ship_list[2] // Ship 1
+    stim_list[1],
+    ship_list[1],
+    stim_list[2], 
+    ship_list[2] 
   ],
   
   // Object representing the mapping between ships and planets
@@ -1062,43 +1068,43 @@ let timeline = []; // This is the master timeline, the experiment runs sequentia
 
 // // Induction
 // timeline.push(fullscreen);
-timeline.push(consent_block);
+// timeline.push(consent_block);
 // timeline.push(demographics_block);
 // timeline.push(instructionCheckWithFeedback);
 
 // // Attention check
-timeline.push(cfi_block);
-timeline.push(htq_block);
-timeline.push(audit_block);
+// timeline.push(cfi_block);
+// timeline.push(htq_block);
+// timeline.push(audit_block);
 
 // // Phase 1, no ships
-addBlocksToTimeline(timeline, planet_noship, nBlocks_p1, nTrialspBlk);
-timeline.push(valence_p1);
-timeline.push(infer_p1_A);
-timeline.push(infer_p1_B);
-timeline.push(infer_p1_C);
-timeline.push(p1_q3_triangle);
-timeline.push(p1_q4_triangle);
+// addBlocksToTimeline(timeline, planet_noship, nBlocks_p1, nTrialspBlk);
+// timeline.push(valence_p1);
+// timeline.push(infer_p1_A);
+// timeline.push(infer_p1_B);
+// timeline.push(infer_p1_C);
+// timeline.push(p1_q3_triangle);
+// timeline.push(p1_q4_triangle);
 
 
 // // Phase2, ships
-timeline.push(phaseTwoInstructions);
-addBlocksToTimeline(timeline, planet_ship, nBlocks_p2, nTrialspBlk);
-timeline.push(valence_p2);
-timeline.push(infer_p2_A);
-timeline.push(infer_p2_B);
-timeline.push(infer_p2_C);
-timeline.push(infer_p2_ship1);
-timeline.push(infer_p2_ship2);
-timeline.push(infer_p2_ship3);
-timeline.push(p1_q3_triangle);
-timeline.push(p1_q4_triangle);
+// timeline.push(phaseTwoInstructions);
+// addBlocksToTimeline(timeline, planet_ship, nBlocks_p2, nTrialspBlk);
+// timeline.push(valence_p2);
+// timeline.push(infer_p2_A);
+// timeline.push(infer_p2_B);
+// timeline.push(infer_p2_C);
+// timeline.push(infer_p2_ship1);
+// timeline.push(infer_p2_ship2);
+// timeline.push(infer_p2_ship3);
+// timeline.push(p1_q3_triangle);
+// timeline.push(p1_q4_triangle);
 
 // Phase3, contingencies
 timeline.push(cont_catch);
 
 // Phase3, ships
-addBlocksToTimeline(timeline, planet_ship, nBlocks_p3, nTrialspBlk);
+// addBlocksToTimeline(timeline, planet_ship, nBlocks_p3, nTrialspBlk);
 timeline.push(valence_p2);
 timeline.push(infer_p2_A);
 timeline.push(infer_p2_B);
