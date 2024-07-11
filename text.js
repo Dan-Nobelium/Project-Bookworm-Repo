@@ -21,7 +21,7 @@ var consent_block = {
   '<p>Before you begin, please read the information sheet carefully.</p>' +
   '<br>' +
   '<p><b>PARTICIPANT INFORMATION STATEMENT AND CONSENT</b></p>' +
-    '<embed src="data/consent/PIS_SONA_3385.pdf" width="800px" height="2100px" />' +
+    '<embed src="assets/PIS_SONA_3385.pdf" width="800px" height="2100px" />' +
   '<p>By continuing, you are making a decision whether or not to participate. Clicking the button below indicates that, having read the information provided on the participant information sheet, you consent to the above.' +
   '<br></p>',
   choices: ['I consent to participate'],
