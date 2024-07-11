@@ -39,6 +39,7 @@ After downloading the repo, use the below CLI Args in order to successcully run 
 ## Troubleshooting
 - Make sure your project is up to date `git pull`
 - Make sure the branch you are working on is up to date with main `git merge main`
+- Make sure the .env file is correct (check the .env.example to see if anything has been added and request the variable)
 - Periodically run `go mod tidy` to ensure you have all the dependecies
 - Try killing the air process and restarting it
 - Read the tracebacks to see where the error is and ask for help if you can figure it out
