@@ -40,7 +40,7 @@ const probability_trade = [[.5], [.5], [.5]];
 const probability_shield = [[.5], [.5], [.5]];
 let ship_attack_damage = [0, 100, 0.2];
 ship_attack_damage = jsPsych.randomization.shuffle(ship_attack_damage); //randomises the order of the ship damage array (ship_attack_damage)
-const block_duration = 180 * 100; // in milliseconds (3 mins) // sets the length of planet-response trials.
+const block_duration = 180 * 10; // in milliseconds (3 mins) // sets the length of planet-response trials.
 var probability_ship = [[1],[1],[1]]; //how likely is there to be a ship for each planet, [1,1,1] means 100% of clicks will result in a ship.
 
 // Global Variables Definition
@@ -1061,54 +1061,54 @@ let timeline = []; // This is the master timeline, the experiment runs sequentia
 
 
 // Induction
-// timeline.push(fullscreen);
-// timeline.push(consent_block);
-// timeline.push(demographics_block);
-// timeline.push(instructionCheckWithFeedback);
+timeline.push(fullscreen);
+timeline.push(consent_block);
+timeline.push(demographics_block);
+timeline.push(instructionCheckWithFeedback);
 
-// // // Attention check
-// timeline.push(cfi_block);
-// timeline.push(htq_block);
-// timeline.push(audit_block);
+// // Attention check
+timeline.push(cfi_block);
+timeline.push(htq_block);
+timeline.push(audit_block);
 
 // // Phase 1, no ships
-// addBlocksToTimeline(timeline, planet_noship, nBlocks_p1, nTrialspBlk);
+addBlocksToTimeline(timeline, planet_noship, nBlocks_p1, nTrialspBlk);
 timeline.push(valence_p1);
-// timeline.push(infer_p1_A);
-// timeline.push(infer_p1_B);
-// timeline.push(infer_p1_C);
-// timeline.push(p1_q3_triangle);
-// timeline.push(p1_q4_triangle);
+timeline.push(infer_p1_A);
+timeline.push(infer_p1_B);
+timeline.push(infer_p1_C);
+timeline.push(p1_q3_triangle);
+timeline.push(p1_q4_triangle);
 
 
 // // Phase2, ships
-// timeline.push(phaseTwoInstructions);
-// addBlocksToTimeline(timeline, planet_ship, nBlocks_p2, nTrialspBlk);
+timeline.push(phaseTwoInstructions);
+addBlocksToTimeline(timeline, planet_ship, nBlocks_p2, nTrialspBlk);
 timeline.push(valence_p2);
-// timeline.push(infer_p2_A);
-// timeline.push(infer_p2_B);
-// timeline.push(infer_p2_C);
-// timeline.push(infer_p2_ship1);
-// timeline.push(infer_p2_ship2);
-// timeline.push(infer_p2_ship3);
-// timeline.push(p1_q3_triangle);
-// timeline.push(p1_q4_triangle);
+timeline.push(infer_p2_A);
+timeline.push(infer_p2_B);
+timeline.push(infer_p2_C);
+timeline.push(infer_p2_ship1);
+timeline.push(infer_p2_ship2);
+timeline.push(infer_p2_ship3);
+timeline.push(p1_q3_triangle);
+timeline.push(p1_q4_triangle);
 
 // Phase3, contingencies
-// timeline.push(cont_catch);
+timeline.push(cont_catch);
 
 // Phase3, ships
-// addBlocksToTimeline(timeline, planet_ship, nBlocks_p3, nTrialspBlk);
+addBlocksToTimeline(timeline, planet_ship, nBlocks_p3, nTrialspBlk);
 timeline.push(valence_p2);
-// timeline.push(infer_p2_A);
-// timeline.push(infer_p2_B);
-// timeline.push(infer_p2_C);
-// timeline.push(p1_q3_triangle);
-// timeline.push(p1_q4_triangle);
+timeline.push(infer_p2_A);
+timeline.push(infer_p2_B);
+timeline.push(infer_p2_C);
+timeline.push(p1_q3_triangle);
+timeline.push(p1_q4_triangle);
 
 
 //Debrief
-// timeline.push(debrief_block);
+timeline.push(debrief_block);
 
 //Disabled blocks
 //timeline.push(contact_block); // disabled
