@@ -1061,10 +1061,10 @@ let timeline = []; // This is the master timeline, the experiment runs sequentia
 
 
 // // Induction
-// timeline.push(fullscreen);
+timeline.push(fullscreen);
 timeline.push(consent_block);
-// timeline.push(demographics_block);
-// timeline.push(instructionCheckWithFeedback);
+timeline.push(demographics_block);
+timeline.push(instructionCheckWithFeedback);
 
 // // Attention check
 timeline.push(cfi_block);
@@ -1111,10 +1111,10 @@ timeline.push(p1_q4_triangle);
 timeline.push(debrief_block);
 
 //Disabled blocks
-//timeline.push(contact_block); // disabled
+timeline.push(contact_block);
 
 //Exit experiment (uncomment to hide JSON data at program end)
-// timeline.push(exit_experiment);
+timeline.push(exit_experiment);
 
 // Run the experiment
 {
