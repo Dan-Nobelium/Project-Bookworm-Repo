@@ -41,3 +41,22 @@ func (q *Queries) UpdateAdminInfo(ctx context.Context, arg UpdateAdminInfoParams
 	)
 	return i, err
 }
+
+const updatePassword = `-- name: UpdatePassword :exec
+UPDATE
+	credential
+SET
+	password_hash = ?
+WHERE
+	admin_id = ?
+`
+
+type UpdatePasswordParams struct {
+	PasswordHash []byte
+	AdminID      string
+}
+
+func (q *Queries) UpdatePassword(ctx context.Context, arg UpdatePasswordParams) error {
+	_, err := q.db.ExecContext(ctx, updatePassword, arg.PasswordHash, arg.AdminID)
+	return err
+}
