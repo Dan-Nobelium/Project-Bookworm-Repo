@@ -12,10 +12,8 @@ INSERT INTO
 VALUES
 	(?, ?);
 
--- name: CreateSession :one
+-- name: CreateSession :exec
 INSERT INTO
-	session (admin_id, expiry)
+	session (id, admin_id, expiry)
 VALUES
-	(?, ?)
-RETURNING
-	id;
+	(?, ?, ?);

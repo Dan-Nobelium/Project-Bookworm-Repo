@@ -62,23 +62,20 @@ func (q *Queries) CreateCredential(ctx context.Context, arg CreateCredentialPara
 	return err
 }
 
-const createSession = `-- name: CreateSession :one
+const createSession = `-- name: CreateSession :exec
 INSERT INTO
-	session (admin_id, expiry)
+	session (id, admin_id, expiry)
 VALUES
-	(?, ?)
-RETURNING
-	id
+	(?, ?, ?)
 `
 
 type CreateSessionParams struct {
+	ID      string
 	AdminID string
 	Expiry  int64
 }
 
-func (q *Queries) CreateSession(ctx context.Context, arg CreateSessionParams) (string, error) {
-	row := q.db.QueryRowContext(ctx, createSession, arg.AdminID, arg.Expiry)
-	var id string
-	err := row.Scan(&id)
-	return id, err
+func (q *Queries) CreateSession(ctx context.Context, arg CreateSessionParams) error {
+	_, err := q.db.ExecContext(ctx, createSession, arg.ID, arg.AdminID, arg.Expiry)
+	return err
 }
