@@ -1,7 +1,9 @@
 package api
 
 import (
+	"log"
 	"net/http"
+	"project-bookworm/auth"
 	"project-bookworm/database"
 
 	"github.com/labstack/echo/v4"
@@ -24,6 +26,12 @@ func Login(ctx echo.Context) error {
 	if bcrypt.CompareHashAndPassword(admin.PasswordHash, []byte(password)) != nil {
 		// return to change to error handling template in future
 		return ctx.String(http.StatusUnauthorized, "Bad Login")
+	}
+
+	// create a session
+	if err := auth.CreateSession(ctx, &admin); err != nil {
+		log.Printf("Failed to create session: %v")
+		return ctx.String(http.StatusInternalServerError, "It looks like we're having issues, try again later")
 	}
 
 	// return to change to a root page redirect in future
