@@ -46,3 +46,24 @@ func CreateSession(ctx echo.Context, admin *db.GetAdminLoginRow) error {
 	// return nil error
 	return nil
 }
+
+// revokes a session cookie and removes the session from the database
+func RevokeSession(ctx echo.Context) {
+	// get session cookie
+	session, err := ctx.Cookie("session")
+	if err != nil {
+		return
+	}
+
+	// remove from database
+	if err := database.DB.Queries.DeleteSession(ctx.Request().Context(), session.Value); err != nil {
+		return
+	}
+
+	// revoke the cookie
+	session.Value = "revoked"
+	session.MaxAge = -1
+	session.Expires = time.Now()
+	ctx.SetCookie(session)
+	return
+}
