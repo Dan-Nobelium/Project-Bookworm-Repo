@@ -1,7 +1,7 @@
 -- +goose Up
 CREATE TABLE IF NOT EXISTS trial (
   id TEXT PRIMARY KEY,
-  experiment_id TEXT NOT NULL REFERENCES experiment(id),
+  experiment_id TEXT NOT NULL REFERENCES experiment(id) ON DELETE CASCADE,
   data BLOB NOT NULL,
   created_at INT NOT NULL DEFAULT (strftime('%s', 'now')),
   updated_at INT NOT NULL DEFAULT (strftime('%s', 'now'))

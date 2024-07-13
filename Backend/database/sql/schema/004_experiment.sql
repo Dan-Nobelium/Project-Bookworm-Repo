@@ -6,7 +6,7 @@ CREATE TABLE IF NOT EXISTS experiment (
   directory_path TEXT UNIQUE NOT NULL,
   max_trials INT NOT NULL CHECK (max_trials > 0),
   status INT NOT NULL CHECK (status IN (0, 1)),
-  created_by TEXT NOT NULL REFERENCES admin(id),
+  created_by TEXT NOT NULL REFERENCES admin(id) ON DELETE CASCADE,
   created_at INT NOT NULL DEFAULT (strftime('%s', 'now')),
   updated_at INT NOT NULL DEFAULT (strftime('%s', 'now'))
 ) STRICT;
