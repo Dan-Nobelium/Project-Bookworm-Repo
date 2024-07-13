@@ -3,6 +3,7 @@ package main
 import (
 	"log"
 	"os"
+	"project-bookworm/api"
 	"project-bookworm/database"
 	"project-bookworm/handlers"
 
@@ -24,6 +25,7 @@ func main() {
 	e := echo.New()
 
 	handlers.InitHandlerRoutes(e)
+	api.InitApiRoutes(e)
 
 	e.Logger.Fatal(e.Start(":" + os.Getenv("PORT")))
 }
