@@ -45,6 +45,23 @@ func (q *Queries) CreateAdmin(ctx context.Context, arg CreateAdminParams) (Admin
 	return i, err
 }
 
+const createCredential = `-- name: CreateCredential :exec
+INSERT INTO
+	credential (admin_id, password_hash)
+VALUES
+	(?, ?)
+`
+
+type CreateCredentialParams struct {
+	AdminID      string
+	PasswordHash []byte
+}
+
+func (q *Queries) CreateCredential(ctx context.Context, arg CreateCredentialParams) error {
+	_, err := q.db.ExecContext(ctx, createCredential, arg.AdminID, arg.PasswordHash)
+	return err
+}
+
 const createSession = `-- name: CreateSession :one
 INSERT INTO
 	session (admin_id, expiry)
