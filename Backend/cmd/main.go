@@ -3,6 +3,7 @@ package main
 import (
 	"log"
 	"os"
+	"project-bookworm/database"
 	"project-bookworm/handlers"
 
 	"github.com/joho/godotenv"
@@ -14,6 +15,9 @@ func init() {
 	if err := godotenv.Load(".env"); err != nil {
 		log.Panicf("Failed to load environment variables: %v", err)
 	}
+
+	// initialise database connection
+	database.InitDB()
 }
 
 func main() {
