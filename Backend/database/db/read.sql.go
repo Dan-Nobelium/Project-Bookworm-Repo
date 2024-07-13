@@ -41,7 +41,7 @@ FROM
 	admin AS a
 	LEFT JOIN credential AS c ON a.id = c.admin_id
 WHERE
-	a.id = ?
+	a.email = ?
 `
 
 type GetAdminLoginRow struct {
@@ -58,8 +58,8 @@ type GetAdminLoginRow struct {
 	UpdatedAt_2  sql.NullInt64
 }
 
-func (q *Queries) GetAdminLogin(ctx context.Context, id string) (GetAdminLoginRow, error) {
-	row := q.db.QueryRowContext(ctx, getAdminLogin, id)
+func (q *Queries) GetAdminLogin(ctx context.Context, email string) (GetAdminLoginRow, error) {
+	row := q.db.QueryRowContext(ctx, getAdminLogin, email)
 	var i GetAdminLoginRow
 	err := row.Scan(
 		&i.ID,
