@@ -30,7 +30,7 @@ func Login(ctx echo.Context) error {
 
 	// create a session
 	if err := auth.CreateSession(ctx, &admin); err != nil {
-		log.Printf("Failed to create session: %v")
+		log.Printf("Failed to create session: %v", err)
 		return ctx.String(http.StatusInternalServerError, "It looks like we're having issues, try again later")
 	}
 
