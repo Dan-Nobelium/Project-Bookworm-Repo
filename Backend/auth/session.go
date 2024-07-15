@@ -67,3 +67,31 @@ func RevokeSession(ctx echo.Context) {
 	ctx.SetCookie(session)
 	return
 }
+
+// validates a session
+func ValidateSession(ctx echo.Context) (string, bool) {
+	// get session cookie
+	cookie, err := ctx.Cookie("session")
+	if err != nil {
+		return "", false
+	}
+
+	// check session in database
+	session, err := database.DB.Queries.GetSession(ctx.Request().Context(), cookie.Value)
+	if err != nil {
+		// revoke the session
+		RevokeSession(ctx)
+		return "", false
+	}
+
+	// check the expiry date
+	if session.Expiry <= time.Now().Unix() {
+		// remove session from database and revoke session
+		database.DB.Queries.DeleteSession(ctx.Request().Context(), cookie.Value)
+		RevokeSession(ctx)
+		return "", false
+	}
+
+	// return the admin Id and true for valid session
+	return session.AdminID, true
+}
