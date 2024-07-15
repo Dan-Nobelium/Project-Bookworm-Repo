@@ -56,15 +56,18 @@ func RevokeSession(ctx echo.Context) {
 	}
 
 	// remove from database
-	if err := database.DB.Queries.DeleteSession(ctx.Request().Context(), session.Value); err != nil {
-		return
-	}
+	database.DB.Queries.DeleteSession(ctx.Request().Context(), session.Value)
 
 	// revoke the cookie
-	session.Value = "revoked"
-	session.MaxAge = -1
-	session.Expires = time.Now()
-	ctx.SetCookie(session)
+	ctx.SetCookie(&http.Cookie{
+		Name:     "session",
+		Value:    "revoked",
+		MaxAge:   -1,
+		Expires:  time.Now(),
+		HttpOnly: true,
+		Secure:   true,
+		SameSite: http.SameSiteStrictMode,
+	})
 	return
 }
 
@@ -86,8 +89,7 @@ func ValidateSession(ctx echo.Context) (string, bool) {
 
 	// check the expiry date
 	if session.Expiry <= time.Now().Unix() {
-		// remove session from database and revoke session
-		database.DB.Queries.DeleteSession(ctx.Request().Context(), cookie.Value)
+		// revoke the session
 		RevokeSession(ctx)
 		return "", false
 	}
