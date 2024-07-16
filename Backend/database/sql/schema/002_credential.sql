@@ -1,6 +1,6 @@
 -- +goose Up
 CREATE TABLE IF NOT EXISTS credential (
-  admin_id TEXT PRIMARY KEY REFERENCES admin(id),
+  admin_id TEXT PRIMARY KEY REFERENCES admin(id) ON DELETE CASCADE,
   password_hash BLOB NOT NULL,
   created_at INT NOT NULL DEFAULT (strftime('%s', 'now')),
   updated_at INT NOT NULL DEFAULT (strftime('%s', 'now'))
