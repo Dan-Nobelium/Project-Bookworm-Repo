@@ -1130,12 +1130,14 @@ timeline.push(infer_p2_C);
     pun_ship: ship_list[planet_side],
   });
 
-  
-  jsPsych.init({
-    timeline: timeline,
-    preload_images: images,
-    on_finish: function() {
-      jsPsych.data.displayData();
-    }
+  jatos.onLoad(function() {
+    jsPsych.init({
+      timeline: timeline,
+      preload_images: images,
+      on_finish: function() {
+        jsPsych.data.displayData();
+        jatos.endStudy(jsPsych.data.get().json())
+      }
+    });
   });
 } 
