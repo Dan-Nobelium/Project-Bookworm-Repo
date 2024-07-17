@@ -1,4 +1,24 @@
 //This file containts text variables which are placed into the Global Scope. (As resources allow these will be locally scoped).
+
+fetch('./languages.json')
+  .then(response => response.json())
+  .then(languages => {
+    languages.sort((a, b) => a.name.localeCompare(b.name));
+    const dropdown = document.getElementById('languageDropdown');
+
+    languages.forEach(language => {
+      const option = document.createElement('option');
+      option.value = language.name;
+      option.textContent = language.name;
+      // Default language to English
+      if (language.name === "English") {
+        option.selected = true;
+      }
+      dropdown.appendChild(option);
+    });
+  })
+  .catch(error => console.error('Error loading languages:', error));
+
 const demographics_block = {
   type: 'survey-html-form',
   preamble: '<p><b>Please fill in your demographic details</b></p>',
@@ -8,7 +28,7 @@ const demographics_block = {
   '<input type="radio" name="gender" value="female" required/> Female &nbsp;' +
   '<input type="radio" name="gender" value="other" required/> Other<br>' + '<br>' +
   '<p> Age: <input name="age" type="number" min="1" max="99" required/> </p>' + '<br>' +
-  '<p> Native language: <input name="language" type="text" required/> </p>' + '<br>',
+  '<p> Native language: <select name="language" type="text" id="languageDropdown" required/> </select> </p>' + '<br>',
   data: {
     phase: 'demographics'
   }
