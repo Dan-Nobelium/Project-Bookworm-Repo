@@ -53,6 +53,7 @@ jsPsych.plugins['survey-html-form-data-validation'] = (function() {
     // Start the form
     html += trial.html 
 
+    html += '<div id="jspsych-survey-html-form-error-message" style="color: red; display: none"></div>' 
     // Fetch language options
     fetch(trial.language_data_file)
       .then(response => response.json())
@@ -63,7 +64,7 @@ jsPsych.plugins['survey-html-form-data-validation'] = (function() {
 
         languages.forEach(language => {
           const option = document.createElement('option')
-          option.value = language.name 
+          option.value = language.name
           option.textContent = language.name
           
           // Set English as the default
@@ -80,9 +81,9 @@ jsPsych.plugins['survey-html-form-data-validation'] = (function() {
     html += '<button id="jspsych-survey-html-form-next" class="jspsych-btn">' + trial.button_label + '</button>'
     display_element.innerHTML = html
     display_element.querySelector('#jspsych-survey-html-form-next').addEventListener('click', function() {
-      
       const inputs = display_element.querySelectorAll('input[required]')
       const select = display_element.querySelector('select[required]')
+      const errorMessageElement = display_element.querySelector('#jspsych-survey-html-form-error-message')
 
       let isValid = true
 
@@ -91,10 +92,10 @@ jsPsych.plugins['survey-html-form-data-validation'] = (function() {
           isValid = false
           input.classList.add('invalid')
         } else {
-          input.classList.remove('invalid') 
+          input.classList.remove('invalid')
         }
       })
-      
+
       if (!select.value) {
         isValid = false
         select.classList.add('invalid')
@@ -113,7 +114,8 @@ jsPsych.plugins['survey-html-form-data-validation'] = (function() {
 
         jsPsych.finishTrial(trial_data)
       } else {
-        alert('Please fill in all required fields.')
+        errorMessageElement.textContent = 'Please fill in all required fields.'
+        errorMessageElement.style.display = 'block'
       }
     })
   }
