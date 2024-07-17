@@ -7,7 +7,7 @@ const demographics_block = {
   '<input type="radio" name="gender" value="male" required/> Male &nbsp; ' +
   '<input type="radio" name="gender" value="female" required/> Female &nbsp;' +
   '<input type="radio" name="gender" value="other" required/> Other<br>' + '<br>' +
-  '<p> Age: <input name="age" type="text" required/> </p>' + '<br>' +
+  '<p> Age: <input name="age" type="number" min="1" max="99" required/> </p>' + '<br>' +
   '<p> Native language: <input name="language" type="text" required/> </p>' + '<br>',
   data: {
     phase: 'demographics'
