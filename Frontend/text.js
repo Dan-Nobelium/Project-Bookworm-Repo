@@ -1,17 +1,18 @@
 //This file containts text variables which are placed into the Global Scope. (As resources allow these will be locally scoped).
 const demographics_block = {
-  type: 'survey-html-form',
+  type: 'survey-html-form-data-validation',
   preamble: '<p><b>Please fill in your demographic details</b></p>',
   html: 
   '<p> Gender: ' +
   '<input type="radio" name="gender" value="male" required/> Male &nbsp; ' +
   '<input type="radio" name="gender" value="female" required/> Female &nbsp;' +
   '<input type="radio" name="gender" value="other" required/> Other<br>' + '<br>' +
-  '<p> Age: <input name="age" type="text" required/> </p>' + '<br>' +
-  '<p> Native language: <input name="language" type="text" required/> </p>' + '<br>',
+  '<p> Age: <input name="age" type="number" min="1" max="99" required/> </p>' + '<br>' +
+  '<p> Native language: <select name="language" type="text" id="languageDropdown" required/> </select> </p>' + '<br>',
   data: {
     phase: 'demographics'
-  }
+  },
+  language_data_file: './languages.json'
 };
 
 var consent_block = {
