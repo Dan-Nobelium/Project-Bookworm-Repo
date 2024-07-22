@@ -345,7 +345,7 @@ plugin.trial = function(display_element, trial)
     
     function formatShipOutcomeText(outcomeText, damageText) {
         return outcomeText + '<span style="font-weight: bold;font-size: 36px; color: inherit;">-$' + damageText + '</span>';
-      }
+    }
 
     // Create general div structure: Planet Row | Command Info
     if (Array.isArray(trial.stimulus)){
@@ -353,9 +353,9 @@ plugin.trial = function(display_element, trial)
             // Set up space for score, signal, and planet
             html += '<div id="planet-div-' + i + '" class="planet-div"> ';
             html += '<div class="clickid planet-score-box" id="planet-score-box-' + i + '"></div> ';
-
+        html += '<div class="planet-wrapper" style="position: relative">';        
         //Write img tag
-        html += '<img class="clickid planet-img" src="'+trial.stimulus[i] + '" ' +
+        html += '<img class="planet-img clickid" src="'+trial.stimulus[i] + '" ' +
             'id="planet-' + i + '" ' +
             'allowclick="1" ' +  //allow clicks?
             'style="' ;
@@ -367,47 +367,47 @@ plugin.trial = function(display_element, trial)
             if(trial.stimulus_width == null && trial.maintain_aspect_ratio){
                 html += 'width: auto; ';
             }
+        }
+        if(trial.stimulus_width !== null){
+            html += 'width:'+trial.stimulus_width+'px; '
+            if(trial.stimulus_height == null && trial.maintain_aspect_ratio){
+                html += 'height: auto; ';
             }
-            if(trial.stimulus_width !== null){
-                html += 'width:'+trial.stimulus_width+'px; '
-                if(trial.stimulus_height == null && trial.maintain_aspect_ratio){
-                    html += 'height: auto; ';
-                }
-            }
-            html += '"' //End the style property quote
-            html += 'data-choice="'+i + '" '
-            //Make images undraggable
-            html += 'draggable="false" ';
-            html +='></img>'
-            ;
-            
+        }
+        html += '"' //End the style property quote
+        html += 'data-choice="'+i + '" '
+        //Make images undraggable
+        html += 'draggable="false" ';
+        html +='></img>';
+        //Add select ring
+        html += '<img class="planet-select" id="planet-select-' + i + '"> ';
+        html += '</div>';
+        
         //show planet names below the planet
         if (trial.prompt !== null) {
             html += '<div class="clickid planet-prompt" id="planet-prompt-' + i + '" style="position:relative; font-size: 24px;">'
             html += trial.prompt[i];
             html += '</div>'
         }
-            //Add signal box
-            html += '<div class="clickid planet-signal-box" id="planet-signal-box-' + i + '" style="position:absolute; top:100px;"></div> ';
-            //Add select ring divs
-            html += '<img class="planet-select" id="planet-select-' + i + '"> ';
-            //End planet div
-            html +='</div>';
-        }
+        //Add signal box
+        html += '<div class="clickid planet-signal-box" id="planet-signal-box-' + i + '" style="position:absolute; top:100px;"></div> ';
+        //End planet div
+        html +='</div>';
     }
+}
 
-    html += '</div>'
-    html += '<div id="command-info">'
-    html += '<div class="clickid" id="total-score-box"></div>'
-    html += '<div id="ship-placeholder"></div>'
-    html += '<div id="shield-placeholder"></div>'
-    html += '<div id="ship-outcome-text" class="ship-outcome" style="display: none; opacity: 0;"></div>'
-    html += '</div>'
-    html += '</div>'
+html += '</div>'
+html += '<div id="command-info">'
+html += '<div class="clickid" id="total-score-box"></div>'
+html += '<div id="ship-placeholder"></div>'
+html += '<div id="shield-placeholder"></div>'
+html += '<div id="ship-outcome-text" class="ship-outcome" style="display: none; opacity: 0;"></div>'
+html += '</div>'
+html += '</div>'
 
-    
-    //Render basic div structure
-    display_element.innerHTML = html;
+
+//Render basic div structure
+display_element.innerHTML = html;
 
 // Apply CSS grid to the game container
 var gameContainer = display_element.querySelector('#game-container');
@@ -416,33 +416,33 @@ gameContainer.style.gridTemplateColumns = '5fr 1fr'; // Allocate 2/3 width to pl
 gameContainer.style.gridGap = '400px';
 
 
-    // Position planets and command info elements in the grid
-    var planetsDiv = display_element.querySelector('#planet-row');
-    planetsDiv.style.display = 'flex';
-    planetsDiv.style.justifyContent = 'space-between';
-    planetsDiv.style.alignItems = 'left';
+// Position planets and command info elements in the grid
+var planetsDiv = display_element.querySelector('#planet-row');
+planetsDiv.style.display = 'flex';
+planetsDiv.style.justifyContent = 'space-between';
+planetsDiv.style.alignItems = 'left';
 
-    var commandInfo = display_element.querySelector('#command-info');
+var commandInfo = display_element.querySelector('#command-info');
 
-    commandInfo.style.display = 'flex';
-    commandInfo.style.flexDirection = 'column';
-    commandInfo.style.justifyContent = 'space-between';
-    commandInfo.style.alignItems = 'right';
-    commandInfo.style.borderLeft = '6px solid grey';
-    commandInfo.style.paddingLeft = '60px';
-    
-    
+commandInfo.style.display = 'flex';
+commandInfo.style.flexDirection = 'column';
+commandInfo.style.justifyContent = 'space-between';
+commandInfo.style.alignItems = 'right';
+commandInfo.style.borderLeft = '6px solid grey';
+commandInfo.style.paddingLeft = '60px';
 
-    // Update planet creation to include selection ring and planet name within the planet element
-    var planetDivs = display_element.querySelectorAll('.planet-div');
-    planetDivs.forEach(function(planetDiv, i) {
-        var planetImg = planetDiv.querySelector('.planet-img');
-        var selectionRing = planetDiv.querySelector('.planet-select');
-        var planetName = planetDiv.querySelector('.planet-prompt');
 
-        planetDiv.appendChild(selectionRing);
-        planetDiv.appendChild(planetName);
-    });
+
+// Update planet creation to include planet name within the planet element
+var planetDivs = display_element.querySelectorAll('.planet-div');
+planetDivs.forEach(function(planetDiv, i) {
+    // var planetImg = planetDiv.querySelector('.planet-img');
+    // var selectionRing = planetDiv.querySelector('.planet-select');
+    var planetName = planetDiv.querySelector('.planet-prompt');
+
+    // planetDiv.appendChild(selectionRing);
+    planetDiv.appendChild(planetName);
+});
 
 // Update ship creation to include ship image and shield elements within the ship placeholder
 var shipPlaceholder = display_element.querySelector('#ship-placeholder');
@@ -550,8 +550,8 @@ shipPlaceholder.innerHTML = '<div id="ship-img-div" ' +
         selectring.src = trial.stimulus_select;
         selectring.style.visibility = 'hidden';
         selectring.style.position = 'absolute';
-        selectring.style.top = (planetRect.top+ 10) + 'px';
-        selectring.style.left = (planetRect.left - 3) + 'px';
+        selectring.style.top = '-5px';
+        selectring.style.left = '-5px';
         selectring.style.width = (planetRect.width + 10) + 'px';
         selectring.style.height = (planetRect.height + 10) + 'px';
         selectring.style.zIndex = '0';
@@ -1369,6 +1369,7 @@ planetEl.removeEventListener('mouseover',planet_mOver)
 }
 
 console.log("Time exceeded:", checkTime);
+console.log(trial.block_duration);
 console.log("Final action:", final_action);
 
 }
