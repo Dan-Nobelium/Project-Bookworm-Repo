@@ -12,7 +12,7 @@ const demographics_block = {
   data: {
     phase: 'demographics'
   },
-  language_data_file: './languages.json'
+  language_data_file: './assets/languages.json'
 };
 
 var consent_block = {
