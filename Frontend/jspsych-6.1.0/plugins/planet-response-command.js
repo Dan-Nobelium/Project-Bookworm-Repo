@@ -677,7 +677,7 @@ console.log("Trade success:", trade_success);
 if (trade_success){
     //Add and display reward
     var displayScore = trial.rewards[choice];
-    var statusmsg = win_100_text + displayScore + ' points';
+    var statusmsg = win_100_text;// + displayScore + ' points';
     console.log("Trade success message:", statusmsg);
 
 } else {
@@ -1179,7 +1179,7 @@ function updateStatus(choice,msg,color){
     statusDiv.innerHTML = msg
     statusDiv.style.color = color
 
-    console.log("Updated status:", msg);
+    console.log("Updated status:", msg, statusDiv.cloneNode(true));
 
 }
 
