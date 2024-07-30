@@ -46,7 +46,8 @@ const probability_trade = [[.5], [.5], [.5]];
 const probability_shield = [[.5], [.5], [.5]];
 let ship_attack_damage = [0, 100, 0.2];
 ship_attack_damage = jsPsych.randomization.shuffle(ship_attack_damage); //randomises the order of the ship damage array (ship_attack_damage)
-const block_duration = 180 * 1000; // in milliseconds (3 mins) // sets the length of planet-response trials.
+//const block_duration = 180 * 1000; // in milliseconds (3 mins) // sets the length of planet-response trials.
+const block_duration = 25 * 1000; // shorter duration for testing
 var probability_ship = [[1],[1],[1]]; //how likely is there to be a ship for each planet, [1,1,1] means 100% of clicks will result in a ship.
 
 // Global Variables Definition
@@ -72,8 +73,8 @@ let planet_labels = ['Planet A','Planet B','Planet C'];
 
 //ship attack variable labels
 const win_100_text = "<img src='./img/win_100_text.png'>";
-const ship_outcome_1_unshielded = "<img src='./img/ship_outcome_1_unshielded.png'>";
-const ship_outcome_2_unshielded = "<img src='./img/ship_outcome_2_unshielded.png'>";
+const ship_outcome_1_unshielded = "<img src='./img/ship_outcome_1_unshielded.png' height='31px'>";
+const ship_outcome_2_unshielded = "<img src='./img/ship_outcome_2_unshielded.png' height='31px'>";
 const ship_outcome_3_unshielded = "<p style='font-family: Arial; font-weight: bold; font-size: 36px; color: green;'>Bonus! +$</p>";
 const ship_outcome_3_shielded = "<p style='font-family: Arial; font-size: 36px; color: grey;'>Shield successfully deflected attack</p>";
 // const ship_outcome_3_shielded = "<p style='font-family: Arial; font-size: 36px; color: yellow;'>Shield prevented a bonus</p>";

@@ -462,7 +462,7 @@ shipPlaceholder.innerHTML = '<div id="ship-img-div" ' +
     '> ' +
     '</div>' +
     '<div class="ship" id="ship-attack-text"></div>'+
-    '<div class="ship" id="ship-status-text" style="height: 100px"></div>';
+    '<div class="ship" id="ship-status-text" style="width: 100%; height: 164px; margin-top: -6px; display: flex; flex-direction: column; align-items: center; justify-content: space-evenly"></div>';
 
 
     // Create shield elements and append them to the shield placeholder
@@ -1171,12 +1171,14 @@ scoreDiv.innerHTML = 'Total points: ' + points
 
 function updateStatus(choice,msg,color){
     //Update planet status with some message and in some colour
+    var statusDiv;
     if(choice=='ship'){
-        var statusDiv = display_element.querySelector('#ship-status-text')
+        statusDiv = display_element.querySelector('#ship-status-text')
+        statusDiv.innerHTML = msg
     } else {
-        var statusDiv = display_element.querySelector('#planet-score-box-'+choice)
-    }
-    statusDiv.innerHTML = msg
+        statusDiv = display_element.querySelector('#planet-score-box-'+choice)
+        statusDiv.innerHTML = msg
+    }   
     statusDiv.style.color = color
 
     console.log("Updated status:", msg, statusDiv.cloneNode(true));
