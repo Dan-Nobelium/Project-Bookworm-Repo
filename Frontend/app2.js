@@ -72,8 +72,8 @@ let planet_labels = ['Planet A','Planet B','Planet C'];
 
 //ship attack variable labels
 const win_100_text = "<img src='./img/win_100_text.png'>";
-const ship_outcome_1_unshielded = "<p style='font-family: Arial; font-weight: bold; font-size: 36px; color: red; -webkit-text-stroke: 0.5px black;'>Attack! </p>";
-const ship_outcome_2_unshielded = "<p style='font-family: Arial; font-weight: bold; font-size: 36px; color: darkorange; -webkit-text-stroke: 0.5px yellow;'>Attack! </p>";
+const ship_outcome_1_unshielded = "<img src='./img/ship_outcome_1_unshielded.png'>";
+const ship_outcome_2_unshielded = "<img src='./img/ship_outcome_2_unshielded.png'>";
 const ship_outcome_3_unshielded = "<p style='font-family: Arial; font-weight: bold; font-size: 36px; color: green;'>Bonus! +$</p>";
 const ship_outcome_3_shielded = "<p style='font-family: Arial; font-size: 36px; color: grey;'>Shield successfully deflected attack</p>";
 // const ship_outcome_3_shielded = "<p style='font-family: Arial; font-size: 36px; color: yellow;'>Shield prevented a bonus</p>";
