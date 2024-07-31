@@ -17,18 +17,15 @@ let sample = samples[0];
 let num_planets = 3;
 let planet_sides = [...Array(num_planets).keys()].map(x => x.toString());
 let planet_side = jsPsych.randomization.sampleWithReplacement(planet_sides, 1)[0];
+
 // Stimulus and image Initialization
 const stim_list = jsPsych.randomization.repeat(['./assets/planet_p.png','./assets/planet_o.png', './assets/planet_b.png'], 1);
 const ship_list = jsPsych.randomization.repeat(['./assets/ship1.png','./assets/ship2.png','./assets/ship3.png'], 1);
 const stim_selector_highlight = './assets/selectring.png';
 const images = [
-  './assets/signal1.png','./assets/signal2.png','./assets/signal3.png','assets/signal4.png',
-  './assets/ship1.png','./assets/ship2.png', './assets/planet_p.png',
-  './assets/planet_b.png','./assets/planet_o.png',
-  './assets/cursor.png','./assets/cursordark.png', './assets/selectring.png',
-  './assets/win100.png', './assets/lose.png',
-  './assets/arrow.jpg', './assets/blank_lose.jpg', './assets/blank_arrow.jpg'
+  './assets/signal1.png', './assets/signal2.png', './assets/signal3.png', 'assets/signal4.png', './assets/ship1.png', './assets/ship2.png', './assets/planet_p.png', './assets/planet_b.png', './assets/planet_o.png', './assets/cursor.png', './assets/cursordark.png', './assets/selectring.png', './assets/win100.png', './assets/lose.png', './assets/arrow.jpg', './assets/blank_lose.jpg', './assets/blank_arrow.jpg'
 ];
+
 const planetColors = {
   './assets/planet_p.png': 'pink',
   './assets/planet_o.png': 'orange',
@@ -206,7 +203,7 @@ let planet_noship = {
       // // phase 1, winning $100 image/text make this loosing
       // var inf_img_p1_winning100 = [
       //   {
-      //     stimulus: './assets/win100.png',
+      //     stimulus: './assetswin100.png',
       //     text: "Winning $100"
       //   }
       // ];
@@ -777,8 +774,8 @@ var cont_catch = {
   
   // Object representing the mapping between ships and planets
   ship_planet_mapping: {
-    './assets/ship1.png': 'Planet B',
-    './assets/ship2.png': 'Planet C'
+    ['./assets/ship1.png']: 'Planet B',
+    ['./assets/ship2.png']: 'Planet C'
   },
   
   // HTML-formatted string representing the text for winning 100 points
