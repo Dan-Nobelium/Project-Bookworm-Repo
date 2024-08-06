@@ -958,7 +958,7 @@ function formatShipOutcomeText(outcomeText, damageText) {
       return outcomeText + '<span style="font-weight: bold;font-size: 36px; color: inherit;">-' + percentage + '%</span>';
     } else {
       // If damageText is an integer, display it as is
-      return outcomeText + '<span style="font-weight: bold;font-size: 36px; color: inherit;">-$' + damageText + '</span>';
+      return outcomeText + '<span style="font-weight: bold;font-size: 36px; color: inherit;">-' + damageText + ' points</span>';
     }
   }
 
@@ -988,7 +988,7 @@ function formatShipOutcomeText(outcomeText, damageText) {
         if (typeof appliedDamage === 'number' && appliedDamage % 1 !== 0) {
           const pointsLost = Math.round(trial.data.points * appliedDamage);
           trial.data.points -= pointsLost;
-          statusmsg = formatShipOutcomeText(trial.ship_outcome_2_unshielded, appliedDamage);
+          statusmsg = formatShipOutcomeText(trial.ship_outcome_2_unshielded, pointsLost);
           statusclr = 'darkorange';
           console.log("INDEX 2, points lost:", pointsLost);
         } else {
