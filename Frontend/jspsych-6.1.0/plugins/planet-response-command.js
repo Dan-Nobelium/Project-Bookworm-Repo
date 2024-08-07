@@ -254,29 +254,29 @@ jsPsych.plugins["planet-response-command"] = (function() {
 				description: '[disabled]Time between end of last ship outcome and ship disappearance.'
 			},
             ship_outcome_1_unshielded: {
-                type: jsPsych.plugins.parameterType.STRING,
-                pretty_name: 'Ship outcome 1 unshielded',
-                default: '',
-                description: 'The text for ship outcome 1 when unshielded.'
-              },
-              ship_outcome_2_unshielded: {
-                type: jsPsych.plugins.parameterType.STRING,
-                pretty_name: 'Ship outcome 2 unshielded',
-                default: '',
-                description: 'The text for ship outcome 2 when unshielded.'
-              },
-              ship_outcome_3_unshielded: {
-                type: jsPsych.plugins.parameterType.STRING,
-                pretty_name: 'Ship outcome 3 unshielded',
-                default: '',
-                description: 'The text for ship outcome 3 when unshielded.'
-              },
-              ship_outcome_3_shielded: {
-                type: jsPsych.plugins.parameterType.STRING,
-                pretty_name: 'Ship outcome 3 shielded',
-                default: '',
-                description: 'The text for ship outcome 3 when shielded.'
-              },
+            type: jsPsych.plugins.parameterType.STRING,
+            pretty_name: 'Ship outcome 1 unshielded',
+            default: '',
+            description: 'The text for ship outcome 1 when unshielded.'
+            },
+            ship_outcome_2_unshielded: {
+            type: jsPsych.plugins.parameterType.STRING,
+            pretty_name: 'Ship outcome 2 unshielded',
+            default: '',
+            description: 'The text for ship outcome 2 when unshielded.'
+            },
+            ship_outcome_3_unshielded: {
+            type: jsPsych.plugins.parameterType.STRING,
+            pretty_name: 'Ship outcome 3 unshielded',
+            default: '',
+            description: 'The text for ship outcome 3 when unshielded.'
+            },
+            ship_outcome_3_shielded: {
+            type: jsPsych.plugins.parameterType.STRING,
+            pretty_name: 'Ship outcome 3 shielded',
+            default: '',
+            description: 'The text for ship outcome 3 when shielded.'
+            },
 	}
 }
 
@@ -399,8 +399,8 @@ plugin.trial = function(display_element, trial)
 html += '</div>'
 html += '<div id="command-info">'
 html += '<div class="clickid" id="total-score-box"></div>'
-html += '<div id="ship-placeholder"></div>'
-html += '<div id="shield-placeholder"></div>'
+html += '<div id="ship-placeholder" style="height: 380px"></div>'
+html += '<div id="shield-placeholder" style="height: 92px"></div>'
 html += '<div id="ship-outcome-text" class="ship-outcome" style="display: none; opacity: 0;"></div>'
 html += '</div>'
 html += '</div>'
@@ -462,7 +462,7 @@ shipPlaceholder.innerHTML = '<div id="ship-img-div" ' +
     '> ' +
     '</div>' +
     '<div class="ship" id="ship-attack-text"></div>'+
-    '<div class="ship" id="ship-status-text"></div>';
+    '<div class="ship" id="ship-status-text" style="width: 100%; height: 164px; margin-top: -6px; display: flex; flex-direction: column; align-items: center; justify-content: space-evenly"></div>';
 
 
     // Create shield elements and append them to the shield placeholder
@@ -677,7 +677,7 @@ console.log("Trade success:", trade_success);
 if (trade_success){
     //Add and display reward
     var displayScore = trial.rewards[choice];
-    var statusmsg = win_100_text + displayScore + ' points';
+    var statusmsg = win_100_text;// + displayScore + ' points';
     console.log("Trade success message:", statusmsg);
 
 } else {
@@ -958,7 +958,7 @@ function formatShipOutcomeText(outcomeText, damageText) {
       return outcomeText + '<span style="font-weight: bold;font-size: 36px; color: inherit;">-' + percentage + '%</span>';
     } else {
       // If damageText is an integer, display it as is
-      return outcomeText + '<span style="font-weight: bold;font-size: 36px; color: inherit;">-$' + damageText + '</span>';
+      return outcomeText + '<span style="font-weight: bold;font-size: 36px; color: inherit;">-' + damageText + ' points</span>';
     }
   }
 
@@ -988,7 +988,7 @@ function formatShipOutcomeText(outcomeText, damageText) {
         if (typeof appliedDamage === 'number' && appliedDamage % 1 !== 0) {
           const pointsLost = Math.round(trial.data.points * appliedDamage);
           trial.data.points -= pointsLost;
-          statusmsg = formatShipOutcomeText(trial.ship_outcome_2_unshielded, appliedDamage);
+          statusmsg = formatShipOutcomeText(trial.ship_outcome_2_unshielded, pointsLost);
           statusclr = 'darkorange';
           console.log("INDEX 2, points lost:", pointsLost);
         } else {
@@ -1022,10 +1022,10 @@ function formatShipOutcomeText(outcomeText, damageText) {
     
       // Update the content and styling of the ship outcome div
       console.log("Updating ship outcome div content");
-      shipOutcomeDiv.innerHTML = statusmsg;
-      shipOutcomeDiv.style.color = statusclr;
-      shipOutcomeDiv.style.display = 'block';
-      shipOutcomeDiv.style.visibility = 'visible';
+    //   shipOutcomeDiv.innerHTML = statusmsg;
+    //   shipOutcomeDiv.style.color = statusclr;
+    //   shipOutcomeDiv.style.display = 'block';
+    //   shipOutcomeDiv.style.visibility = 'visible';
     }
   
     // Log details
@@ -1055,7 +1055,7 @@ function formatShipOutcomeText(outcomeText, damageText) {
     setTimeout(function() {
       reset_ship();
       // Hide the ship outcome div when resetting the ship
-      shipOutcomeDiv.style.visibility = 'hidden';
+    //   shipOutcomeDiv.style.visibility = 'hidden';
     }, trial.feedback_duration);
   
     // Print hostile IDX to console
@@ -1170,16 +1170,18 @@ scoreDiv.innerHTML = 'Total points: ' + points
 }
 
 function updateStatus(choice,msg,color){
-//Update planet status with some message and in some colour
-if(choice=='ship'){
-var statusDiv = display_element.querySelector('#ship-status-text')
-} else {
-var statusDiv = display_element.querySelector('#planet-score-box-'+choice)
-}
-statusDiv.innerHTML = msg
-statusDiv.style.color = color
+    //Update planet status with some message and in some colour
+    var statusDiv;
+    if(choice=='ship'){
+        statusDiv = display_element.querySelector('#ship-status-text')
+        statusDiv.innerHTML = msg
+    } else {
+        statusDiv = display_element.querySelector('#planet-score-box-'+choice)
+        statusDiv.innerHTML = msg
+    }   
+    statusDiv.style.color = color
 
-console.log("Updated status:", msg);
+    console.log("Updated status:", msg, statusDiv.cloneNode(true));
 
 }
 
