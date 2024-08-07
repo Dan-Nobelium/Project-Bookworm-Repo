@@ -1,0 +1,19 @@
+package pages
+
+templ AdminHome(loggedIn bool) {
+	@AdminLayout(loggedIn) {
+		if loggedIn {
+			// show the dash
+			<div>
+				<h1>Admin Dashboard</h1>
+				<p>Some content</p>
+			</div>
+		} else {
+			// show logged out home page
+			<div style="display: grid; grid-auto-rows: auto; justify-items: center;">
+				<h1>Admin Home Page</h1>
+				<div>Some content</div>
+			</div>
+		}
+	}
+}

@@ -1,0 +1,40 @@
+package pages
+
+import "project-bookworm/templates/styles"
+
+templ AdminHeader(loggedIn bool) {
+	<header style="border-bottom: 1px solid black;">
+		<nav class={ styles.NavStyle() }>
+			<ul class={ styles.NavListStyle() }>
+				<li><a href="/">Home</a></li>
+				<li><a href="/about">About</a></li>
+			</ul>
+			<ul class={ styles.NavListStyle() }>
+				if loggedIn {
+					<li><a href="/login">Log In</a></li>
+				} else {
+					<li><a href="/logout">Log Out</a></li>
+				}
+			</ul>
+		</nav>
+	</header>
+}
+
+templ AdminLayout(loggedIn bool) {
+	<!DOCTYPE html>
+	<html lang="en">
+		<head>
+			<meta charset="uUTF-8"/>
+			<title>Project Bookworm</title>
+		</head>
+		<body class={ styles.AdminBodyStyle() }>
+			@AdminHeader(loggedIn)
+			<main>
+				{ children... }
+			</main>
+			<footer style="text-align: center; border-top: 1px solid black;">
+				Developed by ???
+			</footer>
+		</body>
+	</html>
+}

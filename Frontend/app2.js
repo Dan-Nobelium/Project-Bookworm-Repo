@@ -17,10 +17,9 @@ let sample = samples[0];
 let num_planets = 3;
 let planet_sides = [...Array(num_planets).keys()].map(x => x.toString());
 let planet_side = jsPsych.randomization.sampleWithReplacement(planet_sides, 1)[0];
+
 // Stimulus and image Initialization
-const stim_list = jsPsych.randomization.repeat(['./assets/planet_p.png','./assets/planet_o.png', './assets/planet_b.png'], 1);
-const ship_list = jsPsych.randomization.repeat(['./assets/ship1.png','./assets/ship2.png','./assets/ship3.png'], 1);
-const stim_selector_highlight = './assets/selectring.png';
+
 const images = [
   './assets/signal1.png','./assets/signal2.png','./assets/signal3.png','assets/signal4.png',
   './assets/ship1.png','./assets/ship2.png', './assets/planet_p.png',
@@ -40,7 +39,8 @@ const probability_trade = [[.5], [.5], [.5]];
 const probability_shield = [[.5], [.5], [.5]];
 let ship_attack_damage = [0, 100, 0.2];
 ship_attack_damage = jsPsych.randomization.shuffle(ship_attack_damage); //randomises the order of the ship damage array (ship_attack_damage)
-const block_duration = 180 * 10; // in milliseconds (3 mins) // sets the length of planet-response trials.
+//const block_duration = 180 * 1000; // in milliseconds (3 mins) // sets the length of planet-response trials.
+const block_duration = 25 * 1000; // shorter duration for testing
 var probability_ship = [[1],[1],[1]]; //how likely is there to be a ship for each planet, [1,1,1] means 100% of clicks will result in a ship.
 
 // Global Variables Definition
@@ -65,9 +65,9 @@ let planet_labels = ['Planet A','Planet B','Planet C'];
 
 
 //ship attack variable labels
-const win_100_text = "<p style='font-family: Arial; font-weight: bold; font-size: 36px; color: #05BF00;'>Success +$100</p>";
-const ship_outcome_1_unshielded = "<p style='font-family: Arial; font-weight: bold; font-size: 36px; color: red; -webkit-text-stroke: 0.5px black;'>Attack! </p>";
-const ship_outcome_2_unshielded = "<p style='font-family: Arial; font-weight: bold; font-size: 36px; color: darkorange; -webkit-text-stroke: 0.5px yellow;'>Attack! </p>";
+const win_100_text = "<img src='./img/win_100_text.png'>";
+const ship_outcome_1_unshielded = "<img src='./img/ship_outcome_1_unshielded.png' height='31px'>";
+const ship_outcome_2_unshielded = "<img src='./img/ship_outcome_2_unshielded.png' height='31px'>";
 const ship_outcome_3_unshielded = "<p style='font-family: Arial; font-weight: bold; font-size: 36px; color: green;'>Bonus! +$</p>";
 const ship_outcome_3_shielded = "<p style='font-family: Arial; font-size: 36px; color: grey;'>Shield successfully deflected attack</p>";
 // const ship_outcome_3_shielded = "<p style='font-family: Arial; font-size: 36px; color: yellow;'>Shield prevented a bonus</p>";
@@ -249,12 +249,13 @@ let blockNumber = 1;
 
         //p1 (planet A)
         var infer_p1_A = {
-          type: 'inference-check-1',
+          type: 'inference-check',
           main_stimulus: stim_list[0],
           main_stimulus_height: main_stim_height,
           prompt: inference_prompt[0],
-          stimulus_1: inf_img_p1_winning100[0].stimulus,
-          stim_text_1: inf_img_p1_winning100[0].text,
+          stimuli_and_text: [
+            [inf_img_p1_winning100[0].stimulus, inf_img_p1_winning100[0].text]
+          ],
           slider_text_top: contingency_q[0],
           labels_top: contingency_labels,
           stimulus_height: inf_stim_height,
@@ -268,12 +269,13 @@ let blockNumber = 1;
 
         // inference check p1 (planet B)
         var infer_p1_B = {
-          type: 'inference-check-1',
+          type: 'inference-check',
           main_stimulus: stim_list[1],
           main_stimulus_height: main_stim_height,
           prompt: inference_prompt[1],
-          stimulus_1: inf_img_p1_winning100[0].stimulus,
-          stim_text_1: inf_img_p1_winning100[0].text,
+          stimuli_and_text: [
+            [inf_img_p1_winning100[0].stimulus, inf_img_p1_winning100[0].text]
+          ],
           slider_text_top: contingency_q[1],
           labels_top: contingency_labels,
           stimulus_height: inf_stim_height,
@@ -288,12 +290,13 @@ let blockNumber = 1;
 
         // inference check p1 (planet C)
         var infer_p1_C = {
-          type: 'inference-check-1',
+          type: 'inference-check',
           main_stimulus: stim_list[2],
           main_stimulus_height: main_stim_height,
           prompt: inference_prompt[2],
-          stimulus_1: inf_img_p1_winning100[0].stimulus,
-          stim_text_1: inf_img_p1_winning100[0].text,
+          stimuli_and_text: [
+            [inf_img_p1_winning100[0].stimulus, inf_img_p1_winning100[0].text]
+          ],
           slider_text_top: contingency_q[2],
           labels_top: contingency_labels,
           stimulus_height: inf_stim_height,
@@ -483,22 +486,18 @@ let planet_ship = {
         };
 
         var infer_p2_A = {
-          type: 'inference-check-6',
+          type: 'inference-check',
           main_stimulus: stim_list[0],
           main_stimulus_height: main_stim_height,
           prompt: inference_prompt[0],
-          ship_outcome_1: win_100_text,
-          ship_outcome_2: ship_outcome_1_unshielded,
-          ship_outcome_3: ship_outcome_2_unshielded,
-          stim_text_1: '',
-          stim_text_2: '',
-          stim_text_3: '',
-          stimulus_4: val_img_p2[5].stimulus,
-          stimulus_5: val_img_p2[6].stimulus,
-          stimulus_6: val_img_p2[7].stimulus,
-          stim_text_4: inf_img_p2_A[2].text,
-          stim_text_5: inf_img_p2_A[3].text,
-          stim_text_6: inf_img_p2_A[4].text,
+          stimuli_and_text: [
+            [win_100_text, ''],
+            [ship_outcome_1_unshielded, ''],
+            [ship_outcome_2_unshielded, ''],
+            [val_img_p2[5].stimulus, inf_img_p2_A[2].text],
+            [val_img_p2[6].stimulus, inf_img_p2_A[3].text],
+            [val_img_p2[7].stimulus, inf_img_p2_A[4].text],
+          ],
           slider_text_top: contingency_q[0],
           labels_top: contingency_labels,
           stimulus_height: inf_stim_height,
@@ -510,22 +509,18 @@ let planet_ship = {
           }
         };
         var infer_p2_B = {
-          type: 'inference-check-6',
+          type: 'inference-check',
           main_stimulus: stim_list[1],
           main_stimulus_height: main_stim_height,
           prompt: inference_prompt[1],
-          ship_outcome_1: win_100_text,
-          ship_outcome_2: ship_outcome_1_unshielded,
-          ship_outcome_3: ship_outcome_2_unshielded,
-          stim_text_1: '',
-          stim_text_2: '',
-          stim_text_3: '',
-          stimulus_4: val_img_p2[5].stimulus,
-          stimulus_5: val_img_p2[6].stimulus,
-          stimulus_6: val_img_p2[7].stimulus,
-          stim_text_4: inf_img_p2_A[2].text,
-          stim_text_5: inf_img_p2_A[3].text,
-          stim_text_6: inf_img_p2_A[4].text,
+          stimuli_and_text: [
+            [win_100_text, ''],
+            [ship_outcome_1_unshielded, ''],
+            [ship_outcome_2_unshielded, ''],
+            [val_img_p2[5].stimulus,inf_img_p2_A[2].text,],
+            [val_img_p2[6].stimulus,inf_img_p2_A[3].text,],
+            [val_img_p2[7].stimulus,inf_img_p2_A[4].text,]
+          ],
           slider_text_top: contingency_q[1],
           labels_top: contingency_labels,
           stimulus_height: inf_stim_height,
@@ -538,22 +533,18 @@ let planet_ship = {
         };
         
         var infer_p2_C = {
-          type: 'inference-check-6',
+          type: 'inference-check',
           main_stimulus: stim_list[2],
           main_stimulus_height: main_stim_height,
           prompt: inference_prompt[2],
-          ship_outcome_1: win_100_text,
-          ship_outcome_2: ship_outcome_1_unshielded,
-          ship_outcome_3: ship_outcome_2_unshielded,
-          stim_text_1: '',
-          stim_text_2: '',
-          stim_text_3: '',
-          stimulus_4: inf_img_p2_A[2].stimulus,
-          stimulus_5: inf_img_p2_A[3].stimulus,
-          stimulus_6: inf_img_p2_A[4].stimulus,
-          stim_text_4: inf_img_p2_A[2].text,
-          stim_text_5: inf_img_p2_A[3].text,
-          stim_text_6: inf_img_p2_A[4].text,
+          stimuli_and_text: [
+            [win_100_text,''],
+            [ship_outcome_1_unshielded,''],
+            [ship_outcome_2_unshielded,''],
+            [inf_img_p2_A[2].stimulus,inf_img_p2_A[2].text],
+            [inf_img_p2_A[3].stimulus,inf_img_p2_A[3].text],
+            [inf_img_p2_A[4].stimulus,inf_img_p2_A[4].text]
+          ],
           slider_text_top: contingency_q[2],
           labels_top: contingency_labels,
           stimulus_height: inf_stim_height,
@@ -566,14 +557,12 @@ let planet_ship = {
         };
     // inference check p2 (ship 1)
 var infer_p2_ship1 = {
-  type: 'inference-check-2',
-  main_stimulus: './assets/ship1.png',
   main_stimulus_height: main_stim_height,
   prompt: inference_prompt[3],
-  ship_outcome_1: ship_outcome_1_unshielded,
-  ship_outcome_2: ship_outcome_2_unshielded,
-  stim_text_1: '',
-  stim_text_2: '',
+  stimuli_and_text: [
+    [ship_outcome_1_unshielded, ''],
+    [ship_outcome_2_unshielded, '']
+  ],
   slider_text_top: contingency_q[3],
   slider_text_bottom: contingency_q[4],
   labels_top: contingency_labels,
@@ -589,14 +578,12 @@ var infer_p2_ship1 = {
 
 // inference check p2 (ship 2)
 var infer_p2_ship2 = {
-  type: 'inference-check-2',
-  main_stimulus: './assets/ship2.png',
   main_stimulus_height: main_stim_height,
   prompt: inference_prompt[4],
-  ship_outcome_1: ship_outcome_1_unshielded,
-  ship_outcome_2: ship_outcome_2_unshielded,
-  stim_text_1: '',
-  stim_text_2: '',
+  stimuli_and_text: [
+    [ship_outcome_1_unshielded,''],
+    [ship_outcome_2_unshielded,'']
+  ],
   slider_text_top: contingency_q[4],
   slider_text_bottom: contingency_q[5],
   labels_top: contingency_labels,
@@ -612,14 +599,12 @@ var infer_p2_ship2 = {
 
 // inference check p2 (ship 3)
 var infer_p2_ship3 = {
-  type: 'inference-check-2',
-  main_stimulus: './assets/ship3.png',
   main_stimulus_height: main_stim_height,
   prompt: inference_prompt[5],
-  ship_outcome_1: ship_outcome_1_unshielded,
-  ship_outcome_2: ship_outcome_2_unshielded,
-  stim_text_1: '',
-  stim_text_2: '',
+  stimuli_and_text: [
+    [ship_outcome_1_unshielded,''],
+    [ship_outcome_2_unshielded,'']
+  ],
   slider_text_top: contingency_q[5],
   slider_text_bottom: contingency_q[6],
   labels_top: contingency_labels,
@@ -764,15 +749,15 @@ var cont_catch = {
     `Which planet leads to this attack? ${ship_outcome_2_unshielded}`,
     `Which ship leads to this attack?  ${ship_outcome_2_unshielded}`,
   ],
-  planet_options: stim_list,
-  ship_option_1: ship_list[0],
-  ship_option_2: ship_list[1],
-  ship_option_3: ship_list[2],
+  planet_options: stim_list_original,
+  ship_option_1: ship_list_original[0],
+  ship_option_2: ship_list_original[1],
+  ship_option_3: ship_list_original[2],
   correct_answers: [
-    stim_list[1], // Planet 1
-    ship_list[1], // Ship 3
-    stim_list[2], // Planet 2
-    ship_list[2] // Ship 1
+    stim_list[1],
+    ship_list[1],
+    stim_list[2], 
+    ship_list[2] 
   ],
   
   // Object representing the mapping between ships and planets
@@ -1061,28 +1046,25 @@ let timeline = []; // This is the master timeline, the experiment runs sequentia
 
 
 // // Induction
-timeline.push(fullscreen);
-timeline.push(consent_block);
-timeline.push(demographics_block);
-timeline.push(instructionCheckWithFeedback);
 
 // // Attention check
-timeline.push(cfi_block);
-timeline.push(htq_block);
-timeline.push(audit_block);
+// timeline.push(cfi_block);
+// timeline.push(htq_block);
+// timeline.push(audit_block);
 
 // // Phase 1, no ships
-addBlocksToTimeline(timeline, planet_noship, nBlocks_p1, nTrialspBlk);
-timeline.push(valence_p1);
-timeline.push(infer_p1_A);
-timeline.push(infer_p1_B);
-timeline.push(infer_p1_C);
-timeline.push(p1_q3_triangle);
-timeline.push(p1_q4_triangle);
+// addBlocksToTimeline(timeline, planet_noship, nBlocks_p1, nTrialspBlk);
+// timeline.push(valence_p1);
+// timeline.push(infer_p1_A);
+// timeline.push(infer_p1_B);
+// timeline.push(infer_p1_C);
+
+// timeline.push(p1_q3_triangle);
+// timeline.push(p1_q4_triangle);
 
 
 // // Phase2, ships
-timeline.push(phaseTwoInstructions);
+// timeline.push(phaseTwoInstructions);
 addBlocksToTimeline(timeline, planet_ship, nBlocks_p2, nTrialspBlk);
 timeline.push(valence_p2);
 timeline.push(infer_p2_A);
@@ -1091,24 +1073,24 @@ timeline.push(infer_p2_C);
 timeline.push(infer_p2_ship1);
 timeline.push(infer_p2_ship2);
 timeline.push(infer_p2_ship3);
-timeline.push(p1_q3_triangle);
-timeline.push(p1_q4_triangle);
+// timeline.push(p1_q3_triangle);
+// timeline.push(p1_q4_triangle);
 
 // Phase3, contingencies
-timeline.push(cont_catch);
+// timeline.push(cont_catch);
 
 // Phase3, ships
-addBlocksToTimeline(timeline, planet_ship, nBlocks_p3, nTrialspBlk);
+// addBlocksToTimeline(timeline, planet_ship, nBlocks_p3, nTrialspBlk);
 timeline.push(valence_p2);
 timeline.push(infer_p2_A);
 timeline.push(infer_p2_B);
 timeline.push(infer_p2_C);
-timeline.push(p1_q3_triangle);
-timeline.push(p1_q4_triangle);
+// timeline.push(p1_q3_triangle);
+// timeline.push(p1_q4_triangle);
 
 
 //Debrief
-timeline.push(debrief_block);
+// timeline.push(debrief_block);
 
 //Disabled blocks
 timeline.push(contact_block);
