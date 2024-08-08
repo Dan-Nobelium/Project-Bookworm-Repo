@@ -2,9 +2,6 @@
 jsPsych.plugins['valence-check'] = (function () {
   var plugin = {};
 
-  // Register preloads for images
-  jsPsych.pluginAPI.registerPreload('valence-check-9-m', 'stimulus', 'image');
-
   plugin.info = {
     name: 'valence-check',
     description: '',
@@ -118,7 +115,7 @@ jsPsych.plugins['valence-check'] = (function () {
     // Prompt
     if (trial.prompt != null) {
       html += `${trial.prompt}`;
-      html += '<BR><BR>'
+      html += '<BR>'
     }
 
     console.log(trial.stimuli_and_text);
@@ -130,14 +127,18 @@ jsPsych.plugins['valence-check'] = (function () {
       const inputIdBase = `jspsych-valence-check-10-response${i}`;
       let stimulus = pair[0];
       let text = pair[1];
-
-      if (stimulus[0] == "<") {
-        html += `<div id="${slideIdBase}-stimulus">`;      
+      if (stimulus.slice(0, 4) == "<img") {
+        html += `<div id="${slideIdBase}-stimulus" style="margin: 36px 0px">`;    
+        html += `${stimulus}`;
+        html += `</div>`;
+      }
+      else if (stimulus.slice(0, 2) == "<p") {
+        html += `<div id="${slideIdBase}-stimulus">`;     
         html += `${stimulus}`;
         html += `</div>`;
       }
       else {
-        html += `<div id="${slideIdBase}-stimulus">`;      
+        html += `<div id="${slideIdBase}-stimulus">`;     
         html += `<img src="${stimulus}"`;
         html += `style="height:${trial.stimulus_height}px;";`;
         html += `></img></div>`;
