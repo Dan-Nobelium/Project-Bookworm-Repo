@@ -44,11 +44,10 @@ const planetColors = {
 // Independent Variables Definition
 const probability_trade = [[.5], [.5], [.5]];
 const probability_shield = [[.5], [.5], [.5]];
-//let ship_attack_damage = [0, 100, 0.2]; // an integer represents a number of points; a float represents a proportion of the player's current score. A negative number represents a reward.
-let ship_attack_damage = [-0.4, 100, 0.2]; // an integer represents a number of points; a float represents a proportion of the player's current score. A negative number represents a reward.
+let ship_attack_damage = [[-100, 'percent'], [-50, 'points'], [20, 'points']]; // A negative number represents a bonus.
 ship_attack_damage = jsPsych.randomization.shuffle(ship_attack_damage); //randomises the order of the ship damage array (ship_attack_damage)
 //const block_duration = 180 * 1000; // in milliseconds (3 mins) // sets the length of planet-response trials.
-const block_duration = 25 * 1000; // shorter duration for testing
+const block_duration = 40 * 1000; // shorter duration for testing
 var probability_ship = [[1],[1],[1]]; //how likely is there to be a ship for each planet, [1,1,1] means 100% of clicks will result in a ship.
 
 // Global Variables Definition

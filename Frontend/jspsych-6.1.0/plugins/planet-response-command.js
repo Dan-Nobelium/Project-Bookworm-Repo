@@ -177,10 +177,10 @@ jsPsych.plugins["planet-response-command"] = (function() {
 				description: 'Duration between ship appearance and attack.'
 			},
 			ship_attack_damage: {
-				type: jsPsych.plugins.parameterType.FLOAT,
+				type: jsPsych.plugins.parameterType.ARRAY,
 				pretty_name: 'Ship damage',
 				array: true,
-				default: [0, 100, 0.2],
+				default: [[0, 'points'], [100, 'points'], [20, 'percent']],
 				description: 'Array of ship damage values: [0 damage, 100 damage, 20% of total points]'
 			},
 			ship_hostile_idx: {
@@ -953,14 +953,7 @@ function formatShipOutcomeText(outcomeText, damage) {
         return;
     }
     let gain = -damage;
-    if (gain % 1 !== 0) {
-      // If gain is a float, convert it to a percentage
-      const percentage = (gain * 100).toFixed(0);
-      return outcomeText + '<span style="font-weight: bold;font-size: 36px; color: inherit;">' + (gain > 0 ? "+" : "") + percentage + '%</span>';
-    } else {
-      // If gain is an integer, display it as is
-      return outcomeText + '<span style="font-weight: bold;font-size: 36px; color: inherit;">' + (gain > 0 ? "+" : "") + gain + ' points</span>';
-    }
+    return outcomeText + '<span style="font-weight: bold;font-size: 36px; color: inherit;">' + (gain > 0 ? "+" : "") + gain + ' points</span>';
   }
 
  function ship_attack(choice) {
@@ -973,24 +966,24 @@ function formatShipOutcomeText(outcomeText, damage) {
     // Log shield response
     response.ships.shield_activated.push(shield_activated);
     console.log("Shield activated:", shield_activated);
-  
+    
+    console.log(trial.ship_attack_damage[choice]);
+
     // Calculate damage based on the attacking ship's index and the ship_attack_damage parameter
-    const damageTypes = trial.ship_attack_damage;
-    const appliedDamage = typeof damageTypes[choice] === 'number' ? damageTypes[choice] :
-      damageTypes[choice](trial.data.points);
-    console.log("Applied damage:", appliedDamage);
+    const damageValue = trial.ship_attack_damage[choice][0];
+    const damageType = trial.ship_attack_damage[choice][1];
+    const pointsLost = damageType == 'percent' ? Math.round(trial.data.points * (damageValue / 100)) : damageValue;
+    //const appliedDamage = typeof damageTypes[choice] === 'number' ? damageTypes[choice] : damageTypes[choice](trial.data.points);
+    console.log("Applied damage:", pointsLost);
   
     // Check if the applied damage is not equal to 0 before proceeding with the attack
-    if (appliedDamage !== 0) {
+    if (pointsLost !== 0) {
       // Apply points loss depending on the choice and the shield activation
       if (!shield_activated) {
         // Subtract the calculated damage from the points
         const initialPoints = trial.data.points; // Store the initial points before damage
-        if (typeof appliedDamage === 'number' && appliedDamage % 1 !== 0) {
-          const pointsLost = Math.round(trial.data.points * appliedDamage);
-          trial.data.points -= pointsLost;
-          
-          
+        trial.data.points -= pointsLost;
+        if (damageType == 'percent') {         
           if (pointsLost >= 0) {
             statusmsg = formatShipOutcomeText(trial.ship_outcome_2_unshielded, pointsLost);
             statusclr = 'darkorange';
@@ -998,21 +991,20 @@ function formatShipOutcomeText(outcomeText, damage) {
           }
           else {
             statusmsg = formatShipOutcomeText(trial.ship_outcome_3_unshielded, pointsLost);
-            statusclr = 'green';
+            statusclr = 'yellow';
             console.log("INDEX 2, points gained:", -pointsLost);
           }
           
         } else {
-          trial.data.points -= appliedDamage;
-          if (appliedDamage >= 0) {
-            statusmsg = formatShipOutcomeText(trial.ship_outcome_1_unshielded, appliedDamage);
+          if (pointsLost >= 0) {
+            statusmsg = formatShipOutcomeText(trial.ship_outcome_1_unshielded, pointsLost);
             statusclr = 'red';
-            console.log("INDEX 1, damage:", appliedDamage);
+            console.log("INDEX 1, damage:", pointsLost);
           }
           else {
-            statusmsg = formatShipOutcomeText(trial.ship_outcome_3_unshielded, appliedDamage);
-            statusclr = 'lime';
-            console.log("INDEX 2, bonus:", -appliedDamage);
+            statusmsg = formatShipOutcomeText(trial.ship_outcome_3_unshielded, pointsLost);
+            statusclr = 'yellow';
+            console.log("INDEX 2, bonus:", -pointsLost);
           }
         }
         const pointsDifference = initialPoints - trial.data.points; // Calculate the points difference
@@ -1025,7 +1017,7 @@ function formatShipOutcomeText(outcomeText, damage) {
         updateScore(trial.data.points);
       } else if (shield_activated) {
         console.log("Shield activated, setting status message");
-        statusmsg = trial.ship_outcome_3_shielded;
+        statusmsg = trial.ship_outcome_3_shielded; // It seems like this should depend on whether an attack or a bonus was blocked
         statusclr = 'grey';
         console.log("Status message:", statusmsg);
         console.log("Status color:", statusclr);
@@ -1048,10 +1040,10 @@ function formatShipOutcomeText(outcomeText, damage) {
   
     // Log details
     var time_outcome = performance.now() - start_time;
-    response.ships.outcome.push(-appliedDamage);
+    response.ships.outcome.push(-pointsLost);
     response.ships.time_outcome.push(time_outcome);
     // Also update a single list of outcomes for easier tracking of each change in score
-    response.all_outcomes.outcome.push(-appliedDamage);
+    response.all_outcomes.outcome.push(-pointsLost);
     response.all_outcomes.time_outcome.push(time_outcome);
     // Finally, update total
     response.all_outcomes.total.push(trial.data.points);
