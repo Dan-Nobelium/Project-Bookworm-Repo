@@ -75,9 +75,9 @@ let planet_labels = ['Planet A','Planet B','Planet C'];
 const win_100_text = "<img src='./img/win_100_text.png'>";
 const ship_outcome_1_unshielded = "<img src='./img/ship_outcome_1_unshielded.png' height='31px'>";
 const ship_outcome_2_unshielded = "<img src='./img/ship_outcome_2_unshielded.png' height='31px'>";
-const ship_outcome_3_unshielded = "<p style='font-family: Arial; font-weight: bold; font-size: 36px; color: green;'>Bonus! +$</p>";
-const ship_outcome_3_shielded = "<p style='font-family: Arial; font-size: 36px; color: grey;'>Shield successfully deflected attack</p>";
-// const ship_outcome_3_shielded = "<p style='font-family: Arial; font-size: 36px; color: yellow;'>Shield prevented a bonus</p>";
+const ship_outcome_3_unshielded = "<img src='./img/ship_outcome_3_unshielded.png' height='32px'>";
+const ship_outcome_3_shielded = "<img src='./img/ship_outcome_3_shielded.png' height='84px'>";
+// const ship_outcome_3_shielded = "<img src='./img/ship_outcome_3_shielded_alt.png' height='84px'>";
 
 // // manipulate response-ship Rft rate
 // if (group[0].includes("0.1")) {
@@ -1083,13 +1083,13 @@ let timeline = []; // This is the master timeline, the experiment runs sequentia
 // // Phase2, ships
 // timeline.push(phaseTwoInstructions);
 addBlocksToTimeline(timeline, planet_ship, nBlocks_p2, nTrialspBlk);
-timeline.push(valence_p2);
-timeline.push(infer_p2_A);
-timeline.push(infer_p2_B);
-timeline.push(infer_p2_C);
-timeline.push(infer_p2_ship1);
-timeline.push(infer_p2_ship2);
-timeline.push(infer_p2_ship3);
+// timeline.push(valence_p2);
+// timeline.push(infer_p2_A);
+// timeline.push(infer_p2_B);
+// timeline.push(infer_p2_C);
+// timeline.push(infer_p2_ship1);
+// timeline.push(infer_p2_ship2);
+// timeline.push(infer_p2_ship3);
 // timeline.push(p1_q3_triangle);
 // timeline.push(p1_q4_triangle);
 
@@ -1098,10 +1098,10 @@ timeline.push(infer_p2_ship3);
 
 // Phase3, ships
 // addBlocksToTimeline(timeline, planet_ship, nBlocks_p3, nTrialspBlk);
-timeline.push(valence_p2);
-timeline.push(infer_p2_A);
-timeline.push(infer_p2_B);
-timeline.push(infer_p2_C);
+// timeline.push(valence_p2);
+// timeline.push(infer_p2_A);
+// timeline.push(infer_p2_B);
+// timeline.push(infer_p2_C);
 // timeline.push(p1_q3_triangle);
 // timeline.push(p1_q4_triangle);
 
