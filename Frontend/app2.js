@@ -44,7 +44,8 @@ const planetColors = {
 // Independent Variables Definition
 const probability_trade = [[.5], [.5], [.5]];
 const probability_shield = [[.5], [.5], [.5]];
-let ship_attack_damage = [0, 100, 0.2];
+//let ship_attack_damage = [0, 100, 0.2]; // an integer represents a number of points; a float represents a proportion of the player's current score. A negative number represents a reward.
+let ship_attack_damage = [-0.4, 100, 0.2]; // an integer represents a number of points; a float represents a proportion of the player's current score. A negative number represents a reward.
 ship_attack_damage = jsPsych.randomization.shuffle(ship_attack_damage); //randomises the order of the ship damage array (ship_attack_damage)
 //const block_duration = 180 * 1000; // in milliseconds (3 mins) // sets the length of planet-response trials.
 const block_duration = 25 * 1000; // shorter duration for testing
@@ -787,9 +788,6 @@ var cont_catch = {
 
   // HTML-formatted string representing the second attack text
   attack_text_2: ship_outcome_2_unshielded,
-  
-  // Array of integers representing the attack damage for each ship
-  ship_attack_damage: ship_attack_damage,
   
   // HTML-formatted string containing the instructions to display when an incorrect answer is given
   instructions: '<p>Your answer is incorrect. Please review the information provided and try again.</p>',

@@ -341,11 +341,7 @@ plugin.trial = function(display_element, trial)
     display_element.style.cursor = "url('" + trial.cursor[0] + "'),pointer"
     display_wrapper.style.backgroundColor = "black"
     display_element.style.color = "green"
-
     
-    function formatShipOutcomeText(outcomeText, damageText) {
-        return outcomeText + '<span style="font-weight: bold;font-size: 36px; color: inherit;">-$' + damageText + '</span>';
-    }
 
     // Create general div structure: Planet Row | Command Info
     if (Array.isArray(trial.stimulus)){
@@ -951,14 +947,19 @@ function show_ship(choice) {
     console.log("Ship appeared:", choice);
     console.log("Ship appearance time:", performance.now() - start_time);
 }
-function formatShipOutcomeText(outcomeText, damageText) {
-    if (typeof damageText === 'number' && damageText % 1 !== 0) {
-      // If damageText is a float, convert it to a percentage
-      const percentage = (damageText * 100).toFixed(0);
-      return outcomeText + '<span style="font-weight: bold;font-size: 36px; color: inherit;">-' + percentage + '%</span>';
+function formatShipOutcomeText(outcomeText, damage) {
+    if (typeof damage != 'number') {
+        console.log('invalid damage value passed to formatShipOutcomeText');
+        return;
+    }
+    let gain = -damage;
+    if (gain % 1 !== 0) {
+      // If gain is a float, convert it to a percentage
+      const percentage = (gain * 100).toFixed(0);
+      return outcomeText + '<span style="font-weight: bold;font-size: 36px; color: inherit;">' + (gain > 0 ? "+" : "") + percentage + '%</span>';
     } else {
-      // If damageText is an integer, display it as is
-      return outcomeText + '<span style="font-weight: bold;font-size: 36px; color: inherit;">-' + damageText + ' points</span>';
+      // If gain is an integer, display it as is
+      return outcomeText + '<span style="font-weight: bold;font-size: 36px; color: inherit;">' + (gain > 0 ? "+" : "") + gain + ' points</span>';
     }
   }
 
@@ -988,14 +989,31 @@ function formatShipOutcomeText(outcomeText, damageText) {
         if (typeof appliedDamage === 'number' && appliedDamage % 1 !== 0) {
           const pointsLost = Math.round(trial.data.points * appliedDamage);
           trial.data.points -= pointsLost;
-          statusmsg = formatShipOutcomeText(trial.ship_outcome_2_unshielded, pointsLost);
-          statusclr = 'darkorange';
-          console.log("INDEX 2, points lost:", pointsLost);
+          
+          
+          if (pointsLost >= 0) {
+            statusmsg = formatShipOutcomeText(trial.ship_outcome_2_unshielded, pointsLost);
+            statusclr = 'darkorange';
+            console.log("INDEX 2, points lost:", pointsLost);
+          }
+          else {
+            statusmsg = formatShipOutcomeText(trial.ship_outcome_3_unshielded, pointsLost);
+            statusclr = 'green';
+            console.log("INDEX 2, points gained:", -pointsLost);
+          }
+          
         } else {
           trial.data.points -= appliedDamage;
-          statusmsg = formatShipOutcomeText(trial.ship_outcome_1_unshielded, appliedDamage);
-          statusclr = 'red';
-          console.log("INDEX 1, damage:", appliedDamage);
+          if (appliedDamage >= 0) {
+            statusmsg = formatShipOutcomeText(trial.ship_outcome_1_unshielded, appliedDamage);
+            statusclr = 'red';
+            console.log("INDEX 1, damage:", appliedDamage);
+          }
+          else {
+            statusmsg = formatShipOutcomeText(trial.ship_outcome_3_unshielded, appliedDamage);
+            statusclr = 'lime';
+            console.log("INDEX 2, bonus:", -appliedDamage);
+          }
         }
         const pointsDifference = initialPoints - trial.data.points; // Calculate the points difference
         console.log("Initial points:", initialPoints);
