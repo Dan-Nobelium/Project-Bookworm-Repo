@@ -277,6 +277,18 @@ jsPsych.plugins["planet-response-command"] = (function() {
             default: '',
             description: 'The text for ship outcome 3 when shielded.'
             },
+            ship_outcome_3_shielded_alt: {
+                type: jsPsych.plugins.parameterType.STRING,
+                pretty_name: 'Ship outcome 3 shielded (alternative)',
+                default: '',
+                description: 'Alternative version of the text for ship outcome 3 when shielded.'
+            },
+            show_whether_shield_blocked_attack_or_bonus: {
+                type: jsPsych.plugins.parameterType.BOOL,
+				pretty_name: 'Toggle use of "Shield prevented a bonus" image',			
+				default: false, 
+				description: 'Toggle whether the user is told that the shield blocked a bonus (true), or is just told that it blocked an attack regardless of whether it was an attack or a bonus (false; default).'
+            },
 	}
 }
 
@@ -974,7 +986,7 @@ function formatShipOutcomeText(outcomeText, damage) {
     const damageType = trial.ship_attack_damage[choice][1];
     const pointsLost = damageType == 'percent' ? Math.round(trial.data.points * (damageValue / 100)) : damageValue;
     //const appliedDamage = typeof damageTypes[choice] === 'number' ? damageTypes[choice] : damageTypes[choice](trial.data.points);
-    console.log("Applied damage:", pointsLost);
+    console.log("Damage:", pointsLost);
   
     // Check if the applied damage is not equal to 0 before proceeding with the attack
     if (pointsLost !== 0) {
@@ -1017,8 +1029,14 @@ function formatShipOutcomeText(outcomeText, damage) {
         updateScore(trial.data.points);
       } else if (shield_activated) {
         console.log("Shield activated, setting status message");
-        statusmsg = trial.ship_outcome_3_shielded; // It seems like this should depend on whether an attack or a bonus was blocked
-        statusclr = 'grey';
+        if (damageValue > 0 || !trial.show_whether_shield_blocked_attack_or_bonus) {
+            statusmsg = trial.ship_outcome_3_shielded;
+            statusclr = 'grey';
+        }
+        else {
+            statusmsg = trial.ship_outcome_3_shielded_alt;
+            statusclr = 'yellow';
+        }
         console.log("Status message:", statusmsg);
         console.log("Status color:", statusclr);
       }

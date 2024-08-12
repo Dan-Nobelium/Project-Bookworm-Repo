@@ -46,6 +46,8 @@ const probability_trade = [[.5], [.5], [.5]];
 const probability_shield = [[.5], [.5], [.5]];
 let ship_attack_damage = [[-100, 'percent'], [-50, 'points'], [20, 'points']]; // A negative number represents a bonus.
 ship_attack_damage = jsPsych.randomization.shuffle(ship_attack_damage); //randomises the order of the ship damage array (ship_attack_damage)
+//const show_whether_shield_blocked_attack_or_bonus = false;
+const show_whether_shield_blocked_attack_or_bonus = true; // for testing
 //const block_duration = 180 * 1000; // in milliseconds (3 mins) // sets the length of planet-response trials.
 const block_duration = 40 * 1000; // shorter duration for testing
 var probability_ship = [[1],[1],[1]]; //how likely is there to be a ship for each planet, [1,1,1] means 100% of clicks will result in a ship.
@@ -77,7 +79,7 @@ const ship_outcome_1_unshielded = "<img src='./img/ship_outcome_1_unshielded.png
 const ship_outcome_2_unshielded = "<img src='./img/ship_outcome_2_unshielded.png' height='31px'>";
 const ship_outcome_3_unshielded = "<img src='./img/ship_outcome_3_unshielded.png' height='32px'>";
 const ship_outcome_3_shielded = "<img src='./img/ship_outcome_3_shielded.png' height='84px'>";
-// const ship_outcome_3_shielded = "<img src='./img/ship_outcome_3_shielded_alt.png' height='84px'>";
+const ship_outcome_3_shielded_alt = "<img src='./img/ship_outcome_3_shielded_alt.png' height='84px'>";
 
 // // manipulate response-ship Rft rate
 // if (group[0].includes("0.1")) {
@@ -163,6 +165,7 @@ let planet_noship = {
   shield_charging_time: shield_charging_time_const,
   ship_attack_time: ship_attack_time_const,
   ship_attack_damage: ship_attack_damage,
+  show_whether_shield_blocked_attack_or_bonus: show_whether_shield_blocked_attack_or_bonus,
   block_duration: block_duration,
   data: {
     phase: 'phase1',
@@ -362,6 +365,7 @@ let planet_ship = {
   shield_charging_time: shield_charging_time_const,
   ship_attack_time: ship_attack_time_const,
   ship_attack_damage: ship_attack_damage,
+  show_whether_shield_blocked_attack_or_bonus: show_whether_shield_blocked_attack_or_bonus,
   block_duration: block_duration,
   probability_trade: probability_trade,
   probability_ship: probability_ship,
@@ -370,6 +374,7 @@ let planet_ship = {
   ship_outcome_2_unshielded: ship_outcome_2_unshielded,
   ship_outcome_3_unshielded: ship_outcome_3_unshielded,
   ship_outcome_3_shielded: ship_outcome_3_shielded,
+  ship_outcome_3_shielded_alt: ship_outcome_3_shielded_alt,
   win_100_text: win_100_text,
   data: {
       phase: 'phase2',
@@ -1080,7 +1085,7 @@ let timeline = []; // This is the master timeline, the experiment runs sequentia
 // // Phase2, ships
 // timeline.push(phaseTwoInstructions);
 addBlocksToTimeline(timeline, planet_ship, nBlocks_p2, nTrialspBlk);
-// timeline.push(valence_p2);
+timeline.push(valence_p2);
 // timeline.push(infer_p2_A);
 // timeline.push(infer_p2_B);
 // timeline.push(infer_p2_C);
