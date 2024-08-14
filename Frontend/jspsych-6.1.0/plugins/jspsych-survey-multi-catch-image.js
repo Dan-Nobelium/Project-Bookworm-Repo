@@ -129,22 +129,30 @@ jsPsych.plugins['survey-multi-catch-image'] = (function() {
             <div class="jspsych-survey-multi-catch-options">
               ${index === 1 || index === 3 ? `
                 <div class="option-container">
-                  <img src="${trial.ship_option_1}" class="option-image">
-                  <input type="radio" name="Q${index}" value="${trial.ship_option_1}" required>
+                  <label for="Q${index}-1">
+                    <img src="${trial.ship_option_1}" class="option-image">
+                  </label>
+                  <input type="radio" name="Q${index}" id="Q${index}-1" value="${trial.ship_option_1}" required>
                 </div>
                 <div class="option-container">
-                  <img src="${trial.ship_option_2}" class="option-image">
-                  <input type="radio" name="Q${index}" value="${trial.ship_option_2}" required>
+                  <label for="Q${index}-2">
+                    <img src="${trial.ship_option_2}" class="option-image">
+                  </label>
+                  <input type="radio" name="Q${index}" id="Q${index}-2" value="${trial.ship_option_2}" required>
                 </div>
                 <div class="option-container">
-                  <img src="${trial.ship_option_3}" class="option-image">
-                  <input type="radio" name="Q${index}" value="${trial.ship_option_3}" required>
+                  <label for="Q${index}-3">
+                    <img src="${trial.ship_option_3}" class="option-image">
+                  </label>
+                  <input type="radio" name="Q${index}" id="Q${index}-3" value="${trial.ship_option_3}" required>
                 </div>
               ` : `
                 ${trial.planet_options.map((planet, planetIndex) => `
                   <div class="option-container">
-                    <img src="${planet}" class="option-image">
-                    <input type="radio" name="Q${index}" value="${trial.planet_options[planetIndex]}" required>
+                    <label for="Q${index}-${planet}">
+                      <img src="${planet}" class="option-image">
+                    </label>
+                    <input type="radio" name="Q${index}" id="Q${index}-${planet}" value="${trial.planet_options[planetIndex]}" required>
                   </div>
                 `).join('')}
               `}
