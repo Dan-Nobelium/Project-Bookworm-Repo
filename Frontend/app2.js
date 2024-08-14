@@ -44,10 +44,12 @@ const planetColors = {
 // Independent Variables Definition
 const probability_trade = [[.5], [.5], [.5]];
 const probability_shield = [[.5], [.5], [.5]];
-let ship_attack_damage = [0, 100, 0.2];
+let ship_attack_damage = [[-100, 'percent'], [-50, 'points'], [20, 'points']]; // A negative number represents a bonus.
 ship_attack_damage = jsPsych.randomization.shuffle(ship_attack_damage); //randomises the order of the ship damage array (ship_attack_damage)
+//const show_whether_shield_blocked_attack_or_bonus = false;
+const show_whether_shield_blocked_attack_or_bonus = true; // for testing
 //const block_duration = 180 * 1000; // in milliseconds (3 mins) // sets the length of planet-response trials.
-const block_duration = 25 * 1000; // shorter duration for testing
+const block_duration = 40 * 1000; // shorter duration for testing
 var probability_ship = [[1],[1],[1]]; //how likely is there to be a ship for each planet, [1,1,1] means 100% of clicks will result in a ship.
 
 // Global Variables Definition
@@ -75,9 +77,9 @@ let planet_labels = ['Planet A','Planet B','Planet C'];
 const win_100_text = "<img src='./assets/win_100_text.png'>";
 const ship_outcome_1_unshielded = "<img src='./assets/ship_outcome_1_unshielded.png' height='31px'>";
 const ship_outcome_2_unshielded = "<img src='./assets/ship_outcome_2_unshielded.png' height='31px'>";
-const ship_outcome_3_unshielded = "<p style='font-family: Arial; font-weight: bold; font-size: 36px; color: green;'>Bonus! +$</p>";
-const ship_outcome_3_shielded = "<p style='font-family: Arial; font-size: 36px; color: grey;'>Shield successfully deflected attack</p>";
-// const ship_outcome_3_shielded = "<p style='font-family: Arial; font-size: 36px; color: yellow;'>Shield prevented a bonus</p>";
+const ship_outcome_3_unshielded = "<img src='./assets/ship_outcome_3_unshielded.png' height='32px'>";
+const ship_outcome_3_shielded = "<img src='./assets/ship_outcome_3_shielded.png' height='84px'>";
+const ship_outcome_3_shielded_alt = "<img src='./assets/ship_outcome_3_shielded_alt.png' height='84px'>";
 
 // // manipulate response-ship Rft rate
 // if (group[0].includes("0.1")) {
@@ -163,6 +165,7 @@ let planet_noship = {
   shield_charging_time: shield_charging_time_const,
   ship_attack_time: ship_attack_time_const,
   ship_attack_damage: ship_attack_damage,
+  show_whether_shield_blocked_attack_or_bonus: show_whether_shield_blocked_attack_or_bonus,
   block_duration: block_duration,
   data: {
     phase: 'phase1',
@@ -362,6 +365,7 @@ let planet_ship = {
   shield_charging_time: shield_charging_time_const,
   ship_attack_time: ship_attack_time_const,
   ship_attack_damage: ship_attack_damage,
+  show_whether_shield_blocked_attack_or_bonus: show_whether_shield_blocked_attack_or_bonus,
   block_duration: block_duration,
   probability_trade: probability_trade,
   probability_ship: probability_ship,
@@ -370,6 +374,7 @@ let planet_ship = {
   ship_outcome_2_unshielded: ship_outcome_2_unshielded,
   ship_outcome_3_unshielded: ship_outcome_3_unshielded,
   ship_outcome_3_shielded: ship_outcome_3_shielded,
+  ship_outcome_3_shielded_alt: ship_outcome_3_shielded_alt,
   win_100_text: win_100_text,
   data: {
       phase: 'phase2',
@@ -788,9 +793,6 @@ var cont_catch = {
   // HTML-formatted string representing the second attack text
   attack_text_2: ship_outcome_2_unshielded,
   
-  // Array of integers representing the attack damage for each ship
-  ship_attack_damage: ship_attack_damage,
-  
   // HTML-formatted string containing the instructions to display when an incorrect answer is given
   instructions: '<p>Your answer is incorrect. Please review the information provided and try again.</p>',
   
@@ -1059,61 +1061,62 @@ let timeline = []; // This is the master timeline, the experiment runs sequentia
 
 
 // // Induction
-timeline.push(fullscreen);
-timeline.push(consent_block);
-timeline.push(demographics_block);
-timeline.push(instructionCheckWithFeedback);
+// timeline.push(fullscreen);
+// timeline.push(consent_block);
+// timeline.push(demographics_block);
+// timeline.push(instructionCheckWithFeedback);
 
-// // Attention check
-timeline.push(cfi_block);
-timeline.push(htq_block);
-timeline.push(audit_block);
+// // // Attention check
+// timeline.push(cfi_block);
+// timeline.push(htq_block);
+// timeline.push(audit_block);
 
 // // Phase 1, no ships
-addBlocksToTimeline(timeline, planet_noship, nBlocks_p1, nTrialspBlk);
-timeline.push(valence_p1);
-timeline.push(infer_p1_A);
-timeline.push(infer_p1_B);
-timeline.push(infer_p1_C);
+// addBlocksToTimeline(timeline, planet_noship, nBlocks_p1, nTrialspBlk);
+// timeline.push(valence_p1);
+// timeline.push(infer_p1_A);
+// timeline.push(infer_p1_B);
+// timeline.push(infer_p1_C);
 
-timeline.push(p1_q3_triangle);
-timeline.push(p1_q4_triangle);
+// timeline.push(p1_q3_triangle);
+// timeline.push(p1_q4_triangle);
 
 
 // // Phase2, ships
-timeline.push(phaseTwoInstructions);
+// timeline.push(phaseTwoInstructions);
 addBlocksToTimeline(timeline, planet_ship, nBlocks_p2, nTrialspBlk);
 timeline.push(valence_p2);
-timeline.push(infer_p2_A);
-timeline.push(infer_p2_B);
-timeline.push(infer_p2_C);
-timeline.push(infer_p2_ship1);
-timeline.push(infer_p2_ship2);
-timeline.push(infer_p2_ship3);
-timeline.push(p1_q3_triangle);
-timeline.push(p1_q4_triangle);
+// timeline.push(infer_p2_A);
+// timeline.push(infer_p2_B);
+// timeline.push(infer_p2_C);
+// timeline.push(infer_p2_ship1);
+// timeline.push(infer_p2_ship2);
+// timeline.push(infer_p2_ship3);
+// timeline.push(p1_q3_triangle);
+// timeline.push(p1_q4_triangle);
+
 
 // Phase3, contingencies
-timeline.push(cont_catch);
+//timeline.push(cont_catch);
 
 // Phase3, ships
-addBlocksToTimeline(timeline, planet_ship, nBlocks_p3, nTrialspBlk);
-timeline.push(valence_p2);
-timeline.push(infer_p2_A);
-timeline.push(infer_p2_B);
-timeline.push(infer_p2_C);
-timeline.push(p1_q3_triangle);
-timeline.push(p1_q4_triangle);
+// addBlocksToTimeline(timeline, planet_ship, nBlocks_p3, nTrialspBlk);
+// timeline.push(valence_p2);
+// timeline.push(infer_p2_A);
+// timeline.push(infer_p2_B);
+// timeline.push(infer_p2_C);
+// timeline.push(p1_q3_triangle);
+// timeline.push(p1_q4_triangle);
 
 
 //Debrief
-timeline.push(debrief_block);
+//timeline.push(debrief_block);
 
 //Disabled blocks
-timeline.push(contact_block); // disabled
+//timeline.push(contact_block); // disabled
 
 //Exit experiment (uncomment to hide JSON data at program end)
-timeline.push(exit_experiment);
+// timeline.push(exit_experiment);
 
 // Run the experiment
 {
