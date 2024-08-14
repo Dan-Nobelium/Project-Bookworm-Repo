@@ -1062,9 +1062,9 @@ let timeline = []; // This is the master timeline, the experiment runs sequentia
 
 // // Induction
 // timeline.push(fullscreen);
-// timeline.push(consent_block);
-// timeline.push(demographics_block);
-// timeline.push(instructionCheckWithFeedback);
+timeline.push(consent_block);
+timeline.push(demographics_block);
+timeline.push(instructionCheckWithFeedback);
 
 // // // Attention check
 // timeline.push(cfi_block);
