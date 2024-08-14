@@ -17,7 +17,7 @@ const demographics_block = {
 
 var consent_block = {
   type: 'html-button-response',
-  stimulus:   '<img src= "./img/logo.png"></img>' +
+  stimulus:   '<img src= "./assets/logo.png"></img>' +
   '<p>Welcome to the experiment!</p>' +
   '<p>Before you begin, please read the information sheet carefully.</p>' +
   '<br>' +
