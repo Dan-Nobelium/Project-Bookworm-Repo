@@ -231,7 +231,7 @@ jsPsych.plugins["planet-response-command"] = (function() {
 				type: jsPsych.plugins.parameterType.IMAGE,
 				pretty_name: 'Cursor images',
 				array: true,
-				default: ['img/cursor.png','img/cursordark.png'],
+				default: ['./assets/cursor.png','./assets/cursordark.png'],
 				description: '1st Element: default cursor; 2nd Element: mousedown cursor'
     		},
 			signal_time_range: {
@@ -597,7 +597,7 @@ function proceed_trade(choice){
     var promptRect = planetPrompt.getBoundingClientRect()
 
     //Display signal image and status
-    document.querySelector('#planet-signal-box-'+choice).innerHTML = '<img src="img/signal1.png" ' +
+    document.querySelector('#planet-signal-box-'+choice).innerHTML = '<img src="./assets/signal1.png" ' +
         'id="planet-signal-img-' + choice + '" ' +
         'style="display:block; position: relative;' +
         'height: ' + (trial.signal_width-10) + 'px; ' +
@@ -621,7 +621,7 @@ function proceed_trade(choice){
     var signal_img_count_max = 4;
     var signal_img_count = Math.ceil(Math.random() * signal_img_count_max);
     var signalImg = display_element.querySelector('#planet-signal-img-' + choice)
-    signalImg.src = 'img/signal' + signal_img_count + '.png'
+    signalImg.src = './assets/signal' + signal_img_count + '.png'
 
     updateStatus(choice,signalmsg,signalclr )
     function sigframe() {
@@ -642,7 +642,7 @@ function proceed_trade(choice){
                 signal_img_count = 1
             }
             var signalImg = display_element.querySelector('#planet-signal-img-' + choice)
-            signalImg.src = 'img/signal' + signal_img_count + '.png'
+            signalImg.src = './assets/signal' + signal_img_count + '.png'
         }
     }
     //This is an example of spending a little too much effort into a trivial detail...
