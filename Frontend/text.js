@@ -12,12 +12,12 @@ const demographics_block = {
   data: {
     phase: 'demographics'
   },
-  language_data_file: './languages.json'
+  language_data_file: './assets/languages.json'
 };
 
 var consent_block = {
   type: 'html-button-response',
-  stimulus:   '<img src= "./img/logo.png"></img>' +
+  stimulus:   '<img src= "./assets/logo.png"></img>' +
   '<p>Welcome to the experiment!</p>' +
   '<p>Before you begin, please read the information sheet carefully.</p>' +
   '<br>' +
