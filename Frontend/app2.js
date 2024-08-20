@@ -729,6 +729,8 @@ var cont_catch = {
               <p>Planet A:</p>
               <img src="./assets/arrow.jpg" style="width: 100px; height: 100px; object-fit: contain; margin-right: 10px;">
               <img src="${ship_list[0]}" style="width: 100px; height: 100px; object-fit: contain; margin-right: 10px;">
+              <img src="./assets/arrow.jpg" style="width: 100px; height: 100px; object-fit: contain; margin-right: 10px; visibility: hidden;">
+              <div style="margin-top: 5px; visibility: hidden;">${ship_outcome_1_unshielded}</div>
             </div>
           </div>
           <div style="display: flex; flex-direction: column; align-items: center;">
@@ -1062,9 +1064,9 @@ let timeline = []; // This is the master timeline, the experiment runs sequentia
 
 // // Induction
 // timeline.push(fullscreen);
-timeline.push(consent_block);
-timeline.push(demographics_block);
-timeline.push(instructionCheckWithFeedback);
+// timeline.push(consent_block);
+// timeline.push(demographics_block);
+// timeline.push(instructionCheckWithFeedback);
 
 // // // Attention check
 // timeline.push(cfi_block);
@@ -1084,8 +1086,8 @@ timeline.push(instructionCheckWithFeedback);
 
 // // Phase2, ships
 // timeline.push(phaseTwoInstructions);
-addBlocksToTimeline(timeline, planet_ship, nBlocks_p2, nTrialspBlk);
-timeline.push(valence_p2);
+// addBlocksToTimeline(timeline, planet_ship, nBlocks_p2, nTrialspBlk);
+// timeline.push(valence_p2);
 // timeline.push(infer_p2_A);
 // timeline.push(infer_p2_B);
 // timeline.push(infer_p2_C);
@@ -1097,7 +1099,7 @@ timeline.push(valence_p2);
 
 
 // Phase3, contingencies
-//timeline.push(cont_catch);
+timeline.push(cont_catch);
 
 // Phase3, ships
 // addBlocksToTimeline(timeline, planet_ship, nBlocks_p3, nTrialspBlk);
