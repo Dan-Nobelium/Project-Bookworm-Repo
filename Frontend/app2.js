@@ -764,10 +764,10 @@ var cont_catch = {
   
   // Array of HTML strings representing the question prompts
   question_prompts: [
-    `Which planet leads to this attack? ${ship_outcome_1_unshielded}`,
-    `Which ship leads to this attack? ${ship_outcome_1_unshielded}`,
-    `Which planet leads to this attack? ${ship_outcome_2_unshielded}`,
-    `Which ship leads to this attack?  ${ship_outcome_2_unshielded}`,
+    `Which planet leads to this attack?<br>${ship_outcome_1_unshielded}`,
+    `Which ship leads to this attack?<br>${ship_outcome_1_unshielded}`,
+    `Which planet leads to this attack?<br>${ship_outcome_2_unshielded}`,
+    `Which ship leads to this attack?<br>${ship_outcome_2_unshielded}`,
   ],
   planet_options: stim_list_original,
   ship_option_1: ship_list_original[0],
