@@ -777,6 +777,8 @@ var cont_catch = {
               <p>Planet A:</p>
               <img src="./assets/arrow.jpg" style="width: 100px; height: 100px; object-fit: contain; margin-right: 10px;">
               <img src="${ship_list[0]}" style="width: 100px; height: 100px; object-fit: contain; margin-right: 10px;">
+              <img src="./assets/arrow.jpg" style="width: 100px; height: 100px; object-fit: contain; margin-right: 10px; visibility: hidden;">
+              <div style="margin-top: 5px; visibility: hidden;">${ship_outcome_1_unshielded}</div>
             </div>
           </div>
           <div style="display: flex; flex-direction: column; align-items: center;">
@@ -809,10 +811,10 @@ var cont_catch = {
 
   // Array of HTML strings representing the question prompts
   question_prompts: [
-    `Which planet leads to this attack? ${ship_outcome_1_unshielded}`,
-    `Which ship leads to this attack? ${ship_outcome_1_unshielded}`,
-    `Which planet leads to this attack? ${ship_outcome_2_unshielded}`,
-    `Which ship leads to this attack?  ${ship_outcome_2_unshielded}`,
+    `Which planet leads to this attack?<br>${ship_outcome_1_unshielded}`,
+    `Which ship leads to this attack?<br>${ship_outcome_1_unshielded}`,
+    `Which planet leads to this attack?<br>${ship_outcome_2_unshielded}`,
+    `Which ship leads to this attack?<br>${ship_outcome_2_unshielded}`,
   ],
   planet_options: stim_list_original,
   ship_option_1: ship_list_original[0],
@@ -1222,8 +1224,8 @@ let timeline = []; // This is the master timeline, the experiment runs sequentia
 // // Induction
 // timeline.push(fullscreen);
 // timeline.push(consent_block);
-timeline.push(demographics_block);
-timeline.push(instructionCheckWithFeedback);
+// timeline.push(demographics_block);
+// timeline.push(instructionCheckWithFeedback);
 
 // // // Attention check
 timeline.push(cfi_block);
