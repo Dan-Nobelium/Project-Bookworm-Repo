@@ -4,7 +4,7 @@ Planets Task is a JavaScript-based application for conducting studies related to
 
 ## Installation
 
-This project does not require any specific package manager for installation. Simply clone the repository from the code repo and include the JavaScript files in your project as needed. 
+This project does not require any specific package manager for installation. Simply clone the repository from the code repo and include the JavaScript files in your project as needed.
 
 ## Usage
 
@@ -21,7 +21,7 @@ stimulus_width: 200, // width of planet images
 // ...  
 };
 
-## Table of Contents 
+## Table of Contents
 
     Installation
     Usage
@@ -43,19 +43,19 @@ planets-and-pirates/
 ├── index2.html
 ├── text.js
 ├── jspsych-6.1.0/
-│   ├── css/
-│   │   └── jspsych.css
-│   ├── jspsych.js
-│   └── plugins/
+│ ├── css/
+│ │ └── jspsych.css
+│ ├── jspsych.js
+│ └── plugins/
 └── img/
 
 app2.js: The main JavaScript file containing the game logic and experiment structure.
 index2.html: The HTML file that serves as the entry point for the game.
 text.js: A JavaScript file containing text content used in the game.
 jspsych-6.1.0/: Directory containing the jsPsych library files.
-    css/: Directory containing the jsPsych CSS file.
-    jspsych.js: The core jsPsych library file.
-    plugins/: Directory containing jsPsych plugin files.
+css/: Directory containing the jsPsych CSS file.
+jspsych.js: The core jsPsych library file.
+plugins/: Directory containing jsPsych plugin files.
 img/: Directory containing image files used in the game.
 
 ## Dependencies
