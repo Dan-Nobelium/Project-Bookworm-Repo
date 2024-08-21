@@ -2,8 +2,7 @@
  * Example plugin template
  */
 
-jsPsych.plugins["PLUGIN-NAME"] = (function() {
-
+jsPsych.plugins["PLUGIN-NAME"] = (function () {
   var plugin = {};
 
   plugin.info = {
@@ -11,20 +10,19 @@ jsPsych.plugins["PLUGIN-NAME"] = (function() {
     parameters: {
       parameter_name: {
         type: jsPsych.plugins.parameterType.INT, // BOOL, STRING, INT, FLOAT, FUNCTION, KEYCODE, SELECT, HTML_STRING, IMAGE, AUDIO, VIDEO, OBJECT, COMPLEX
-        default: undefined
+        default: undefined,
       },
       parameter_name: {
         type: jsPsych.plugins.parameterType.IMAGE,
-        default: undefined
-      }
-    }
-  }
+        default: undefined,
+      },
+    },
+  };
 
-  plugin.trial = function(display_element, trial) {
-
+  plugin.trial = function (display_element, trial) {
     // data saving
     var trial_data = {
-      parameter_name: 'parameter value'
+      parameter_name: "parameter value",
     };
 
     // end trial

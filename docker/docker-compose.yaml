@@ -1,7 +1,6 @@
-version: '3.8'
+version: "3.8"
 
 services:
-
   proxy:
     image: jc21/nginx-proxy-manager:latest
     restart: unless-stopped
@@ -32,11 +31,11 @@ services:
       retries: 1000
       start_period: 10s
     environment:
-      JATOS_DB_URL: 'jdbc:mysql://db/jatos?characterEncoding=UTF-8&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC'
-      JATOS_DB_USERNAME: 'test'
-      JATOS_DB_PASSWORD: 'test'
-      JATOS_DB_DRIVER: 'com.mysql.cj.jdbc.Driver'
-      JATOS_SECRET: 'a-long-test-string'
+      JATOS_DB_URL: "jdbc:mysql://db/jatos?characterEncoding=UTF-8&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC"
+      JATOS_DB_USERNAME: "test"
+      JATOS_DB_PASSWORD: "test"
+      JATOS_DB_DRIVER: "com.mysql.cj.jdbc.Driver"
+      JATOS_SECRET: "a-long-test-string"
     volumes:
       - jatos-logs:/opt/jatos/logs
       - jatos-data:/opt/jatos_data
@@ -47,22 +46,22 @@ services:
     image: mysql:8.0.32-debian
     restart: always
     healthcheck:
-      test: ["CMD", "mysqladmin" ,"ping", "-h", "localhost"]
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
       interval: 2s
       timeout: 2s
       retries: 30
     environment:
-      MYSQL_DATABASE: 'jatos'
-      MYSQL_USER: 'test'
-      MYSQL_PASSWORD: 'test'
-      MYSQL_ROOT_PASSWORD: 'test'
+      MYSQL_DATABASE: "jatos"
+      MYSQL_USER: "test"
+      MYSQL_PASSWORD: "test"
+      MYSQL_ROOT_PASSWORD: "test"
     cap_add:
       - SYS_NICE
     volumes:
       - jatos-db:/var/lib/mysql
     ports:
       - 3306:3306
-      
+
 volumes:
   jatos-data:
   jatos-logs:

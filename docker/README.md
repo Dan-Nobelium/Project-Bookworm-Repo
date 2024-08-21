@@ -1,4 +1,5 @@
 # Running Docker Compose
+
 To run the compose file with logging:
 `docker compose up`
 
