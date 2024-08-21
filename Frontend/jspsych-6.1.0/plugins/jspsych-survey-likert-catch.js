@@ -140,11 +140,11 @@ jsPsych.plugins['survey-likert-catch'] = (function() {
   
       // Iterate over the labels
       for (var j = 0; j < question.labels.length; j++) {
-        options_string += '<li style="width:' + (100 / question.labels.length) + '%"><input type="radio" name="Q' + question_index + '" value="' + j + '"';
+        options_string += '<li style="width:' + (100 / question.labels.length) + '%"><input id="' + i.toString() + '_' + j.toString() + '" type="radio" name="Q' + question_index + '" value="' + j + '"';
         if (question.required) {
           options_string += ' required';
         }
-        options_string += '><label class="jspsych-survey-likert-opt-label">' + question.labels[j] + '</label></li>';
+        options_string += '><label for="' + i.toString() + '_' + j.toString() + '" class="jspsych-survey-likert-opt-label">' + question.labels[j] + '</label></li>';
       }
   
       // Close the options string

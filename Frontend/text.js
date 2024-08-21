@@ -4,11 +4,11 @@ const demographics_block = {
   preamble: '<p><b>Please fill in your demographic details</b></p>',
   html: 
   '<p> Gender: ' +
-  '<input type="radio" name="gender" value="male" required/> Male &nbsp; ' +
-  '<input type="radio" name="gender" value="female" required/> Female &nbsp;' +
-  '<input type="radio" name="gender" value="other" required/> Other<br>' + '<br>' +
-  '<p> Age: <input name="age" type="number" min="1" max="99" required/> </p>' + '<br>' +
-  '<p> Native language: <select name="language" type="text" id="languageDropdown" required/> </select> </p>' + '<br>',
+  '<input type="radio" name="gender" value="male" id="gender-male" required/> <label for="gender-male">Male</label> &nbsp; ' +
+  '<input type="radio" name="gender" value="female" id="gender-female" required/> <label for="gender-female">Female</label> &nbsp;' +
+  '<input type="radio" name="gender" value="other" id="gender-other" required/> <label for="gender-other">Other</label><br>' + '<br>' +
+  '<p> <label for="age">Age:</label> <input name="age" type="number" min="1" max="99" id="age" required/> </p>' + '<br>' +
+  '<p> <label for="languageDropdown">Native language:</label> <select name="language" type="text" id="languageDropdown" required/> </select> </p>' + '<br>',
   data: {
     phase: 'demographics'
   },

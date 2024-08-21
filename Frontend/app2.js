@@ -1062,14 +1062,14 @@ let timeline = []; // This is the master timeline, the experiment runs sequentia
 
 // // Induction
 // timeline.push(fullscreen);
-timeline.push(consent_block);
+// timeline.push(consent_block);
 timeline.push(demographics_block);
 timeline.push(instructionCheckWithFeedback);
 
 // // // Attention check
-// timeline.push(cfi_block);
-// timeline.push(htq_block);
-// timeline.push(audit_block);
+timeline.push(cfi_block);
+timeline.push(htq_block);
+timeline.push(audit_block);
 
 // // Phase 1, no ships
 // addBlocksToTimeline(timeline, planet_noship, nBlocks_p1, nTrialspBlk);
@@ -1084,8 +1084,8 @@ timeline.push(instructionCheckWithFeedback);
 
 // // Phase2, ships
 // timeline.push(phaseTwoInstructions);
-addBlocksToTimeline(timeline, planet_ship, nBlocks_p2, nTrialspBlk);
-timeline.push(valence_p2);
+// addBlocksToTimeline(timeline, planet_ship, nBlocks_p2, nTrialspBlk);
+// timeline.push(valence_p2);
 // timeline.push(infer_p2_A);
 // timeline.push(infer_p2_B);
 // timeline.push(infer_p2_C);
@@ -1097,7 +1097,7 @@ timeline.push(valence_p2);
 
 
 // Phase3, contingencies
-//timeline.push(cont_catch);
+timeline.push(cont_catch);
 
 // Phase3, ships
 // addBlocksToTimeline(timeline, planet_ship, nBlocks_p3, nTrialspBlk);
@@ -1110,7 +1110,7 @@ timeline.push(valence_p2);
 
 
 //Debrief
-//timeline.push(debrief_block);
+// timeline.push(debrief_block);
 
 //Disabled blocks
 //timeline.push(contact_block); // disabled
