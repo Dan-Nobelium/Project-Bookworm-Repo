@@ -1,60 +1,62 @@
-jsPsych.plugins['html-slider-triangle'] = (function() {
+jsPsych.plugins["html-slider-triangle"] = (function () {
   var plugin = {};
 
   plugin.info = {
-    name: 'html-slider-triangle',
-    description: 'A plugin for creating a 3D triangle slider',
+    name: "html-slider-triangle",
+    description: "A plugin for creating a 3D triangle slider",
     parameters: {
       stimulus_all: {
         type: jsPsych.plugins.parameterType.ARRAY,
-        pretty_name: 'Stimulus all',
+        pretty_name: "Stimulus all",
         default: [],
-        description: 'Array of stimulus image paths'
+        description: "Array of stimulus image paths",
       },
       planetColors: {
         type: jsPsych.plugins.parameterType.OBJECT,
-        pretty_name: 'Planet colors',
+        pretty_name: "Planet colors",
         default: null,
-        description: 'Object mapping image paths to their respective colors'
+        description: "Object mapping image paths to their respective colors",
       },
       prompt: {
         type: jsPsych.plugins.parameterType.STRING,
-        pretty_name: 'Prompt',
+        pretty_name: "Prompt",
         default: null,
-        description: 'Any content here will be displayed above the triangle slider.'
+        description:
+          "Any content here will be displayed above the triangle slider.",
       },
       slider_width: {
         type: jsPsych.plugins.parameterType.INT,
-        pretty_name: 'Slider width',
+        pretty_name: "Slider width",
         default: 500,
-        description: 'Width of the triangle slider in pixels.'
+        description: "Width of the triangle slider in pixels.",
       },
       slider_height: {
         type: jsPsych.plugins.parameterType.INT,
-        pretty_name: 'Slider height',
+        pretty_name: "Slider height",
         default: 400,
-        description: 'Height of the triangle slider in pixels.'
+        description: "Height of the triangle slider in pixels.",
       },
       stimulus_height: {
         type: jsPsych.plugins.parameterType.INT,
-        pretty_name: 'Stimulus height',
+        pretty_name: "Stimulus height",
         default: 100,
-        description: 'Height of the stimulus images in pixels.'
+        description: "Height of the stimulus images in pixels.",
       },
       labels: {
         type: jsPsych.plugins.parameterType.STRING,
-        pretty_name: 'Labels',
+        pretty_name: "Labels",
         default: [],
         array: true,
-        description: 'Labels to display on the triangle slider.'
+        description: "Labels to display on the triangle slider.",
       },
       require_movement: {
         type: jsPsych.plugins.parameterType.BOOL,
-        pretty_name: 'Require movement',
+        pretty_name: "Require movement",
         default: false,
-        description: 'If true, the participant will have to move the slider before continuing.'
-      }
-    }
+        description:
+          "If true, the participant will have to move the slider before continuing.",
+      },
+    },
   };
 
   // Helper functions
@@ -63,14 +65,22 @@ jsPsych.plugins['html-slider-triangle'] = (function() {
   // Calculate the coordinates of the triangle vertices
   var topVertex = { x: plugin.info.parameters.slider_width.default / 2, y: 0 };
   var leftVertex = { x: 0, y: plugin.info.parameters.slider_height.default };
-  var rightVertex = { x: plugin.info.parameters.slider_width.default, y: plugin.info.parameters.slider_height.default };
+  var rightVertex = {
+    x: plugin.info.parameters.slider_width.default,
+    y: plugin.info.parameters.slider_height.default,
+  };
 
-  console.log('Top Vertex:', topVertex);
-  console.log('Left Vertex:', leftVertex);
-  console.log('Right Vertex:', rightVertex);
+  console.log("Top Vertex:", topVertex);
+  console.log("Left Vertex:", leftVertex);
+  console.log("Right Vertex:", rightVertex);
 
   // Get image and label position for a given index (updated for flipped equilateral triangle)
-  function getImageLabelPosition(index, sliderWidth, sliderHeight, stimulusHeight) {
+  function getImageLabelPosition(
+    index,
+    sliderWidth,
+    sliderHeight,
+    stimulusHeight,
+  ) {
     var vertexX, vertexY;
     switch (index) {
       case 0: // Planet A - LEFT VERTEX
@@ -96,12 +106,16 @@ jsPsych.plugins['html-slider-triangle'] = (function() {
     var labelX = x;
     var labelY = y + stimulusHeight - 110; // Position the label 100 pixels below the planet
 
-    console.log(`Planet ${String.fromCharCode(65 + index)} position: (${x}, ${y})`);
-    console.log(`Planet ${String.fromCharCode(65 + index)} label position: (${labelX}, ${labelY})`);
+    console.log(
+      `Planet ${String.fromCharCode(65 + index)} position: (${x}, ${y})`,
+    );
+    console.log(
+      `Planet ${String.fromCharCode(65 + index)} label position: (${labelX}, ${labelY})`,
+    );
 
     return {
       planetPosition: `top: ${y}px; left: ${x}px; transform: translate(-50%, -50%);`,
-      labelPosition: `top: ${labelY}px; left: ${labelX}px; transform: translateX(-50%); white-space: nowrap;`
+      labelPosition: `top: ${labelY}px; left: ${labelX}px; transform: translateX(-50%); white-space: nowrap;`,
     };
   }
 
@@ -111,7 +125,11 @@ jsPsych.plugins['html-slider-triangle'] = (function() {
   }
 
   // Get pie chart gradient based on planet colors and proportions
-  function getPieChartGradient(planetColors, planetOrder, proportions = [33, 33, 33]) {
+  function getPieChartGradient(
+    planetColors,
+    planetOrder,
+    proportions = [33, 33, 33],
+  ) {
     var colorStops = [];
     var cumulativePercentage = 0;
 
@@ -120,11 +138,13 @@ jsPsych.plugins['html-slider-triangle'] = (function() {
       var color = planetColors[planet];
       var percentage = proportions[i];
 
-      colorStops.push(`${color} ${cumulativePercentage}% ${cumulativePercentage + percentage}%`);
+      colorStops.push(
+        `${color} ${cumulativePercentage}% ${cumulativePercentage + percentage}%`,
+      );
       cumulativePercentage += percentage;
     }
 
-    return `conic-gradient(${colorStops.join(', ')})`;
+    return `conic-gradient(${colorStops.join(", ")})`;
   }
 
   // Get barycentric coordinates of a point inside the triangle (updated to handle non-equilateral triangles)
@@ -138,7 +158,16 @@ jsPsych.plugins['html-slider-triangle'] = (function() {
 
   // Check if a point is inside the triangle
   function isInsideTriangle(x, y, x1, y1, x2, y2, x3, y3) {
-    var [lambda1, lambda2, lambda3] = getBarycentricCoordinates(x, y, x1, y1, x2, y2, x3, y3);
+    var [lambda1, lambda2, lambda3] = getBarycentricCoordinates(
+      x,
+      y,
+      x1,
+      y1,
+      x2,
+      y2,
+      x3,
+      y3,
+    );
     return lambda1 >= 0 && lambda2 >= 0 && lambda3 >= 0;
   }
 
@@ -174,18 +203,29 @@ jsPsych.plugins['html-slider-triangle'] = (function() {
     let candidatePoints = [...tri];
     for (let i = 0; i < 3; i++) {
       let vertexOne = tri[i];
-      let vertexTwo = tri[(i+1) % 3];
-      let numerator = dotProduct(vecSub(point, vertexOne), vecSub(vertexTwo, vertexOne));
-      let denominator = dotProduct(vecSub(vertexTwo, vertexOne), vecSub(vertexTwo, vertexOne));
+      let vertexTwo = tri[(i + 1) % 3];
+      let numerator = dotProduct(
+        vecSub(point, vertexOne),
+        vecSub(vertexTwo, vertexOne),
+      );
+      let denominator = dotProduct(
+        vecSub(vertexTwo, vertexOne),
+        vecSub(vertexTwo, vertexOne),
+      );
       projection = numerator / denominator;
       if (projection >= 0 && projection <= 1) {
-        candidatePoints.push(vecAdd(vertexOne, vecScale(projection, vecSub(vertexTwo, vertexOne))));
+        candidatePoints.push(
+          vecAdd(vertexOne, vecScale(projection, vecSub(vertexTwo, vertexOne))),
+        );
       }
     }
     let closestDistance = Infinity;
     let closestPoint = null;
     for (let candidate of candidatePoints) {
-      let distance = Math.sqrt(Math.pow(candidate[0] - point[0], 2) + Math.pow(candidate[1] - point[1], 2));
+      let distance = Math.sqrt(
+        Math.pow(candidate[0] - point[0], 2) +
+          Math.pow(candidate[1] - point[1], 2),
+      );
       if (distance < closestDistance) {
         closestDistance = distance;
         closestPoint = candidate;
@@ -197,15 +237,20 @@ jsPsych.plugins['html-slider-triangle'] = (function() {
   // Trial function
   // ==============
 
-  plugin.trial = function(display_element, trial) {
+  plugin.trial = function (display_element, trial) {
     // Parameter validation and error handling
     if (!Array.isArray(trial.stimulus_all) || trial.stimulus_all.length !== 3) {
-      console.error('Error: stimulus_all should be an array of 3 image paths.');
+      console.error("Error: stimulus_all should be an array of 3 image paths.");
       return;
     }
 
-    if (typeof trial.planetColors !== 'object' || Object.keys(trial.planetColors).length !== 3) {
-      console.error('Error: planetColors should be an object with 3 key-value pairs.');
+    if (
+      typeof trial.planetColors !== "object" ||
+      Object.keys(trial.planetColors).length !== 3
+    ) {
+      console.error(
+        "Error: planetColors should be an object with 3 key-value pairs.",
+      );
       return;
     }
 
@@ -218,15 +263,22 @@ jsPsych.plugins['html-slider-triangle'] = (function() {
       <div id="jspsych-html-slider-triangle-wrapper" style="position: relative; width: ${trial.slider_width}px; height: ${trial.slider_height}px;">
         <div id="jspsych-html-slider-triangle-stimulus" style="position: relative; width: 100%; height: 100%;">
           <!-- Planet images and labels -->
-          ${planetOrder.map((planet, index) => {
-            const { planetPosition, labelPosition } = getImageLabelPosition(index, trial.slider_width, trial.slider_height, trial.stimulus_height);
-            return `
+          ${planetOrder
+            .map((planet, index) => {
+              const { planetPosition, labelPosition } = getImageLabelPosition(
+                index,
+                trial.slider_width,
+                trial.slider_height,
+                trial.stimulus_height,
+              );
+              return `
               <div style="position: absolute;">
                 <img src="${planet}" style="position: absolute; ${planetPosition}; width: ${trial.stimulus_height}px; height: ${trial.stimulus_height}px;"/>
                 <div id="planet-${index}-label" style="position: absolute; ${labelPosition}; color: ${trial.planetColors[planet]};">Planet ${String.fromCharCode(65 + index)} (${getDefaultProportion(index)}% of total)</div>
               </div>
             `;
-          }).join('')}
+            })
+            .join("")}
 
           <!-- Equilateral Triangle -->
           <div id="jspsych-html-slider-triangle" style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: ${trial.slider_width}px; height: ${trial.slider_height}px; clip-path: polygon(50% 100%, 0 0, 100% 0); background-color: #ddd;" role="slider" aria-valuemin="0" aria-valuemax="100" aria-valuenow="33" aria-label="Triangle Slider" tabindex="0"></div>
@@ -254,12 +306,19 @@ jsPsych.plugins['html-slider-triangle'] = (function() {
     // DOM elements
     // ============
 
-    var triangle = display_element.querySelector('#jspsych-html-slider-triangle');
-    var handle = display_element.querySelector('#jspsych-html-slider-triangle-handle');
-    handle.style.pointerEvents = 'none'; // ignore mouse events so they occur on the triangle instead
-    var pieChart = display_element.querySelector('#jspsych-html-slider-triangle-pie-chart');
-    var continueButton = display_element.querySelector('#jspsych-html-slider-triangle-continue');
-
+    var triangle = display_element.querySelector(
+      "#jspsych-html-slider-triangle",
+    );
+    var handle = display_element.querySelector(
+      "#jspsych-html-slider-triangle-handle",
+    );
+    handle.style.pointerEvents = "none"; // ignore mouse events so they occur on the triangle instead
+    var pieChart = display_element.querySelector(
+      "#jspsych-html-slider-triangle-pie-chart",
+    );
+    var continueButton = display_element.querySelector(
+      "#jspsych-html-slider-triangle-continue",
+    );
 
     // State variables
     // ===============
@@ -277,13 +336,13 @@ jsPsych.plugins['html-slider-triangle'] = (function() {
       timestamps: {
         start: null,
         end: null,
-        clicks: []
+        clicks: [],
       },
       locations: {
         clicks: [],
       },
       stimulus_all: trial.stimulus_all,
-      planetColors: trial.planetColors
+      planetColors: trial.planetColors,
     };
 
     // Record the start timestamp
@@ -293,7 +352,10 @@ jsPsych.plugins['html-slider-triangle'] = (function() {
     var triangleRect = triangle.getBoundingClientRect();
     var topLeftCorner = { x: triangleRect.left, y: triangleRect.top };
     var topRightCorner = { x: triangleRect.right, y: triangleRect.top };
-    var bottomCorner = { x: triangleRect.left + triangleRect.width / 2, y: triangleRect.top + triangleRect.height };
+    var bottomCorner = {
+      x: triangleRect.left + triangleRect.width / 2,
+      y: triangleRect.top + triangleRect.height,
+    };
 
     // Update handle position and proportions based on mouse position
     function updateHandlePosition(mouseX, mouseY) {
@@ -316,7 +378,16 @@ jsPsych.plugins['html-slider-triangle'] = (function() {
 
       if (!isInsideTriangle(x, y, x1, y1, x2, y2, x3, y3)) {
         // Clicked point is outside the triangle
-        var { closestX, closestY } = getClosestPointOnTriangleEdge(x, y, x1, y1, x2, y2, x3, y3);
+        var { closestX, closestY } = getClosestPointOnTriangleEdge(
+          x,
+          y,
+          x1,
+          y1,
+          x2,
+          y2,
+          x3,
+          y3,
+        );
         x = closestX;
         y = closestY;
       }
@@ -326,9 +397,9 @@ jsPsych.plugins['html-slider-triangle'] = (function() {
       var area2 = Math.abs((x - x2) * (y3 - y2) - (x3 - x2) * (y - y2)) / 2;
       var area3 = Math.abs((x - x3) * (y1 - y3) - (x1 - x3) * (y - y3)) / 2;
 
-      var bottomProportion = area1 / area * 100;
-      var leftProportion = area2 / area * 100;
-      var rightProportion = area3 / area * 100;
+      var bottomProportion = (area1 / area) * 100;
+      var leftProportion = (area2 / area) * 100;
+      var rightProportion = (area3 / area) * 100;
       proportions = [leftProportion, rightProportion, bottomProportion];
 
       // Update the labels with the new proportions
@@ -338,7 +409,11 @@ jsPsych.plugins['html-slider-triangle'] = (function() {
       });
 
       // Update the pie chart rendering
-      pieChart.style.backgroundImage = getPieChartGradient(trial.planetColors, planetOrder, proportions);
+      pieChart.style.backgroundImage = getPieChartGradient(
+        trial.planetColors,
+        planetOrder,
+        proportions,
+      );
 
       // Return the updated proportions array
       return proportions;
@@ -348,14 +423,21 @@ jsPsych.plugins['html-slider-triangle'] = (function() {
       var edges = [
         { x1: x1, y1: y1, x2: x2, y2: y2 },
         { x1: x2, y1: y2, x2: x3, y2: y3 },
-        { x1: x3, y1: y3, x2: x1, y2: y1 }
+        { x1: x3, y1: y3, x2: x1, y2: y1 },
       ];
 
       var closestPoint = null;
       var minDistance = Infinity;
 
-      edges.forEach(edge => {
-        var { closestX, closestY } = getClosestPointOnLineSegment(x, y, edge.x1, edge.y1, edge.x2, edge.y2);
+      edges.forEach((edge) => {
+        var { closestX, closestY } = getClosestPointOnLineSegment(
+          x,
+          y,
+          edge.x1,
+          edge.y1,
+          edge.x2,
+          edge.y2,
+        );
         var distance = getDistance(x, y, closestX, closestY);
         if (distance < minDistance) {
           minDistance = distance;
@@ -388,13 +470,16 @@ jsPsych.plugins['html-slider-triangle'] = (function() {
       triangleRect = triangle.getBoundingClientRect();
       topLeftCorner = { x: triangleRect.left, y: triangleRect.top };
       topRightCorner = { x: triangleRect.right, y: triangleRect.top };
-      bottomCorner = { x: triangleRect.left + triangleRect.width / 2, y: triangleRect.top + triangleRect.height };
+      bottomCorner = {
+        x: triangleRect.left + triangleRect.width / 2,
+        y: triangleRect.top + triangleRect.height,
+      };
     }
 
-    window.addEventListener('resize', handleResize);
+    window.addEventListener("resize", handleResize);
 
     // Event listener for mousemove event on the triangle
-    triangle.addEventListener('mousemove', function(event) {
+    triangle.addEventListener("mousemove", function (event) {
       if (isDragging) {
         var mouseX = event.clientX;
         var mouseY = event.clientY;
@@ -403,7 +488,7 @@ jsPsych.plugins['html-slider-triangle'] = (function() {
     });
 
     // Event listener for mousedown event on the triangle
-    triangle.addEventListener('mousedown', function(event) {
+    triangle.addEventListener("mousedown", function (event) {
       if (event.button === 0) {
         isHovering = true;
         isDragging = true;
@@ -416,14 +501,14 @@ jsPsych.plugins['html-slider-triangle'] = (function() {
         response.locations.clicks.push({
           x: mouseX,
           y: mouseY,
-          proportions: proportions
+          proportions: proportions,
         });
         event.preventDefault();
       }
     });
 
     // Listen for mousemove on the window, for dragging the handle with mouse outside triangle
-    window.addEventListener('mousemove', function(event) {
+    window.addEventListener("mousemove", function (event) {
       if (isDragging && !isHovering) {
         tri = Array();
         let bcr = triangle.getBoundingClientRect();
@@ -431,25 +516,31 @@ jsPsych.plugins['html-slider-triangle'] = (function() {
         tri.push([bcr.right, bcr.y]);
         tri.push([bcr.x + bcr.width / 2, bcr.y + bcr.height]);
         console.log(tri);
-        console.log(closestPointInsideTriangle(Array(event.clientX, event.clientY), tri));
-        updateHandlePosition(...closestPointInsideTriangle(Array(event.clientX, event.clientY), tri));
+        console.log(
+          closestPointInsideTriangle(Array(event.clientX, event.clientY), tri),
+        );
+        updateHandlePosition(
+          ...closestPointInsideTriangle(
+            Array(event.clientX, event.clientY),
+            tri,
+          ),
+        );
       }
-
     });
 
     // Event listener for mouseup event on the document
-    document.addEventListener('mouseup', function(event) {
+    document.addEventListener("mouseup", function (event) {
       if (event.button === 0) {
         isDragging = false;
       }
     });
 
     // Event listener for mouseleave event on the triangle
-    triangle.addEventListener('mouseleave', function(event) {
+    triangle.addEventListener("mouseleave", function (event) {
       isHovering = false;
     });
 
-    triangle.addEventListener('mouseenter', function(event) {
+    triangle.addEventListener("mouseenter", function (event) {
       isHovering = true;
     });
 
@@ -476,7 +567,7 @@ jsPsych.plugins['html-slider-triangle'] = (function() {
         response.locations.clicks.push({
           x: mouseX,
           y: mouseY,
-          proportions: proportions
+          proportions: proportions,
         });
         event.preventDefault();
       }
@@ -486,21 +577,21 @@ jsPsych.plugins['html-slider-triangle'] = (function() {
       isDragging = false;
     }
 
-    triangle.addEventListener('touchmove', handleTouchMove);
-    triangle.addEventListener('touchstart', handleTouchStart);
-    triangle.addEventListener('touchend', handleTouchEnd);
+    triangle.addEventListener("touchmove", handleTouchMove);
+    triangle.addEventListener("touchstart", handleTouchStart);
+    triangle.addEventListener("touchend", handleTouchEnd);
 
     // Continue button visibility
     function updateContinueButtonVisibility() {
       if (response.clicked) {
-        continueButton.style.display = 'block';
+        continueButton.style.display = "block";
       } else {
-        continueButton.style.display = 'none';
+        continueButton.style.display = "none";
       }
     }
 
-    triangle.addEventListener('mousedown', updateContinueButtonVisibility);
-    triangle.addEventListener('touchstart', updateContinueButtonVisibility);
+    triangle.addEventListener("mousedown", updateContinueButtonVisibility);
+    triangle.addEventListener("touchstart", updateContinueButtonVisibility);
 
     // Keyboard navigation support
     function handleKeyDown(event) {
@@ -509,16 +600,16 @@ jsPsych.plugins['html-slider-triangle'] = (function() {
       var y = response.locations.clicks[response.locations.clicks.length - 1].y;
 
       switch (key) {
-        case 'ArrowUp':
+        case "ArrowUp":
           y -= 10;
           break;
-        case 'ArrowDown':
+        case "ArrowDown":
           y += 10;
           break;
-        case 'ArrowLeft':
+        case "ArrowLeft":
           x -= 10;
           break;
-        case 'ArrowRight':
+        case "ArrowRight":
           x += 10;
           break;
         default:
@@ -529,20 +620,20 @@ jsPsych.plugins['html-slider-triangle'] = (function() {
       event.preventDefault();
     }
 
-    document.addEventListener('keydown', handleKeyDown);
+    document.addEventListener("keydown", handleKeyDown);
 
     // Function to end the trial
-    var end_trial = function() {
+    var end_trial = function () {
       // Remove event listeners
-      triangle.removeEventListener('mousemove', updateHandlePosition);
-      triangle.removeEventListener('mousedown', updateHandlePosition);
-      document.removeEventListener('mouseup', updateHandlePosition);
-      triangle.removeEventListener('mouseleave', updateHandlePosition);
-      triangle.removeEventListener('touchmove', handleTouchMove);
-      triangle.removeEventListener('touchstart', handleTouchStart);
-      triangle.removeEventListener('touchend', handleTouchEnd);
-      document.removeEventListener('keydown', handleKeyDown);
-      window.removeEventListener('resize', handleResize);
+      triangle.removeEventListener("mousemove", updateHandlePosition);
+      triangle.removeEventListener("mousedown", updateHandlePosition);
+      document.removeEventListener("mouseup", updateHandlePosition);
+      triangle.removeEventListener("mouseleave", updateHandlePosition);
+      triangle.removeEventListener("touchmove", handleTouchMove);
+      triangle.removeEventListener("touchstart", handleTouchStart);
+      triangle.removeEventListener("touchend", handleTouchEnd);
+      document.removeEventListener("keydown", handleKeyDown);
+      window.removeEventListener("resize", handleResize);
 
       // Set the final proportions
       response.proportions = proportions;
@@ -553,18 +644,18 @@ jsPsych.plugins['html-slider-triangle'] = (function() {
 
       // Prepare the trial data
       var trial_data = {
-        response: response
+        response: response,
       };
 
       // Clear the display
-      display_element.innerHTML = '';
+      display_element.innerHTML = "";
 
       // End the trial
       jsPsych.finishTrial(trial_data);
     };
 
     // Event listener for the continue button
-    continueButton.addEventListener('click', end_trial);
+    continueButton.addEventListener("click", end_trial);
   };
 
   return plugin;
