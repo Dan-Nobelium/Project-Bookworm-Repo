@@ -822,12 +822,6 @@ var cont_catch = {
   ship_option_3: ship_list_original[2],
   correct_answers: [stim_list[1], ship_list[1], stim_list[2], ship_list[2]],
 
-  // Object representing the mapping between ships and planets
-  ship_planet_mapping: {
-    "./assets/ship1.png": "Planet B",
-    "./assets/ship2.png": "Planet C",
-  },
-
   // HTML-formatted string representing the text for winning 100 points
   win_text: win_100_text,
 
@@ -1228,9 +1222,9 @@ let timeline = []; // This is the master timeline, the experiment runs sequentia
 // timeline.push(instructionCheckWithFeedback);
 
 // // // Attention check
-timeline.push(cfi_block);
-timeline.push(htq_block);
-timeline.push(audit_block);
+// timeline.push(cfi_block);
+// timeline.push(htq_block);
+// timeline.push(audit_block);
 
 // // Phase 1, no ships
 // addBlocksToTimeline(timeline, planet_noship, nBlocks_p1, nTrialspBlk);
@@ -1244,7 +1238,7 @@ timeline.push(audit_block);
 
 // // Phase2, ships
 // timeline.push(phaseTwoInstructions);
-// addBlocksToTimeline(timeline, planet_ship, nBlocks_p2, nTrialspBlk);
+addBlocksToTimeline(timeline, planet_ship, nBlocks_p2, nTrialspBlk);
 // timeline.push(valence_p2);
 // timeline.push(infer_p2_A);
 // timeline.push(infer_p2_B);
@@ -1256,7 +1250,7 @@ timeline.push(audit_block);
 // timeline.push(p1_q4_triangle);
 
 // Phase3, contingencies
-timeline.push(cont_catch);
+// timeline.push(cont_catch);
 
 // Phase3, ships
 // addBlocksToTimeline(timeline, planet_ship, nBlocks_p3, nTrialspBlk);
