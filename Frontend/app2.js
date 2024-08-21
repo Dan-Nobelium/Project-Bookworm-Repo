@@ -13,14 +13,6 @@ let group = jsPsych.randomization.sampleWithReplacement(groups, 1);
 let samples = ["ProA", "others"];
 let sample = samples[0];
 
-// randomise position of planets (left/middle/right as 0/1/2)
-let num_planets = 3;
-let planet_sides = [...Array(num_planets).keys()].map((x) => x.toString());
-let planet_side = jsPsych.randomization.sampleWithReplacement(
-  planet_sides,
-  1,
-)[0];
-
 // Stimulus and image Initialization
 // Ship and stim lists in original order
 const stim_list_original = [
@@ -184,7 +176,6 @@ let instructionCheckWithFeedback = {
 let planet_noship = {
   type: "planet-response-command",
   show_ship: false,
-  ship_hostile_idx: planet_side,
   prompt: planet_labels,
   stimulus: stim_list,
   stimulus_select: stim_selector_highlight,
@@ -340,21 +331,6 @@ var infer_p1_C = {
 
 //* inference and valence checks end *-----------------
 
-//NEW: slider response Qs - images
-var slider_img_left = [
-  {
-    stimulus: stim_list[0],
-    text: "Planet A (left)",
-  },
-];
-
-var slider_img_right = [
-  {
-    stimulus: stim_list[1],
-    text: "Planet B (right)",
-  },
-];
-
 //////////////////////
 
 // define phase 2 instructions
@@ -376,7 +352,6 @@ var phaseTwoInstructions = {
 let planet_ship = {
   type: "planet-response-command",
   show_ship: true,
-  ship_hostile_idx: planet_side,
   prompt: planet_labels,
   stimulus: stim_list,
   stimulus_select: stim_selector_highlight,
@@ -1286,10 +1261,7 @@ timeline.push(cont_catch);
   jsPsych.data.addProperties({
     subject_id: subject_id,
     group: group,
-    sample: sample,
-    planet_side: planet_side,
-    pun_planet: stim_list[planet_side],
-    pun_ship: ship_list[planet_side],
+    sample: sample
   });
 
   jsPsych.init({

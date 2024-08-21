@@ -191,13 +191,6 @@ jsPsych.plugins["planet-response-command"] = (function () {
         description:
           "Array of ship damage values: [0 damage, 100 damage, 20% of total points]",
       },
-      ship_hostile_idx: {
-        type: jsPsych.plugins.parameterType.INT,
-        pretty_name: "Index of hostile ship",
-        default: 0,
-        description:
-          "Index of hostile ship, can be 0 (left) or 1 (right), or 3",
-      },
       shield_charging_time: {
         type: jsPsych.plugins.parameterType.INT,
         pretty_name: "Shield charging duration",
