@@ -822,12 +822,6 @@ var cont_catch = {
   ship_option_3: ship_list_original[2],
   correct_answers: [stim_list[1], ship_list[1], stim_list[2], ship_list[2]],
 
-  // Object representing the mapping between ships and planets
-  ship_planet_mapping: {
-    "./assets/ship1.png": "Planet B",
-    "./assets/ship2.png": "Planet C",
-  },
-
   // HTML-formatted string representing the text for winning 100 points
   win_text: win_100_text,
 
