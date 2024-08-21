@@ -90,17 +90,28 @@ let nBlocks_p3 = 1;
 let planet_labels = ["Planet A", "Planet B", "Planet C"];
 
 //ship attack variable labels
-const win_100_text = "<img src='./assets/win_100_text.png'>";
+const win_100_file = './assets/win_100_text.png';
+const win_100_text = `<img src='${win_100_file}'>`;
+const ship_outcome_files = [
+  './assets/ship_outcome_1_unshielded.png',
+  './assets/ship_outcome_2_unshielded.png',
+  './assets/ship_outcome_3_unshielded.png',
+  './assets/ship_outcome_3_shielded.png',
+  './assets/ship_outcome_3_shielded_alt.png'
+];
+const ship_outcome_heights = [31, 31, 32, 84, 84];
 const ship_outcome_1_unshielded =
-  "<img src='./assets/ship_outcome_1_unshielded.png' height='31px'>";
+  `<img src='${ship_outcome_files[0]}' height='${ship_outcome_heights[0]}px'>`;
 const ship_outcome_2_unshielded =
-  "<img src='./assets/ship_outcome_2_unshielded.png' height='31px'>";
+  `<img src='${ship_outcome_files[1]}' height='${ship_outcome_heights[1]}px'>`;
 const ship_outcome_3_unshielded =
-  "<img src='./assets/ship_outcome_3_unshielded.png' height='32px'>";
+  `<img src='${ship_outcome_files[2]}' height='${ship_outcome_heights[2]}px'>`;
 const ship_outcome_3_shielded =
-  "<img src='./assets/ship_outcome_3_shielded.png' height='84px'>";
+  `<img src='${ship_outcome_files[3]}' height='${ship_outcome_heights[3]}px'>`;
 const ship_outcome_3_shielded_alt =
-  "<img src='./assets/ship_outcome_3_shielded_alt.png' height='84px'>";
+  `<img src='${ship_outcome_files[4]}' height='${ship_outcome_heights[4]}px'>`;
+
+
 
 // // manipulate response-ship Rft rate
 // if (group[0].includes("0.1")) {
@@ -366,12 +377,13 @@ let planet_ship = {
   probability_trade: probability_trade,
   probability_ship: probability_ship,
   probability_shield: probability_shield,
-  ship_outcome_1_unshielded: ship_outcome_1_unshielded,
-  ship_outcome_2_unshielded: ship_outcome_2_unshielded,
-  ship_outcome_3_unshielded: ship_outcome_3_unshielded,
-  ship_outcome_3_shielded: ship_outcome_3_shielded,
-  ship_outcome_3_shielded_alt: ship_outcome_3_shielded_alt,
-  win_100_text: win_100_text,
+  ship_outcome_1_unshielded_file: ship_outcome_files[0],
+  ship_outcome_2_unshielded_file: ship_outcome_files[1],
+  ship_outcome_3_unshielded_file: ship_outcome_files[2],
+  ship_outcome_3_shielded_file: ship_outcome_files[3],
+  ship_outcome_3_shielded_alt_file: ship_outcome_files[4],
+  win_100_text: win_100_file,
+  ship_outcome_image_heights: ship_outcome_heights,
   data: {
     phase: "phase2",
     block_type: "planet_ship",
@@ -1197,9 +1209,9 @@ let timeline = []; // This is the master timeline, the experiment runs sequentia
 // timeline.push(instructionCheckWithFeedback);
 
 // // // Attention check
-timeline.push(cfi_block);
-timeline.push(htq_block);
-timeline.push(audit_block);
+// timeline.push(cfi_block);
+// timeline.push(htq_block);
+// timeline.push(audit_block);
 
 // // Phase 1, no ships
 // addBlocksToTimeline(timeline, planet_noship, nBlocks_p1, nTrialspBlk);
@@ -1213,7 +1225,7 @@ timeline.push(audit_block);
 
 // // Phase2, ships
 // timeline.push(phaseTwoInstructions);
-// addBlocksToTimeline(timeline, planet_ship, nBlocks_p2, nTrialspBlk);
+ addBlocksToTimeline(timeline, planet_ship, nBlocks_p2, nTrialspBlk);
 // timeline.push(valence_p2);
 // timeline.push(infer_p2_A);
 // timeline.push(infer_p2_B);
@@ -1228,7 +1240,7 @@ timeline.push(audit_block);
 timeline.push(cont_catch);
 
 // Phase3, ships
-// addBlocksToTimeline(timeline, planet_ship, nBlocks_p3, nTrialspBlk);
+ addBlocksToTimeline(timeline, planet_ship, nBlocks_p3, nTrialspBlk);
 // timeline.push(valence_p2);
 // timeline.push(infer_p2_A);
 // timeline.push(infer_p2_B);

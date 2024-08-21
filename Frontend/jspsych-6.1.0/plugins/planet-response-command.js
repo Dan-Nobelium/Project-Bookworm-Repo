@@ -9,7 +9,13 @@
 
 jsPsych.plugins["planet-response-command"] = (function () {
   var plugin = {};
-  jsPsych.pluginAPI.registerPreload("planet-response", "stimulus", "image");
+  // jsPsych.pluginAPI.registerPreload(plugin_name, parameter, media_type)
+  jsPsych.pluginAPI.registerPreload("planet-response-command", "ship_outcome_1_unshielded", "image");
+  jsPsych.pluginAPI.registerPreload("planet-response-command", "ship_outcome_2_unshielded", "image");
+  jsPsych.pluginAPI.registerPreload("planet-response-command", "ship_outcome_3_unshielded", "image");
+  jsPsych.pluginAPI.registerPreload("planet-response-command", "ship_outcome_3_shielded", "image");
+  jsPsych.pluginAPI.registerPreload("planet-response-command", "ship_outcome_3_shielded_alt", "image");
+  jsPsych.pluginAPI.registerPreload("planet-response-command", "win_100_text", "image");
   plugin.info = {
     name: "planet-response-command",
     description: "",
@@ -261,36 +267,49 @@ jsPsych.plugins["planet-response-command"] = (function () {
         description:
           "[disabled]Time between end of last ship outcome and ship disappearance.",
       },
-      ship_outcome_1_unshielded: {
-        type: jsPsych.plugins.parameterType.STRING,
+      ship_outcome_1_unshielded_file: {
+        type: jsPsych.plugins.parameterType.IMAGE,
         pretty_name: "Ship outcome 1 unshielded",
         default: "",
         description: "The text for ship outcome 1 when unshielded.",
       },
-      ship_outcome_2_unshielded: {
-        type: jsPsych.plugins.parameterType.STRING,
+      ship_outcome_2_unshielded_file: {
+        type: jsPsych.plugins.parameterType.IMAGE,
         pretty_name: "Ship outcome 2 unshielded",
         default: "",
         description: "The text for ship outcome 2 when unshielded.",
       },
-      ship_outcome_3_unshielded: {
-        type: jsPsych.plugins.parameterType.STRING,
+      ship_outcome_3_unshielded_file: {
+        type: jsPsych.plugins.parameterType.IMAGE,
         pretty_name: "Ship outcome 3 unshielded",
         default: "",
         description: "The text for ship outcome 3 when unshielded.",
       },
-      ship_outcome_3_shielded: {
-        type: jsPsych.plugins.parameterType.STRING,
+      ship_outcome_3_shielded_file: {
+        type: jsPsych.plugins.parameterType.IMAGE,
         pretty_name: "Ship outcome 3 shielded",
         default: "",
         description: "The text for ship outcome 3 when shielded.",
       },
-      ship_outcome_3_shielded_alt: {
-        type: jsPsych.plugins.parameterType.STRING,
+      ship_outcome_3_shielded_alt_file: {
+        type: jsPsych.plugins.parameterType.IMAGE,
         pretty_name: "Ship outcome 3 shielded (alternative)",
         default: "",
         description:
           "Alternative version of the text for ship outcome 3 when shielded.",
+      },
+      ship_outcome_image_heights: {
+        type: jsPsych.plugins.parameterType.ARRAY,
+        pretty_name: "Heights of ship outcome images",
+        default: "",
+        description:
+          "Array containing heights, in pixels, of ship_outcome images.",
+      },
+      win_100_text: {
+        type: jsPsych.plugins.parameterType.IMAGE,
+        pretty_name: "",
+        default: "",
+        description: "",
       },
       show_whether_shield_blocked_attack_or_bonus: {
         type: jsPsych.plugins.parameterType.BOOL,
@@ -344,6 +363,7 @@ jsPsych.plugins["planet-response-command"] = (function () {
     }
 `;
 
+
   // Create a style element and append the CSS string to it
   var styleElement = document.createElement("style");
   styleElement.type = "text/css";
@@ -351,6 +371,14 @@ jsPsych.plugins["planet-response-command"] = (function () {
   document.head.appendChild(styleElement);
 
   plugin.trial = function (display_element, trial) {
+    // Create img divs for ship outcome text
+    const ship_outcome_1_unshielded = `<img src='${trial.ship_outcome_1_unshielded_file}' height='${trial.ship_outcome_image_heights[0]}px'>`;
+    const ship_outcome_2_unshielded = `<img src='${trial.ship_outcome_2_unshielded_file}' height='${trial.ship_outcome_image_heights[1]}px'>`;
+    const ship_outcome_3_unshielded = `<img src='${trial.ship_outcome_3_unshielded_file}' height='${trial.ship_outcome_image_heights[2]}px'>`;
+    const ship_outcome_3_shielded = `<img src='${trial.ship_outcome_3_shielded_file}' height='${trial.ship_outcome_image_heights[3]}px'>`;
+    const ship_outcome_3_shielded_alt = `<img src='${trial.ship_outcome_3_shielded_alt_file}' height='${trial.ship_outcome_image_heights[4]}px'>`;
+    const win_100_text = `<img src='${trial.win_100_text}'>`;
+
     var html = "";
     html += '<div id="game-container">';
     html += '<div id="planet-row">';
@@ -1110,14 +1138,14 @@ jsPsych.plugins["planet-response-command"] = (function () {
           if (damageType == "percent") {
             if (pointsLost >= 0) {
               statusmsg = formatShipOutcomeText(
-                trial.ship_outcome_2_unshielded,
+                ship_outcome_2_unshielded,
                 pointsLost,
               );
               statusclr = "darkorange";
               console.log("INDEX 2, points lost:", pointsLost);
             } else {
               statusmsg = formatShipOutcomeText(
-                trial.ship_outcome_3_unshielded,
+                ship_outcome_3_unshielded,
                 pointsLost,
               );
               statusclr = "yellow";
@@ -1126,14 +1154,14 @@ jsPsych.plugins["planet-response-command"] = (function () {
           } else {
             if (pointsLost >= 0) {
               statusmsg = formatShipOutcomeText(
-                trial.ship_outcome_1_unshielded,
+                ship_outcome_1_unshielded,
                 pointsLost,
               );
               statusclr = "red";
               console.log("INDEX 1, damage:", pointsLost);
             } else {
               statusmsg = formatShipOutcomeText(
-                trial.ship_outcome_3_unshielded,
+                ship_outcome_3_unshielded,
                 pointsLost,
               );
               statusclr = "yellow";
@@ -1154,10 +1182,10 @@ jsPsych.plugins["planet-response-command"] = (function () {
             damageValue > 0 ||
             !trial.show_whether_shield_blocked_attack_or_bonus
           ) {
-            statusmsg = trial.ship_outcome_3_shielded;
+            statusmsg = ship_outcome_3_shielded;
             statusclr = "grey";
           } else {
-            statusmsg = trial.ship_outcome_3_shielded_alt;
+            statusmsg = ship_outcome_3_shielded_alt;
             statusclr = "yellow";
           }
           console.log("Status message:", statusmsg);
