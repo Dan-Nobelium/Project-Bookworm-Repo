@@ -67,7 +67,7 @@ ship_attack_damage = jsPsych.randomization.shuffle(ship_attack_damage); //random
 //const show_whether_shield_blocked_attack_or_bonus = false;
 const show_whether_shield_blocked_attack_or_bonus = true; // for testing
 //const block_duration = 180 * 1000; // in milliseconds (3 mins) // sets the length of planet-response trials.
-const block_duration = 40 * 1000; // shorter duration for testing
+const block_duration = 90 * 1000; // shorter duration for testing
 var probability_ship = [[1], [1], [1]]; //how likely is there to be a ship for each planet, [1,1,1] means 100% of clicks will result in a ship.
 
 // Global Variables Definition
@@ -1197,9 +1197,9 @@ let timeline = []; // This is the master timeline, the experiment runs sequentia
 // timeline.push(instructionCheckWithFeedback);
 
 // // // Attention check
-timeline.push(cfi_block);
-timeline.push(htq_block);
-timeline.push(audit_block);
+// timeline.push(cfi_block);
+// timeline.push(htq_block);
+// timeline.push(audit_block);
 
 // // Phase 1, no ships
 // addBlocksToTimeline(timeline, planet_noship, nBlocks_p1, nTrialspBlk);
@@ -1213,7 +1213,7 @@ timeline.push(audit_block);
 
 // // Phase2, ships
 // timeline.push(phaseTwoInstructions);
-// addBlocksToTimeline(timeline, planet_ship, nBlocks_p2, nTrialspBlk);
+addBlocksToTimeline(timeline, planet_ship, nBlocks_p2, nTrialspBlk);
 // timeline.push(valence_p2);
 // timeline.push(infer_p2_A);
 // timeline.push(infer_p2_B);
@@ -1225,7 +1225,7 @@ timeline.push(audit_block);
 // timeline.push(p1_q4_triangle);
 
 // Phase3, contingencies
-timeline.push(cont_catch);
+// timeline.push(cont_catch);
 
 // Phase3, ships
 // addBlocksToTimeline(timeline, planet_ship, nBlocks_p3, nTrialspBlk);

@@ -501,8 +501,44 @@ jsPsych.plugins["planet-response-command"] = (function () {
       "> " +
       "</div>" +
       '<div class="ship" id="ship-attack-text"></div>' +
-      '<div class="ship" id="ship-status-text" style="width: 100%; height: 164px; margin-top: -6px; display: flex; flex-direction: column; align-items: center; justify-content: space-evenly"></div>';
+      '<div class="ship" id="ship-status-image" style="overflow: visible; height: 64px; position: relative"></div>' +
+      '<div class="ship" id="ship-status-text" style="width: 100%; height: 40px; display: flex; flex-direction: column; align-items: center; justify-content: space-evenly"></div>';
 
+    const ship_attack_image_divs = [null,null,null,null,null];
+    let index = 0;
+    for (img of [trial.ship_outcome_1_unshielded, trial.ship_outcome_2_unshielded, trial.ship_outcome_3_unshielded, trial.ship_outcome_3_shielded, trial.ship_outcome_3_shielded_alt]) {
+      ship_attack_image_divs[index] = document.createElement('div');
+      ship_attack_image_divs[index].innerHTML = img;
+      ship_attack_image_divs[index].style.position = "absolute";
+      ship_attack_image_divs[index].style.display = "flex";
+      ship_attack_image_divs[index].style.width = "100%";
+      ship_attack_image_divs[index].style.height = "120px";
+      ship_attack_image_divs[index].style.justifyContent = "center";
+      ship_attack_image_divs[index].style.alignItems = "center";
+      ship_attack_image_divs[index].style.top = "0";
+      ship_attack_image_divs[index].style.left = "0";
+      ship_attack_image_divs[index].style.opacity = "0";
+      document.querySelector("#ship-status-image").appendChild(ship_attack_image_divs[index]);
+      index += 1;
+    }   
+    
+    const outcome_1_unshielded = ship_attack_image_divs[0];
+    const outcome_2_unshielded = ship_attack_image_divs[1];
+    const outcome_3_unshielded = ship_attack_image_divs[2];
+    const outcome_3_shielded = ship_attack_image_divs[3];
+    const outcome_3_shielded_alt = ship_attack_image_divs[4];
+
+    function show_status_image(outcome) {
+      for (div of ship_attack_image_divs) {
+        if (div === outcome) {
+          div.style.opacity = "1";
+        }
+        else {
+          div.style.opacity = "0";
+        }
+      }
+    }
+    
     // Create shield elements and append them to the shield placeholder
     var shieldPlaceholder = display_element.querySelector(
       "#shield-placeholder",
@@ -1102,6 +1138,7 @@ jsPsych.plugins["planet-response-command"] = (function () {
 
       // Check if the applied damage is not equal to 0 before proceeding with the attack
       if (pointsLost !== 0) {
+        statusmsg = "";
         // Apply points loss depending on the choice and the shield activation
         if (!shield_activated) {
           // Subtract the calculated damage from the points
@@ -1109,33 +1146,25 @@ jsPsych.plugins["planet-response-command"] = (function () {
           trial.data.points -= pointsLost;
           if (damageType == "percent") {
             if (pointsLost >= 0) {
-              statusmsg = formatShipOutcomeText(
-                trial.ship_outcome_2_unshielded,
-                pointsLost,
-              );
+              show_status_image(outcome_2_unshielded);
+              statusmsg = formatShipOutcomeText("", pointsLost);
               statusclr = "darkorange";
               console.log("INDEX 2, points lost:", pointsLost);
             } else {
-              statusmsg = formatShipOutcomeText(
-                trial.ship_outcome_3_unshielded,
-                pointsLost,
-              );
+              show_status_image(outcome_3_unshielded);
+              statusmsg = formatShipOutcomeText("", pointsLost);
               statusclr = "yellow";
               console.log("INDEX 2, points gained:", -pointsLost);
             }
           } else {
             if (pointsLost >= 0) {
-              statusmsg = formatShipOutcomeText(
-                trial.ship_outcome_1_unshielded,
-                pointsLost,
-              );
+              show_status_image(outcome_1_unshielded);
+              statusmsg = formatShipOutcomeText("", pointsLost);
               statusclr = "red";
               console.log("INDEX 1, damage:", pointsLost);
             } else {
-              statusmsg = formatShipOutcomeText(
-                trial.ship_outcome_3_unshielded,
-                pointsLost,
-              );
+              show_status_image(outcome_3_unshielded);
+              statusmsg = formatShipOutcomeText("", pointsLost);
               statusclr = "yellow";
               console.log("INDEX 2, bonus:", -pointsLost);
             }
@@ -1144,6 +1173,7 @@ jsPsych.plugins["planet-response-command"] = (function () {
           console.log("Initial points:", initialPoints);
           console.log("Updated points:", trial.data.points);
           console.log("Points difference:", pointsDifference);
+          document.querySelector("#ship-status-image").style.visibility = "visible";
           console.log("Status message:", statusmsg);
 
           // Update score
@@ -1154,10 +1184,10 @@ jsPsych.plugins["planet-response-command"] = (function () {
             damageValue > 0 ||
             !trial.show_whether_shield_blocked_attack_or_bonus
           ) {
-            statusmsg = trial.ship_outcome_3_shielded;
+            show_status_image(outcome_3_shielded);
             statusclr = "grey";
           } else {
-            statusmsg = trial.ship_outcome_3_shielded_alt;
+            show_status_image(outcome_3_shielded_alt);
             statusclr = "yellow";
           }
           console.log("Status message:", statusmsg);
