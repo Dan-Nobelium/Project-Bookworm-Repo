@@ -56,6 +56,9 @@ const planetColors = {
 };
 
 // Independent Variables Definition
+const trade_outcomes = [[1,0],[2,1],[1]];
+const shield_outcomes = [[5,2],[9,2],[1,5]];
+const ship_outcomes = [null,null,null];
 const probability_trade = [[0.5], [0.5], [0.5]];
 const probability_shield = [[0.5], [0.5], [0.5]];
 let ship_attack_damage = [
@@ -67,7 +70,7 @@ ship_attack_damage = jsPsych.randomization.shuffle(ship_attack_damage); //random
 //const show_whether_shield_blocked_attack_or_bonus = false;
 const show_whether_shield_blocked_attack_or_bonus = true; // for testing
 //const block_duration = 180 * 1000; // in milliseconds (3 mins) // sets the length of planet-response trials.
-const block_duration = 40 * 1000; // shorter duration for testing
+const block_duration = 80 * 1000; // shorter duration for testing
 var probability_ship = [[1], [1], [1]]; //how likely is there to be a ship for each planet, [1,1,1] means 100% of clicks will result in a ship.
 
 // Global Variables Definition
@@ -102,24 +105,7 @@ const ship_outcome_3_shielded =
 const ship_outcome_3_shielded_alt =
   "<img src='./assets/ship_outcome_3_shielded_alt.png' height='84px'>";
 
-// // manipulate response-ship Rft rate
-// if (group[0].includes("0.1")) {
-//   var probability_ship = [[0.1],[0.1],[0.1]];
-// } else if (group[0].includes("0.4")) {
-//   var probability_ship = [[0.4],[0.4],[0.4]];
-// } else (console.error("ERROR: group is not defined as 0.1 or 0.4"))
-
-// // manipulate early/late instruction by block sizes of phase 2/3
-// if (group[0].includes("early")) {
-//   nBlocks_p2 = 2;
-//   nBlocks_p3 = 3;
-// } else if (group[0].includes("late")) {
-//   nBlocks_p2 = 3;
-//   nBlocks_p3 = 4;
-// } else (console.log("ERROR: group is not defined as early or late"))
-
-// var probability_ship = probability_ship;
-//Continious or discreete testing phases
+//Continious or discrete testing phases
 let continuousResp = true;
 let nTrialspBlk = 5; //if continuousResp is true though, this doesnt matter
 if (continuousResp) {
@@ -366,6 +352,9 @@ let planet_ship = {
   probability_trade: probability_trade,
   probability_ship: probability_ship,
   probability_shield: probability_shield,
+  trade_outcomes: trade_outcomes,
+  ship_outcomes: ship_outcomes,
+  shield_outcomes: shield_outcomes,
   ship_outcome_1_unshielded: ship_outcome_1_unshielded,
   ship_outcome_2_unshielded: ship_outcome_2_unshielded,
   ship_outcome_3_unshielded: ship_outcome_3_unshielded,
@@ -1197,9 +1186,9 @@ let timeline = []; // This is the master timeline, the experiment runs sequentia
 // timeline.push(instructionCheckWithFeedback);
 
 // // // Attention check
-timeline.push(cfi_block);
-timeline.push(htq_block);
-timeline.push(audit_block);
+// timeline.push(cfi_block);
+// timeline.push(htq_block);
+// timeline.push(audit_block);
 
 // // Phase 1, no ships
 // addBlocksToTimeline(timeline, planet_noship, nBlocks_p1, nTrialspBlk);
@@ -1213,7 +1202,7 @@ timeline.push(audit_block);
 
 // // Phase2, ships
 // timeline.push(phaseTwoInstructions);
-// addBlocksToTimeline(timeline, planet_ship, nBlocks_p2, nTrialspBlk);
+addBlocksToTimeline(timeline, planet_ship, nBlocks_p2, nTrialspBlk);
 // timeline.push(valence_p2);
 // timeline.push(infer_p2_A);
 // timeline.push(infer_p2_B);

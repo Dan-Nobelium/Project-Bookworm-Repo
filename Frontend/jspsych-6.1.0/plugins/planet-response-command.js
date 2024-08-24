@@ -100,12 +100,6 @@ jsPsych.plugins["planet-response-command"] = (function () {
         default: 10,
         description: "Blank space (padding) around signal image.",
       },
-      trade_balance: {
-        type: jsPsych.plugins.parameterType.BOOL,
-        pretty_name: "Balance trade success probabilities.",
-        default: true,
-        description: "Balance trade success probabilities.",
-      },
       probability_trade: {
         type: jsPsych.plugins.parameterType.FLOAT,
         pretty_name: "P(trade success)",
@@ -132,12 +126,6 @@ jsPsych.plugins["planet-response-command"] = (function () {
         default: 2000, //1000,
         description:
           "Duration between trade attempt mouseclick and appearance of ship.",
-      },
-      ship_balance: {
-        type: jsPsych.plugins.parameterType.BOOL,
-        pretty_name: "Balance ship probabilities.",
-        default: true,
-        description: "Balance ship appearance probabilities.",
       },
       probability_ship: {
         type: jsPsych.plugins.parameterType.FLOAT,
@@ -211,13 +199,6 @@ jsPsych.plugins["planet-response-command"] = (function () {
         default: true,
         description: "Shield prevents trading when active.",
       },
-      shield_balance: {
-        type: jsPsych.plugins.parameterType.BOOL,
-        pretty_name: "Balance shield probabilities.",
-        default: true,
-        description: "Balance shield availability probabilities.",
-      },
-
       shield_cost_toggle: {
         type: jsPsych.plugins.parameterType.BOOL,
         pretty_name: "Toggle shield activation cost",
@@ -299,6 +280,21 @@ jsPsych.plugins["planet-response-command"] = (function () {
         description:
           "Toggle whether the user is told that the shield blocked a bonus (true), or is just told that it blocked an attack regardless of whether it was an attack or a bonus (false; default).",
       },
+      trade_outcomes: {
+        type: jsPsych.plugins.parameterType.INT,
+        default: null,
+        array: true
+      },
+      shield_outcomes: {
+        type: jsPsych.plugins.parameterType.INT,
+        default: null,
+        array: true
+      },
+      ship_outcomes: {
+        type: jsPsych.plugins.parameterType.INT,
+        default: null,
+        array: true
+      }
     },
   };
 
@@ -351,6 +347,45 @@ jsPsych.plugins["planet-response-command"] = (function () {
   document.head.appendChild(styleElement);
 
   plugin.trial = function (display_element, trial) {
+    let trade_outcomes = [[],[],[]];
+    let shield_outcomes = [[],[],[]];
+    let ship_outcomes = [[],[],[]];
+    for (let i = 0; i < 3; i++) {
+      trade_outcomes[i] = initialise_outcome_array(trial.trade_outcomes[i])
+      shield_outcomes[i] = initialise_outcome_array(trial.shield_outcomes[i]);
+      ship_outcomes[i] = initialise_outcome_array(trial.ship_outcomes[i]);
+    }
+
+    console.log('trade, shield, ship outcomes', trade_outcomes, shield_outcomes, ship_outcomes);
+
+    function initialise_outcome_array(in_array) {
+      console.log(in_array);
+      if (!in_array) return [];
+      if (in_array.length == 2 && (in_array[0] > 1 || in_array[1] > 1)) {
+        return generate_outcome_array(in_array[0], in_array[1]);
+      }
+      else {
+        for (let i = 0; i < in_array.length; i++) {
+          in_array[i] = Boolean(in_array[i]);
+        }
+        console.log(in_array);
+        return shuffleArrayCopy(in_array);
+      }
+    }
+
+    function generate_outcome_array(true_count, false_count) {
+      let out_array = [];
+      for (let i = 0; i < true_count; i++) {
+        out_array.push(true);
+      }
+      for (let i = 0; i < false_count; i++) {
+        out_array.push(false);
+      }
+      return shuffleArrayCopy(out_array);
+    }
+
+    
+
     var html = "";
     html += '<div id="game-container">';
     html += '<div id="planet-row">';
@@ -547,30 +582,6 @@ jsPsych.plugins["planet-response-command"] = (function () {
     var shipVisible = false; // Visibility state of ship img
     var shield_activated = null; //Shield state
 
-    //Define variables for balanced probability arrays
-    if (trial.trade_balance) {
-      var tradeProbArrs = initProbArray(trial.probability_trade);
-      var trade_orderbase = tradeProbArrs[0]; // Base set to randomise availability of trades
-      var trade_log = tradeProbArrs[1]; // Arr to read future trade success
-      var trade_read = tradeProbArrs[2]; // Arr to log trade success
-    }
-    if (trial.ship_balance) {
-      var shipProbArrs = initProbArray(trial.probability_ship);
-      var ship_orderbase = shipProbArrs[0];
-      var ship_log = shipProbArrs[1];
-      var ship_read = shipProbArrs[2];
-    }
-    if (trial.shield_balance) {
-      var shieldProbArrs = initProbArray(trial.probability_shield);
-      var shield_orderbase = shieldProbArrs[0];
-      var shield_log = shieldProbArrs[1];
-      var shield_read = shieldProbArrs[2];
-    }
-
-    console.log("Shield orderbase:", shield_orderbase);
-    console.log("Shield log:", shield_log);
-    console.log("Shield read:", shield_read);
-
     // Go through each choice and implement conditional mouseclick events, also mouseover, and select ring
     for (var i = 0; i < trial.stimulus.length; i++) {
       var element = display_element.querySelector("#planet-" + i);
@@ -748,18 +759,12 @@ jsPsych.plugins["planet-response-command"] = (function () {
         return outStr;
       }
       // Run trade
-      if (trial.trade_balance) {
-        var tradeBalOut = balanceSuccess(
-          trade_orderbase,
-          trade_log,
-          trade_read,
-          choice,
-          true,
-          "trade",
-        );
-        trade_success = tradeBalOut[0];
-        trade_log = tradeBalOut[1];
-        trade_read = tradeBalOut[2];
+      if (trial.trade_outcomes[choice]) {
+        if (trade_outcomes[choice].length == 0) {
+          trade_outcomes[choice] = initialise_outcome_array(trial.trade_outcomes[choice]);
+        }
+        console.log('trade_outcomes ', choice, trade_outcomes[choice]);
+        trade_success = trade_outcomes[choice].pop();
       } else {
         trade_success = Math.random() < trial.probability_trade[choice];
       }
@@ -821,18 +826,12 @@ jsPsych.plugins["planet-response-command"] = (function () {
       // Ship-related code
       var show_ship_check = false;
       var show_ship_samp = Math.random();
-      if (trial.ship_balance) {
-        var shipBalOut = balanceSuccess(
-          ship_orderbase,
-          ship_log,
-          ship_read,
-          choice,
-          true,
-          "ship",
-        );
-        show_ship_check = shipBalOut[0];
-        ship_log = shipBalOut[1];
-        ship_read = shipBalOut[2];
+      if (trial.ship_outcomes[choice]) {
+        if (ship_outcomes[choice].length == 0) {
+          ship_outcomes[choice] = initialise_outcome_array(trial.ship_outcomes[choice]);
+        }
+        show_ship_check = ship_outcomes[choice].pop();
+        console.log('ship_outcomes ', choice, ship_outcomes[choice]);
       } else {
         if (show_ship_samp < trial.probability_ship[choice]) {
           show_ship_check = true;
@@ -887,18 +886,11 @@ jsPsych.plugins["planet-response-command"] = (function () {
     var shield_success = Math.random() > trial.probability_shield[0]; // Initialize based on the first element of trial.probability_shield
 
     function proceed_shield(choice) {
-      if (trial.shield_balance) {
-        var shieldBalOut = balanceSuccess(
-          shield_orderbase,
-          shield_log,
-          shield_read,
-          choice,
-          true,
-          "shield",
-        );
-        shield_success = shieldBalOut[0];
-        shield_log = shieldBalOut[1];
-        shield_read = shieldBalOut[2];
+      if (trial.shield_outcomes[choice]) {
+        if (shield_outcomes[choice].length == 0) {
+          shield_outcomes[choice] = initialise_outcome_array(trial.shield_outcomes[choice]);
+        }
+        shield_success = shield_outcomes[choice].pop();
       } else {
         // Run shield gamble
         shield_success = Math.random() < trial.probability_shield[choice];
@@ -1653,55 +1645,6 @@ jsPsych.plugins["planet-response-command"] = (function () {
     return outarray;
   };
 
-  function balanceSuccess(
-    orderbase,
-    arr_log,
-    arr_read,
-    choice,
-    verbose = false,
-    vstr = "",
-  ) {
-    //Function to output single samples from semi-random series of booleans
-    // First, check shield arr_log
-    var baselength = orderbase[choice].length;
-    var arr_length = arr_log[choice].length;
-    var arr_next = arr_length;
-    // Multiples of shield appearances have shield availability sampled from uniform random
-    if (arr_length / baselength == Math.round(arr_length / baselength)) {
-      var arr_order = shuffleArray(orderbase[choice]);
-      for (var ii = 0; ii < arr_order.length; ii++) {
-        arr_read[choice].push(arr_order[ii]);
-      }
-    }
-    arr_success = Boolean(arr_read[choice][arr_next]);
-    if (verbose) {
-      // console.log(vstr + ' array read: ' + String(arr_read[0]) + '; ' + String(arr_read[1]))
-      // console.log(vstr + ' array log (before event): ' + String(arr_log[0]) + '; ' + String(arr_log[1]))
-    }
-
-    // Update log
-    arr_log[choice].push(Number(arr_success));
-    if (verbose) {
-      // console.log(vstr + ' array log (after event): ' + String(arr_log[0]) + '; ' + String(arr_log[1]))
-    }
-    //Return arguments
-    return [arr_success, arr_log, arr_read];
-  }
-
-  // initialise variables for balanced probability arrays
-  function initProbArray(probSuccess) {
-    var numOptions = 3; //determines number of planets 3 = 3 planets
-    var orderbase = [];
-    var arr_log = [];
-    var arr_read = [];
-    for (var i = 0; i < numOptions; i++) {
-      orderbase.push(genOrderBase(probSuccess[i]));
-      arr_log.push([]);
-      arr_read.push([]);
-    }
-    return [orderbase, arr_log, arr_read];
-  }
-
   // indexOf that returns all matches
   function indexOfAll(array, searchItem) {
     var i = array.indexOf(searchItem),
@@ -1713,7 +1656,8 @@ jsPsych.plugins["planet-response-command"] = (function () {
     return indices;
   }
 
-  function shuffleArray(array) {
+  function shuffleArrayCopy(array) {
+    array = [...array];
     let curId = array.length;
     // There remain elements to shuffle
     while (0 !== curId) {
