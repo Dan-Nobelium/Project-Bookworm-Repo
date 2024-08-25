@@ -342,6 +342,10 @@ jsPsych.plugins["planet-response-command"] = (function () {
             opacity: 1;
         }
     }
+    #game-container {
+        width: 1920px;
+        height: 1200px;
+    }
 `;
 
   // Create a style element and append the CSS string to it
@@ -349,6 +353,18 @@ jsPsych.plugins["planet-response-command"] = (function () {
   styleElement.type = "text/css";
   styleElement.innerHTML = cssString;
   document.head.appendChild(styleElement);
+
+  function scale_game_container() {
+    let game_container = document.querySelector("#game-container");
+    let width = document.body.clientWidth;
+    let height = document.body.clientHeight;
+    console.log("sgc", width, height);
+    let scale = Math.min(width / 1920, height / 1200) * .95;
+    scale = Math.min(scale, 1);
+    // game_container.style.transform = `scale(${scale})`;
+    game_container.style.width = `${scale * 1920}px`;
+    game_container.style.height = `${scale * 1200}px`;
+  }
 
   plugin.trial = function (display_element, trial) {
     var html = "";
@@ -444,7 +460,7 @@ jsPsych.plugins["planet-response-command"] = (function () {
     var gameContainer = display_element.querySelector("#game-container");
     gameContainer.style.display = "grid";
     gameContainer.style.gridTemplateColumns = "5fr 1fr"; // Allocate 2/3 width to planet row and 1/3 to command info
-    gameContainer.style.gridGap = "400px";
+    //gameContainer.style.gridGap = "400px";
 
     // Position planets and command info elements in the grid
     var planetsDiv = display_element.querySelector("#planet-row");
@@ -471,6 +487,9 @@ jsPsych.plugins["planet-response-command"] = (function () {
       // planetDiv.appendChild(selectionRing);
       planetDiv.appendChild(planetName);
     });
+
+    console.log('test');
+    scale_game_container();
 
     // Update ship creation to include ship image and shield elements within the ship placeholder
     var shipPlaceholder = display_element.querySelector("#ship-placeholder");
