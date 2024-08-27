@@ -746,7 +746,7 @@ var cont_catch = {
       <div style="display: flex; flex-direction: column;">
         <div style="display: grid; grid-template-columns: 1fr; grid-gap: 20px;">
           <div style="display: flex; flex-direction: column; align-items: center;">
-            <p>Your signals to the left planet have been attracting neutral ships.</p>
+            <p>Your signals to the <strong>left planet</strong> have been attracting <strong>neutral ships</strong>.</p>
             <div style="display: flex; flex-direction: row; align-items: center;">
               <img src="${stim_list[0]}" style="width: 100px; height: 100px; object-fit: contain; margin-right: 10px;">
               <p>Planet A:</p>
@@ -757,7 +757,7 @@ var cont_catch = {
             </div>
           </div>
           <div style="display: flex; flex-direction: column; align-items: center;">
-            <p>Your signals to the middle planet have been attracting pirate ships, that have been stealing <b>lots of</b> your points!</p>
+            <p>Your signals to the <strong>middle planet</strong> have been attracting <strong>pirate ships</strong>, that have been stealing <strong>lots of your points!</strong></p>
             <div style="display: flex; flex-direction: row; align-items: center;">
               <img src="${stim_list[1]}" style="width: 100px; height: 100px; object-fit: contain; margin-right: 10px;">
               <p>Planet B:</p>
@@ -768,7 +768,7 @@ var cont_catch = {
             </div>
           </div>
           <div style="display: flex; flex-direction: column; align-items: center;">
-            <p>Your signals to the right planet have been attracting pirate ships, that have been stealing <b>some of</b> of your points!</p>
+            <p>Your signals to the <strong>right planet</strong> have been attracting <strong>pirate ships</strong>, that have been stealing <strong>some of your points!</strong></p>
             <div style="display: flex; flex-direction: row; align-items: center;">
               <img src="${stim_list[2]}" style="width: 100px; height: 100px; object-fit: contain; margin-right: 10px;">
               <p>Planet C:</p>
