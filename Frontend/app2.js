@@ -749,7 +749,7 @@ var cont_catch = {
             <p>Your signals to the <strong>left planet</strong> have been attracting <strong>neutral ships</strong>.</p>
             <div style="display: flex; flex-direction: row; align-items: center;">
               <img src="${stim_list[0]}" style="width: 100px; height: 100px; object-fit: contain; margin-right: 10px;">
-              <p>Planet A:</p>
+              <p>Planet A<br>(left):</p>
               <img src="./assets/arrow.jpg" style="width: 100px; height: 100px; object-fit: contain; margin-right: 10px;">
               <img src="${ship_list[0]}" style="width: 100px; height: 100px; object-fit: contain; margin-right: 10px;">
               <img src="./assets/arrow.jpg" style="width: 100px; height: 100px; object-fit: contain; margin-right: 10px; visibility: hidden;">
@@ -760,7 +760,7 @@ var cont_catch = {
             <p>Your signals to the <strong>middle planet</strong> have been attracting <strong>pirate ships</strong>, that have been stealing <strong>lots of your points!</strong></p>
             <div style="display: flex; flex-direction: row; align-items: center;">
               <img src="${stim_list[1]}" style="width: 100px; height: 100px; object-fit: contain; margin-right: 10px;">
-              <p>Planet B:</p>
+              <p>Planet B<br>(middle):</p>
               <img src="./assets/arrow.jpg" style="width: 100px; height: 100px; object-fit: contain; margin-right: 10px;">
               <img src="${ship_list[1]}" style="width: 100px; height: 100px; object-fit: contain; margin-right: 10px;">
               <img src="./assets/arrow.jpg" style="width: 100px; height: 100px; object-fit: contain; margin-right: 10px;">
@@ -771,7 +771,7 @@ var cont_catch = {
             <p>Your signals to the <strong>right planet</strong> have been attracting <strong>pirate ships</strong>, that have been stealing <strong>some of your points!</strong></p>
             <div style="display: flex; flex-direction: row; align-items: center;">
               <img src="${stim_list[2]}" style="width: 100px; height: 100px; object-fit: contain; margin-right: 10px;">
-              <p>Planet C:</p>
+              <p>Planet C<br>(right):</p>
               <img src="./assets/arrow.jpg" style="width: 100px; height: 100px; object-fit: contain; margin-right: 10px;">
               <img src="${ship_list[2]}" style="width: 100px; height: 100px; object-fit: contain; margin-right: 10px;">
               <img src="./assets/arrow.jpg" style="width: 100px; height: 100px; object-fit: contain; margin-right: 10px;">
