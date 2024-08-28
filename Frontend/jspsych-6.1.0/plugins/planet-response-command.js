@@ -373,8 +373,8 @@ jsPsych.plugins["planet-response-command"] = (function() {
         html +=
           '<div class="clickid planet-score-box" id="planet-score-box-' +
           i +
-          '"></div> ';
-        html += '<div class="planet-wrapper" style="position: relative">';
+          '"></div><style>.planet-score-box img {width: 100%;}</style>';
+        html += '<div class="planet-wrapper" style="position: relative; padding: 4px;">';
         //Write img tag
         html +=
           '<img class="planet-img clickid" src="' +
@@ -388,6 +388,7 @@ jsPsych.plugins["planet-response-command"] = (function() {
         html += "z-index: 20;";
         html += "position: relative;";
         html += "display: block;";
+        html += "width: 100%;";
         if (trial.stimulus_height !== null) {
           html += "height:" + trial.stimulus_height + "px; ";
           if (trial.stimulus_width == null && trial.maintain_aspect_ratio) {
@@ -447,8 +448,8 @@ jsPsych.plugins["planet-response-command"] = (function() {
 
     // Position planets and command info elements in the grid
     var planetsDiv = display_element.querySelector("#planet-row");
-    planetsDiv.style.display = "flex";
-    planetsDiv.style.justifyContent = "space-between";
+    planetsDiv.style.display = "grid";
+    planetsDiv.style.gridTemplateColumns = "1fr 1fr 1fr";
     planetsDiv.style.gap = "1rem";
     planetsDiv.style.paddingInline = "1rem";
 
@@ -596,7 +597,6 @@ jsPsych.plugins["planet-response-command"] = (function() {
       elementbx.style.fontSize = "25px";
       elementbx.style.height = "50px";
       elementbx.style.padding = "20px 0px";
-      elementbx.style.width = planetRect.width + "px";
 
       //Implement selectring positioning
       var planetRect = element.getBoundingClientRect(); //fetch this a second time because the planet-score-box can mess with coordinates
@@ -604,11 +604,10 @@ jsPsych.plugins["planet-response-command"] = (function() {
       selectring.src = trial.stimulus_select;
       selectring.style.visibility = "hidden";
       selectring.style.position = "absolute";
-      selectring.style.top = "-5px";
-      selectring.style.left = "-5px";
-      selectring.style.width = planetRect.width + 10 + "px";
-      selectring.style.height = planetRect.height + 10 + "px";
+      selectring.style.top = "0";
+      selectring.style.left = "0";
       selectring.style.zIndex = "0";
+      selectring.style.width = "100%";
     }
 
     // function to handle procedure following a valid planet-choice response
