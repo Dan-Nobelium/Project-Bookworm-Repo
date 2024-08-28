@@ -7,7 +7,7 @@
  *
  **/
 
-jsPsych.plugins["planet-response-command"] = (function () {
+jsPsych.plugins["planet-response-command"] = (function() {
   var plugin = {};
   jsPsych.pluginAPI.registerPreload("planet-response", "stimulus", "image");
   plugin.info = {
@@ -350,9 +350,10 @@ jsPsych.plugins["planet-response-command"] = (function () {
   styleElement.innerHTML = cssString;
   document.head.appendChild(styleElement);
 
-  plugin.trial = function (display_element, trial) {
+  plugin.trial = function(display_element, trial) {
     var html = "";
     html += '<div id="game-container">';
+    html += '<div><div class="clickid" id="total-score-box"></div>';
     html += '<div id="planet-row">';
 
     var display_wrapper = document.getElementsByClassName(
@@ -427,13 +428,10 @@ jsPsych.plugins["planet-response-command"] = (function () {
       }
     }
 
-    html += "</div>";
+    html += "</div></div>";
     html += '<div id="command-info">';
-    html += '<div class="clickid" id="total-score-box"></div>';
-    html += '<div id="ship-placeholder" style="height: 380px"></div>';
-    html += '<div id="shield-placeholder" style="height: 92px"></div>';
-    html +=
-      '<div id="ship-outcome-text" class="ship-outcome" style="display: none; opacity: 0;"></div>';
+    html += '<div id="ship-placeholder" style="height: 380px; width: 100%;"></div>';
+    html += '<div id="shield-placeholder" style="height: 92px; width: 100%;"></div>';
     html += "</div>";
     html += "</div>";
 
@@ -443,27 +441,26 @@ jsPsych.plugins["planet-response-command"] = (function () {
     // Apply CSS grid to the game container
     var gameContainer = display_element.querySelector("#game-container");
     gameContainer.style.display = "grid";
-    gameContainer.style.gridTemplateColumns = "5fr 1fr"; // Allocate 2/3 width to planet row and 1/3 to command info
-    gameContainer.style.gridGap = "400px";
+    gameContainer.style.gridTemplateColumns = "2fr 1fr"; // Allocate 2/3 width to planet row and 1/3 to command info
+    gameContainer.style.maxWidth = "1500px";
+    gameContainer.style.marginInline = "auto";
 
     // Position planets and command info elements in the grid
     var planetsDiv = display_element.querySelector("#planet-row");
     planetsDiv.style.display = "flex";
     planetsDiv.style.justifyContent = "space-between";
-    planetsDiv.style.alignItems = "left";
+    planetsDiv.style.gap = "1rem";
+    planetsDiv.style.paddingInline = "1rem";
 
     var commandInfo = display_element.querySelector("#command-info");
-
-    commandInfo.style.display = "flex";
-    commandInfo.style.flexDirection = "column";
-    commandInfo.style.justifyContent = "space-between";
-    commandInfo.style.alignItems = "right";
-    commandInfo.style.borderLeft = "6px solid grey";
-    commandInfo.style.paddingLeft = "60px";
+    commandInfo.style.display = "grid";
+    commandInfo.style.justifyItems = "center";
+    commandInfo.style.border = "2rem solid grey";
+    commandInfo.style.borderRadius = "8px";
 
     // Update planet creation to include planet name within the planet element
     var planetDivs = display_element.querySelectorAll(".planet-div");
-    planetDivs.forEach(function (planetDiv, i) {
+    planetDivs.forEach(function(planetDiv, i) {
       // var planetImg = planetDiv.querySelector('.planet-img');
       // var selectionRing = planetDiv.querySelector('.planet-select');
       var planetName = planetDiv.querySelector(".planet-prompt");
@@ -480,9 +477,6 @@ jsPsych.plugins["planet-response-command"] = (function () {
       "height: " +
       trial.ship_height +
       "px ;" +
-      "width: " +
-      trial.ship_width +
-      'px;" ' +
       'draggable="false" ' +
       "> " +
       '<img src="' +
@@ -593,7 +587,7 @@ jsPsych.plugins["planet-response-command"] = (function () {
       element.addEventListener("mouseover", planet_mOver);
       element.addEventListener("mouseout", planet_mOut);
       //Disable selection of images
-      element.addEventListener("click", function (e) {});
+      element.addEventListener("click", function(e) { });
 
       //Also fix width of scorebox
       var planetRect = element.getBoundingClientRect();
@@ -785,7 +779,7 @@ jsPsych.plugins["planet-response-command"] = (function () {
       // Skip ship-related code if show_ship is false
       if (!trial.show_ship) {
         // Wait before showing outcome
-        setTimeout(function () {
+        setTimeout(function() {
           //Compute total points
           trial.data.points += displayScore;
           //Hide signal image
@@ -810,7 +804,7 @@ jsPsych.plugins["planet-response-command"] = (function () {
           console.log("Total points:", trial.data.points);
 
           //reset planets after short delay
-          setTimeout(function () {
+          setTimeout(function() {
             reset_planet(planet, choice);
           }, trial.feedback_duration);
         }, trial.signal_time);
@@ -843,7 +837,7 @@ jsPsych.plugins["planet-response-command"] = (function () {
 
       // Start timer for ship
       if (show_ship_check) {
-        setTimeout(function () {
+        setTimeout(function() {
           if (!shipVisible) {
             show_ship(choice);
           }
@@ -851,7 +845,7 @@ jsPsych.plugins["planet-response-command"] = (function () {
       }
 
       // Wait before showing outcome
-      setTimeout(function () {
+      setTimeout(function() {
         //Compute total points
         trial.data.points += displayScore;
         //Hide signal image
@@ -876,7 +870,7 @@ jsPsych.plugins["planet-response-command"] = (function () {
         console.log("Total points:", trial.data.points);
 
         //reset planets after short delay
-        setTimeout(function () {
+        setTimeout(function() {
           reset_planet(planet, choice);
         }, trial.feedback_duration); //trial.reset_planet_wait
       }, trial.signal_time);
@@ -1051,7 +1045,7 @@ jsPsych.plugins["planet-response-command"] = (function () {
       updateShieldUI(shield_success);
 
       // Start timer for ship to attack and timeout
-      setTimeout(function () {
+      setTimeout(function() {
         ship_attack(choice);
       }, trial.ship_attack_time);
 
@@ -1166,18 +1160,6 @@ jsPsych.plugins["planet-response-command"] = (function () {
 
         console.log("Updating ship status");
         updateStatus("ship", statusmsg, statusclr);
-
-        // Get the existing ship outcome div
-        var shipOutcomeDiv =
-          display_element.querySelector("#ship-outcome-text");
-        console.log("Ship outcome div:", shipOutcomeDiv);
-
-        // Update the content and styling of the ship outcome div
-        console.log("Updating ship outcome div content");
-        //   shipOutcomeDiv.innerHTML = statusmsg;
-        //   shipOutcomeDiv.style.color = statusclr;
-        //   shipOutcomeDiv.style.display = 'block';
-        //   shipOutcomeDiv.style.visibility = 'visible';
       }
 
       // Log details
@@ -1204,7 +1186,7 @@ jsPsych.plugins["planet-response-command"] = (function () {
       }
 
       // Reset ship
-      setTimeout(function () {
+      setTimeout(function() {
         reset_ship();
         // Hide the ship outcome div when resetting the ship
         //   shipOutcomeDiv.style.visibility = 'hidden';
@@ -1216,7 +1198,7 @@ jsPsych.plugins["planet-response-command"] = (function () {
 
     // function to end trial when it is time
     function end_trial() {
-      setTimeout(function () {
+      setTimeout(function() {
         // kill any remaining setTimeout handlers
         jsPsych.pluginAPI.clearAllTimeouts();
 
@@ -1242,6 +1224,7 @@ jsPsych.plugins["planet-response-command"] = (function () {
           vpHeight =
             win.innerHeight || docElem.clientHeight || body.clientHeight;
         //Get location of main div
+        body.style.background = "black";
         var dpRect = display_element.getBoundingClientRect(),
           dpx = dpRect.left,
           dpy = dpRect.top;
@@ -1356,7 +1339,7 @@ jsPsych.plugins["planet-response-command"] = (function () {
     }
     function logIDonMouseDown(element) {
       // Log id on mousedown
-      element.addEventListener("mousedown", function (e) {
+      element.addEventListener("mousedown", function(e) {
         console.log(e.currentTarget.id);
         //Only log element if not hidden
         if (e.currentTarget.style.visibility == "hidden") {
@@ -1405,21 +1388,21 @@ jsPsych.plugins["planet-response-command"] = (function () {
     ) {
       // General function to add conditional mouseclicks to an element
       // Also do one for mousedown events
-      element.addEventListener("mousedown", function (e) {
+      element.addEventListener("mousedown", function(e) {
         var condition = eval(conditionStr);
         if (condition) {
           var ct = e.currentTarget;
           replaceStyle(element, styleChanges);
         }
       });
-      element.addEventListener("mouseleave", function (e) {
+      element.addEventListener("mouseleave", function(e) {
         var condition = true; //eval(conditionStr)
         if (condition) {
           var ct = e.currentTarget;
           replaceStyle(element, styleDef);
         }
       });
-      element.addEventListener("mouseup", function (e) {
+      element.addEventListener("mouseup", function(e) {
         var condition = true;
         if (condition) {
           var ct = e.currentTarget;
@@ -1431,7 +1414,7 @@ jsPsych.plugins["planet-response-command"] = (function () {
       } else {
         var eventStr = "click";
       }
-      element.addEventListener(eventStr, function (e) {
+      element.addEventListener(eventStr, function(e) {
         var condition = eval(conditionStr); //eval is necessary for the condition to be checked only when event is triggered
         if (condition) {
           var ct = e.currentTarget;
@@ -1560,13 +1543,13 @@ jsPsych.plugins["planet-response-command"] = (function () {
       }
       console.log(
         "ct " +
-          checkTime +
-          " cp " +
-          checkPlanet +
-          " cs " +
-          checkShip +
-          " fa " +
-          final_action,
+        checkTime +
+        " cp " +
+        checkPlanet +
+        " cs " +
+        checkShip +
+        " fa " +
+        final_action,
       );
 
       //Flag final action for next check
@@ -1575,7 +1558,7 @@ jsPsych.plugins["planet-response-command"] = (function () {
     }
     function timer_end(duration) {
       //Timer to end trial after block_duration
-      setTimeout(function () {
+      setTimeout(function() {
         //Check if can end block
         if (check_end()) {
           end_trial();
@@ -1598,7 +1581,7 @@ jsPsych.plugins["planet-response-command"] = (function () {
   }
 
   //function genOrderBase(probSuccess,maxlength=10){
-  window.genOrderBase = function (probSuccess, maxlength = 10) {
+  window.genOrderBase = function(probSuccess, maxlength = 10) {
     //Function to generate a finite array of 1 (success) and (0) fails that closely approximates (if not exact) to some probability.
     // So if probSuccess is .5, this should return [0,1].
     // For a given max array length, generate all floating point numbers for all possible proportions
