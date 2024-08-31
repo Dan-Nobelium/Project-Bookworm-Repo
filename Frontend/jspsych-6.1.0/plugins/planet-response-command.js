@@ -496,8 +496,9 @@ jsPsych.plugins["planet-response-command"] = (function() {
       "> " +
       "</div>" +
       '<div class="ship" id="ship-attack-text"></div>' +
-      '<div class="ship" id="ship-status-image" style="overflow: visible; height: 64px; position: relative"></div>' +
-      '<div class="ship" id="ship-status-text" style="width: 100%; height: 40px; display: flex; flex-direction: column; align-items: center; justify-content: space-evenly"></div>';
+      '<div class="ship" id="ship-status-image" style="overflow: visible; height: 64px; position: relative; top: 28px;"></div>' +
+      '<div class="ship" id="ship-status-text" style="width: 100%; height: 40px; display: flex; flex-direction: column; align-items: center; justify-content: space-evenly; position: relative; top: 28px;"></div>';
+      
 
     const ship_attack_image_divs = [null,null,null,null,null];
     let index = 0;
@@ -507,16 +508,16 @@ jsPsych.plugins["planet-response-command"] = (function() {
       ship_attack_image_divs[index].style.position = "absolute";
       ship_attack_image_divs[index].style.display = "flex";
       ship_attack_image_divs[index].style.width = "100%";
-      ship_attack_image_divs[index].style.height = "120px";
+      ship_attack_image_divs[index].style.height = "40px";
       ship_attack_image_divs[index].style.justifyContent = "center";
-      ship_attack_image_divs[index].style.alignItems = "center";
+      ship_attack_image_divs[index].style.alignItems = "centre";
       ship_attack_image_divs[index].style.top = "0";
       ship_attack_image_divs[index].style.left = "0";
       ship_attack_image_divs[index].style.opacity = "0";
+      ship_attack_image_divs[index].style.overflow = "visible";
       document.querySelector("#ship-status-image").appendChild(ship_attack_image_divs[index]);
       index += 1;
     }   
-    
     const outcome_1_unshielded = ship_attack_image_divs[0];
     const outcome_2_unshielded = ship_attack_image_divs[1];
     const outcome_3_unshielded = ship_attack_image_divs[2];
@@ -1185,6 +1186,7 @@ jsPsych.plugins["planet-response-command"] = (function() {
           }
           console.log("Status message:", statusmsg);
           console.log("Status color:", statusclr);
+          document.querySelector("#ship-status-image").style.visibility = "visible";
         }
 
         console.log("Updating ship status");
