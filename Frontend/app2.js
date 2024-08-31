@@ -67,7 +67,7 @@ ship_attack_damage = jsPsych.randomization.shuffle(ship_attack_damage); //random
 //const show_whether_shield_blocked_attack_or_bonus = false;
 const show_whether_shield_blocked_attack_or_bonus = true; // for testing
 //const block_duration = 180 * 1000; // in milliseconds (3 mins) // sets the length of planet-response trials.
-const block_duration = 90 * 1000; // shorter duration for testing
+const block_duration = Infinity; // shorter duration for testing
 var probability_ship = [[1], [1], [1]]; //how likely is there to be a ship for each planet, [1,1,1] means 100% of clicks will result in a ship.
 
 // Global Variables Definition
@@ -191,12 +191,12 @@ let planet_noship = {
     phase: "phase1",
     block_type: "planet_noship",
   },
-  on_start: function (trial) {
+  on_start: function(trial) {
     trial.data.points = points;
     trial.data.block_number = block_number;
     trial.data.trial_number = trial_number;
   },
-  on_finish: function (data) {
+  on_finish: function(data) {
     points = data.points_total;
     trial_number = data.trial_number;
     trial_number++;
@@ -376,12 +376,12 @@ let planet_ship = {
     phase: "phase2",
     block_type: "planet_ship",
   },
-  on_start: function (trial) {
+  on_start: function(trial) {
     trial.data.points = points;
     trial.data.block_number = block_number;
     trial.data.trial_number = trial_number;
   },
-  on_finish: function (data) {
+  on_finish: function(data) {
     points = data.points_total;
     trial_number = data.trial_number;
     trial_number++;
@@ -823,7 +823,7 @@ var cont_catch = {
   allow_keys: false,
 
   // Custom callback function that is called when the trial finishes
-  on_finish: function (data) {
+  on_finish: function(data) {
     data.contingencies_correct = data.contingencies_correct;
     data.responses = JSON.stringify(data.responses);
   },
@@ -834,7 +834,7 @@ var cont_catch = {
   },
 
   // Custom callback function that is called when the trial loads
-  on_load: function () {
+  on_load: function() {
     // Add custom CSS for styling
     var style = document.createElement("style");
     style.innerHTML = `
@@ -1023,7 +1023,7 @@ var cfi_block = {
   data: {
     phase: "ques_cfi",
   },
-  on_finish: function (data) {
+  on_finish: function(data) {
     console.log(data.responses); //can delete afterwards
     var obj_cfi = JSON.parse(data.responses);
     console.log(obj_cfi); //can delete afterwards
@@ -1147,7 +1147,7 @@ var audit_block = {
   data: {
     phase: "ques_audit",
   },
-  on_finish: function (data) {
+  on_finish: function(data) {
     console.log(data.responses); //can delete afterwards
     var obj_audit = JSON.parse(data.responses);
     console.log(obj_audit); //can delete afterwards
@@ -1261,7 +1261,7 @@ addBlocksToTimeline(timeline, planet_ship, nBlocks_p2, nTrialspBlk);
   jsPsych.init({
     timeline: timeline,
     preload_images: images,
-    on_finish: function () {
+    on_finish: function() {
       jsPsych.data.displayData();
     },
   });
