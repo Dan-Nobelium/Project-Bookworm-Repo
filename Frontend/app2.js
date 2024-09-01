@@ -7,6 +7,11 @@
   global variables, and the images list.  */
 // Text/string based variables are imported through text.js via the global scope.
 
+
+
+
+
+
 // Participant Sample Selection
 let groups = ["early_0.1", "early_0.4", "late_0.1", "late_0.4"];
 let group = jsPsych.randomization.sampleWithReplacement(groups, 1);
@@ -15,7 +20,7 @@ let sample = samples[0];
 
 // Stimulus and image Initialization
 // Ship and stim lists in original order
-const stim_list_original = [
+const planet_list_original = [
   "./assets/planet_p.png",
   "./assets/planet_o.png",
   "./assets/planet_b.png",
@@ -25,9 +30,9 @@ const ship_list_original = [
   "./assets/ship2.png",
   "./assets/ship3.png",
 ];
-// Ship and stim lists in randomised order
-const stim_list = jsPsych.randomization.repeat(stim_list_original, 1);
-const ship_list = jsPsych.randomization.repeat(ship_list_original, 1);
+
+
+
 
 const stim_selector_highlight = "./assets/selectring.png";
 const images = [
@@ -55,23 +60,56 @@ const planetColors = {
   "./assets/planet_b.png": "blue",
 };
 
-// Independent Variables Definition
-const trade_outcomes = [[1,0],[2,1],[1]];
-const shield_outcomes = [[5,2],[9,2],[1,5]];
-const ship_outcomes = [null,null,null];
-const probability_trade = [[0.5], [0.5], [0.5]];
-const probability_shield = [[0.5], [0.5], [0.5]];
-let ship_attack_damage = [
-  [-100, "percent"],
-  [-50, "points"],
-  [20, "points"],
-]; // A negative number represents a bonus.
-ship_attack_damage = jsPsych.randomization.shuffle(ship_attack_damage); //randomises the order of the ship damage array (ship_attack_damage)
-//const show_whether_shield_blocked_attack_or_bonus = false;
+// Planet and ship images in randomised order
+const planet_list = jsPsych.randomization.repeat(planet_list_original, 1);
+const ship_list = jsPsych.randomization.repeat(ship_list_original, 1);
+
+const indexed_constants = jsPsych.randomization.shuffle([
+  {
+    contingency_label: "neutral",
+    trade_outcome_set: [1,1,1,1,0,0,0,0],
+    probability_trade: 0.5, // used only if trade_outcome_set is null
+    ship_emergence_set: [1,1,0,0,0],
+    probability_ship: 0.4, // used only if ship_outcome_set is null
+    ship_attack_effect: [0, "points"],
+    attack_img: null,
+    attack_blocked_img: null,
+    probability_shield: 0.5,
+    shield_available_set: null  // used only if probability_shield is null
+  },
+  {
+    contingency_label: "mild",
+    trade_outcome_set: null,
+    probability_trade: 0.5, // used only if trade_outcome_set is null
+    ship_emergence_set: null,
+    probability_ship: 0.1, // used only if ship_outcome_set is null
+    ship_attack_effect: [-200, "points"],
+    attack_img: "./assets/attack_text_orange.png",
+    attack_blocked_img: "./assets/shield_deflected_attack.png",
+    probability_shield: 0.5,
+    shield_available_set: null  // used only if probability_shield is null
+  },
+  {
+    contingency_label: "strong",
+    trade_outcome_set: null,
+    probability_trade: 0.5, // used only if trade_outcome_set is null
+    ship_emergence_set: [1,0,0,0,0,0,0,0,0],
+    probability_ship: 0.1, // used only if ship_outcome_set is null
+    ship_attack_effect: [-20, "percent"],
+    attack_img: "./assets/attack_text_red.png",
+    attack_blocked_img: "./assets/shield_deflected_attack.png",
+    probability_shield: 0.5,
+    shield_available_set: null  // used only if probability_shield is null
+  }
+]);
+
+function get_indexed_constant_array(property_name) {
+  return [indexed_constants[0][property_name], indexed_constants[1][property_name], indexed_constants[2][property_name]];
+}
+
 const show_whether_shield_blocked_attack_or_bonus = true; // for testing
 //const block_duration = 180 * 1000; // in milliseconds (3 mins) // sets the length of planet-response trials.
 const block_duration = 80 * 1000; // shorter duration for testing
-var probability_ship = [[1], [1], [1]]; //how likely is there to be a ship for each planet, [1,1,1] means 100% of clicks will result in a ship.
 
 // Global Variables Definition
 let block_number = 0;
@@ -163,15 +201,12 @@ let planet_noship = {
   type: "planet-response-command",
   show_ship: false,
   prompt: planet_labels,
-  stimulus: stim_list,
+  stimulus: planet_list,
   stimulus_select: stim_selector_highlight,
   ship_stimulus: ship_list,
   reset_planet_wait: reset_planet_wait_const,
   shield_charging_time: shield_charging_time_const,
   ship_attack_time: ship_attack_time_const,
-  ship_attack_damage: ship_attack_damage,
-  show_whether_shield_blocked_attack_or_bonus:
-    show_whether_shield_blocked_attack_or_bonus,
   block_duration: block_duration,
   data: {
     phase: "phase1",
@@ -238,9 +273,9 @@ const valence_p1 = {
   prompt: valence_q,
   stimuli_and_text: [
     ["./assets/win100.png", "Winning $100"],
-    [stim_list[0], "Planet A (left)"],
-    [stim_list[1], "Planet B (middle)"],
-    [stim_list[2], "Planet C (right)"],
+    [ship_list[0], "Planet A (left)"],
+    [ship_list[1], "Planet B (middle)"],
+    [ship_list[2], "Planet C (right)"],
   ],
   labels: valence_labels,
   button_label: "Continue",
@@ -258,7 +293,7 @@ let blockNumber = 1;
 //p1 (planet A)
 var infer_p1_A = {
   type: "inference-check",
-  main_stimulus: stim_list[0],
+  main_stimulus: ship_list[0],
   main_stimulus_height: main_stim_height,
   prompt: inference_prompt[0],
   stimuli_and_text: [
@@ -278,7 +313,7 @@ var infer_p1_A = {
 // inference check p1 (planet B)
 var infer_p1_B = {
   type: "inference-check",
-  main_stimulus: stim_list[1],
+  main_stimulus: ship_list[1],
   main_stimulus_height: main_stim_height,
   prompt: inference_prompt[1],
   stimuli_and_text: [
@@ -298,7 +333,7 @@ var infer_p1_B = {
 // inference check p1 (planet C)
 var infer_p1_C = {
   type: "inference-check",
-  main_stimulus: stim_list[2],
+  main_stimulus: ship_list[2],
   main_stimulus_height: main_stim_height,
   prompt: inference_prompt[2],
   stimuli_and_text: [
@@ -339,27 +374,24 @@ let planet_ship = {
   type: "planet-response-command",
   show_ship: true,
   prompt: planet_labels,
-  stimulus: stim_list,
+  stimulus: planet_list,
   stimulus_select: stim_selector_highlight,
   ship_stimulus: ship_list,
   reset_planet_wait: reset_planet_wait_const,
   shield_charging_time: shield_charging_time_const,
   ship_attack_time: ship_attack_time_const,
-  ship_attack_damage: ship_attack_damage,
+  ship_attack_effect: get_indexed_constant_array('ship_attack_effect'),
   show_whether_shield_blocked_attack_or_bonus:
     show_whether_shield_blocked_attack_or_bonus,
   block_duration: block_duration,
-  probability_trade: probability_trade,
-  probability_ship: probability_ship,
-  probability_shield: probability_shield,
-  trade_outcomes: trade_outcomes,
-  ship_outcomes: ship_outcomes,
-  shield_outcomes: shield_outcomes,
-  ship_outcome_1_unshielded: ship_outcome_1_unshielded,
-  ship_outcome_2_unshielded: ship_outcome_2_unshielded,
-  ship_outcome_3_unshielded: ship_outcome_3_unshielded,
-  ship_outcome_3_shielded: ship_outcome_3_shielded,
-  ship_outcome_3_shielded_alt: ship_outcome_3_shielded_alt,
+  probability_trade: get_indexed_constant_array('probability_trade'),
+  probability_ship: get_indexed_constant_array('probability_ship'),
+  probability_shield: get_indexed_constant_array('probability_shield'),
+  trade_outcomes: get_indexed_constant_array('trade_outcome_set'),
+  ship_outcomes: get_indexed_constant_array('ship_emergence_set'),
+  shield_outcomes: get_indexed_constant_array('shield_available_set'),
+  attack_images: get_indexed_constant_array('attack_img'),
+  attack_blocked_images: get_indexed_constant_array('attack_blocked_img'),
   win_100_text: win_100_text,
   data: {
     phase: "phase2",
@@ -405,15 +437,15 @@ const val_img_p2 = [
     text: "Losing $",
   },
   {
-    stimulus: stim_list[0],
+    stimulus: ship_list[0],
     text: "Planet A (left)",
   },
   {
-    stimulus: stim_list[1],
+    stimulus: ship_list[1],
     text: "Planet B (middle)",
   },
   {
-    stimulus: stim_list[2],
+    stimulus: ship_list[2],
     text: "Planet C (right)",
   },
   {
@@ -481,7 +513,7 @@ var valence_p2 = {
 
 var infer_p2_A = {
   type: "inference-check",
-  main_stimulus: stim_list[0],
+  main_stimulus: ship_list[0],
   main_stimulus_height: main_stim_height,
   prompt: inference_prompt[0],
   stimuli_and_text: [
@@ -504,7 +536,7 @@ var infer_p2_A = {
 };
 var infer_p2_B = {
   type: "inference-check",
-  main_stimulus: stim_list[1],
+  main_stimulus: ship_list[1],
   main_stimulus_height: main_stim_height,
   prompt: inference_prompt[1],
   stimuli_and_text: [
@@ -528,7 +560,7 @@ var infer_p2_B = {
 
 var infer_p2_C = {
   type: "inference-check",
-  main_stimulus: stim_list[2],
+  main_stimulus: ship_list[2],
   main_stimulus_height: main_stim_height,
   prompt: inference_prompt[2],
   stimuli_and_text: [
@@ -627,7 +659,7 @@ var p1_q3_triangle = {
   type: "html-slider-triangle",
   prompt:
     "Reflecting back on what you did in the <b>most recent block</b>, <p>what proportion of your recent interactions were with each planet:",
-  stimulus_all: stim_list,
+  stimulus_all: ship_list,
   planetColors: planetColors,
   stimulus_height: 250,
   slider_width: 900,
@@ -651,7 +683,7 @@ var p1_q4_triangle = {
   type: "html-slider-triangle",
   prompt:
     "To maximise your points in the <b>previous block</b>, <p>what proportion of interactions would you allocate for each planet?",
-  stimulus_all: stim_list,
+  stimulus_all: ship_list,
   planetColors: planetColors,
   stimulus_height: 250,
   slider_width: 900, // Increased width to accommodate more space for labels
@@ -675,9 +707,9 @@ var p2_q3_triangle = {
   type: "html-slider-triangle",
   prompt:
     "Reflecting back on what you did in the <b>most recent block</b>, <p>what proportion of your recent interactions were with each planet:",
-  stimulus_left: stim_list[0],
-  stimulus_right: stim_list[1],
-  stimulus_top: stim_list[2],
+  stimulus_left: ship_list[0],
+  stimulus_right: ship_list[1],
+  stimulus_top: ship_list[2],
   stimulus_height: 250,
   slider_width: 900, // Increased width to accommodate more space for labels
   labels: [
@@ -700,9 +732,9 @@ var p2_q4_triangle = {
   type: "html-slider-triangle",
   prompt:
     "To maximise your points in the <b>previous block</b>, <p>what proportion of interactions would you allocate for each planet?",
-  stimulus_left: stim_list[0],
-  stimulus_right: stim_list[1],
-  stimulus_top: stim_list[2],
+  stimulus_left: ship_list[0],
+  stimulus_right: ship_list[1],
+  stimulus_top: ship_list[2],
   stimulus_height: 250,
   slider_width: 900, // Increased width to accommodate more space for labels
   labels: [
@@ -737,7 +769,7 @@ var cont_catch = {
           <div style="display: flex; flex-direction: column; align-items: center;">
             <p>Your signals to the left planet have been attracting neutral ships.</p>
             <div style="display: flex; flex-direction: row; align-items: center;">
-              <img src="${stim_list[0]}" style="width: 100px; height: 100px; object-fit: contain; margin-right: 10px;">
+              <img src="${ship_list[0]}" style="width: 100px; height: 100px; object-fit: contain; margin-right: 10px;">
               <p>Planet A:</p>
               <img src="./assets/arrow.jpg" style="width: 100px; height: 100px; object-fit: contain; margin-right: 10px;">
               <img src="${ship_list[0]}" style="width: 100px; height: 100px; object-fit: contain; margin-right: 10px;">
@@ -748,7 +780,7 @@ var cont_catch = {
           <div style="display: flex; flex-direction: column; align-items: center;">
             <p>Your signals to the middle planet have been attracting pirate ships, that have been stealing <b>lots of</b> your points!</p>
             <div style="display: flex; flex-direction: row; align-items: center;">
-              <img src="${stim_list[1]}" style="width: 100px; height: 100px; object-fit: contain; margin-right: 10px;">
+              <img src="${ship_list[1]}" style="width: 100px; height: 100px; object-fit: contain; margin-right: 10px;">
               <p>Planet B:</p>
               <img src="./assets/arrow.jpg" style="width: 100px; height: 100px; object-fit: contain; margin-right: 10px;">
               <img src="${ship_list[1]}" style="width: 100px; height: 100px; object-fit: contain; margin-right: 10px;">
@@ -759,7 +791,7 @@ var cont_catch = {
           <div style="display: flex; flex-direction: column; align-items: center;">
             <p>Your signals to the right planet have been attracting pirate ships, that have been stealing <b>some of</b> of your points!</p>
             <div style="display: flex; flex-direction: row; align-items: center;">
-              <img src="${stim_list[2]}" style="width: 100px; height: 100px; object-fit: contain; margin-right: 10px;">
+              <img src="${ship_list[2]}" style="width: 100px; height: 100px; object-fit: contain; margin-right: 10px;">
               <p>Planet C:</p>
               <img src="./assets/arrow.jpg" style="width: 100px; height: 100px; object-fit: contain; margin-right: 10px;">
               <img src="${ship_list[2]}" style="width: 100px; height: 100px; object-fit: contain; margin-right: 10px;">
@@ -780,11 +812,11 @@ var cont_catch = {
     `Which planet leads to this attack?<br>${ship_outcome_2_unshielded}`,
     `Which ship leads to this attack?<br>${ship_outcome_2_unshielded}`,
   ],
-  planet_options: stim_list_original,
+  planet_options: ship_list_original,
   ship_option_1: ship_list_original[0],
   ship_option_2: ship_list_original[1],
   ship_option_3: ship_list_original[2],
-  correct_answers: [stim_list[1], ship_list[1], stim_list[2], ship_list[2]],
+  correct_answers: [ship_list[1], ship_list[1], ship_list[2], ship_list[2]],
 
   // HTML-formatted string representing the text for winning 100 points
   win_text: win_100_text,
@@ -1244,7 +1276,10 @@ timeline.push(cont_catch);
   jsPsych.data.addProperties({
     subject_id: subject_id,
     group: group,
-    sample: sample
+    sample: sample,
+    Planet_A_contingency: indexed_constants[0],
+    Planet_B_contingency: indexed_constants[1],
+    Planet_C_contingency: indexed_constants[2],
   });
 
   jsPsych.init({

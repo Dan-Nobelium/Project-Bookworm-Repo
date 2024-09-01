@@ -167,9 +167,9 @@ jsPsych.plugins["planet-response-command"] = (function () {
         default: 4000,
         description: "Duration between ship appearance and attack.",
       },
-      ship_attack_damage: {
+      ship_attack_effect: {
         type: jsPsych.plugins.parameterType.ARRAY,
-        pretty_name: "Ship damage",
+        pretty_name: "Ship attack effect (positive number for bonus, negative for damage)",
         array: true,
         default: [
           [0, "points"],
@@ -189,7 +189,7 @@ jsPsych.plugins["planet-response-command"] = (function () {
         type: jsPsych.plugins.parameterType.FLOAT,
         pretty_name: "Probability of shield",
         array: true,
-        default: [0.5, 0.5],
+        default: [0.5, 0.5, 0.5],
         description:
           "Probability of shield availability after charging for each ship.",
       },
@@ -1080,11 +1080,11 @@ jsPsych.plugins["planet-response-command"] = (function () {
       response.ships.shield_activated.push(shield_activated);
       console.log("Shield activated:", shield_activated);
 
-      console.log(trial.ship_attack_damage[choice]);
+      console.log(trial.ship_attack_effect[choice]);
 
-      // Calculate damage based on the attacking ship's index and the ship_attack_damage parameter
-      const damageValue = trial.ship_attack_damage[choice][0];
-      const damageType = trial.ship_attack_damage[choice][1];
+      // Calculate damage based on the attacking ship's index and the ship_attack_effect parameter
+      const damageValue = -trial.ship_attack_effect[choice][0];
+      const damageType = trial.ship_attack_effect[choice][1];
       const pointsLost =
         damageType == "percent"
           ? Math.round(trial.data.points * (damageValue / 100))
@@ -1261,7 +1261,7 @@ jsPsych.plugins["planet-response-command"] = (function () {
           probability_ship: trial.probability_ship,
           show_ship_delay: trial.show_ship_delay,
           ship_attack_time: trial.ship_attack_time,
-          ship_attack_damage: trial.ship_attack_damage,
+          ship_attack_effect: trial.ship_attack_effect,
           shield_charging_time: trial.shield_charging_time,
           shield_success: trial.shield_success,
           probability_shield: trial.probability_shield,
