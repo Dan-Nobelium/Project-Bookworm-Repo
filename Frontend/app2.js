@@ -67,9 +67,9 @@ const ship_list = jsPsych.randomization.repeat(ship_list_original, 1);
 const indexed_constants = jsPsych.randomization.shuffle([
   {
     contingency_label: "neutral",
-    trade_outcome_set: [1,1,1,1,0,0,0,0],
+    trade_outcome_set: [1,0],
     probability_trade: 0.5, // used only if trade_outcome_set is null
-    ship_emergence_set: [1,1,0,0,0],
+    ship_emergence_set: [1,1,1,0],
     probability_ship: 0.4, // used only if ship_outcome_set is null
     ship_attack_effect: [0, "points"],
     attack_img: null,
@@ -80,9 +80,9 @@ const indexed_constants = jsPsych.randomization.shuffle([
   {
     contingency_label: "mild",
     trade_outcome_set: null,
-    probability_trade: 0.5, // used only if trade_outcome_set is null
+    probability_trade: 0.9, // used only if trade_outcome_set is null
     ship_emergence_set: null,
-    probability_ship: 0.1, // used only if ship_outcome_set is null
+    probability_ship: 0.2, // used only if ship_outcome_set is null
     ship_attack_effect: [-200, "points"],
     attack_img: "./assets/attack_text_orange.png",
     attack_blocked_img: "./assets/shield_deflected_attack.png",
@@ -109,7 +109,7 @@ function get_indexed_constant_array(property_name) {
 
 const show_whether_shield_blocked_attack_or_bonus = true; // for testing
 //const block_duration = 180 * 1000; // in milliseconds (3 mins) // sets the length of planet-response trials.
-const block_duration = 80 * 1000; // shorter duration for testing
+const block_duration = Infinity; // shorter duration for testing
 
 // Global Variables Definition
 let block_number = 0;

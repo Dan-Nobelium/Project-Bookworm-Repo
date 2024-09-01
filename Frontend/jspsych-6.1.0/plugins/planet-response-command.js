@@ -844,6 +844,7 @@ jsPsych.plugins["planet-response-command"] = (function () {
       if (show_ship_check) {
         setTimeout(function () {
           if (!shipVisible) {
+            console.log('showing ship');
             show_ship(choice);
           }
         }, trial.show_ship_delay);
@@ -883,19 +884,24 @@ jsPsych.plugins["planet-response-command"] = (function () {
 
     // Function to update the state of the shield
     var shield_start_time = null;
-    var shield_success = Math.random() > trial.probability_shield[0]; // Initialize based on the first element of trial.probability_shield
+    var shield_success;
 
     function proceed_shield(choice) {
+      console.log('proceed_shield called', choice)
       if (trial.shield_outcomes[choice]) {
         if (shield_outcomes[choice].length == 0) {
           shield_outcomes[choice] = initialise_outcome_array(trial.shield_outcomes[choice]);
+          console.log('reinitialised shield outcomes:', shield_outcomes[choice]);
         }
+        console.log('shield outcomes: ', shield_outcomes[choice]);
         shield_success = shield_outcomes[choice].pop();
+        
       } else {
         // Run shield gamble
+        console.log('shield probability: ', trial.probability_shield[choice]);
         shield_success = Math.random() < trial.probability_shield[choice];
       }
-
+      console.log('shield_success', shield_success);
       // Update the shield UI based on shield availability
       updateShieldUI(shield_success);
 
@@ -1040,6 +1046,7 @@ jsPsych.plugins["planet-response-command"] = (function () {
       createShieldHTML();
 
       // Update the shield UI based on shield availability
+      proceed_shield(choice);
       updateShieldUI(shield_success);
 
       // Start timer for ship to attack and timeout
@@ -1237,7 +1244,6 @@ jsPsych.plugins["planet-response-command"] = (function () {
         var dpRect = display_element.getBoundingClientRect(),
           dpx = dpRect.left,
           dpy = dpRect.top;
-        proceed_shield;
         // gather the data to store for the trial
         var trial_data = {
           stimuli: { planets: trial.stimulus, ships: trial.ship_stimulus },
