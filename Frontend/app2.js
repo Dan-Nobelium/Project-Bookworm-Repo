@@ -23,7 +23,6 @@ let sample = samples[0];
 const planet_list_original = [
   "./assets/planet_p.png",
   "./assets/planet_o.png",
-  "./assets/planet_p.png",
   "./assets/planet_b.png",
 ];
 const ship_list_original = [
@@ -31,9 +30,6 @@ const ship_list_original = [
   "./assets/ship2.png",
   "./assets/ship3.png",
 ];
-
-
-
 
 const stim_selector_highlight = "./assets/selectring.png";
 const images = [
@@ -68,12 +64,13 @@ const ship_list = jsPsych.randomization.repeat(ship_list_original, 1);
 const indexed_constants = jsPsych.randomization.shuffle([
   {
     contingency_label: "neutral",
+    contingency_long: "<strong>neutral ships</strong>.",
     trade_outcome_set: [1,0],
     probability_trade: 0.5, // used only if trade_outcome_set is null
     ship_emergence_set: [1,1,1,0],
     probability_ship: 0.4, // used only if ship_outcome_set is null
     ship_attack_effect: [0, "points"],
-    attack_img: null,
+    attack_img_path: null,
     attack_text_colour: null,
     attack_blocked_img: null,
     probability_shield: 0.5,
@@ -81,12 +78,13 @@ const indexed_constants = jsPsych.randomization.shuffle([
   },
   {
     contingency_label: "mild",
+    contingency_long: "<strong>pirate ships</strong> that have been stealing <strong>some of your points!</strong>",
     trade_outcome_set: null,
     probability_trade: 0.9, // used only if trade_outcome_set is null
     ship_emergence_set: null,
     probability_ship: 0.2, // used only if ship_outcome_set is null
     ship_attack_effect: [-200, "points"],
-    attack_img: "<img src='./assets/attack_text_orange.png' height='31px'>",
+    attack_img_path: './assets/attack_text_orange.png', 
     attack_text_colour: 'darkorange',
     attack_blocked_img: "<img src='./assets/shield_deflected_attack.png' height='84px'>",
     probability_shield: 0.5,
@@ -94,12 +92,13 @@ const indexed_constants = jsPsych.randomization.shuffle([
   },
   {
     contingency_label: "strong",
+    contingency_long: "<strong>pirate ships</strong> that have been stealing <strong>lots of your points!</strong>",
     trade_outcome_set: null,
     probability_trade: 0.5, // used only if trade_outcome_set is null
     ship_emergence_set: [1,0,0,0,0,0,0,0,0],
     probability_ship: 0.1, // used only if ship_outcome_set is null
     ship_attack_effect: [-20, "percent"],
-    attack_img: "<img src='./assets/attack_text_red.png' height='31px'>",
+    attack_img_path: './assets/attack_text_red.png', 
     attack_text_colour: 'red',
     attack_blocked_img: "<img src='./assets/shield_deflected_attack.png' height='84px'>",
     probability_shield: 0.5,
@@ -107,13 +106,17 @@ const indexed_constants = jsPsych.randomization.shuffle([
   }
 ]);
 
+for (c of indexed_constants) {
+  c.attack_img = c.attack_img_path ? `<img src='${c.attack_img_path}' height='31px'>` : null;
+}
+
 function get_indexed_constant_array(property_name) {
   return [indexed_constants[0][property_name], indexed_constants[1][property_name], indexed_constants[2][property_name]];
 }
 
 const show_whether_shield_blocked_attack_or_bonus = true; // for testing
 //const block_duration = 180 * 1000; // in milliseconds (3 mins) // sets the length of planet-response trials.
-const block_duration = Infinity; // shorter duration for testing
+const block_duration = 30 * 1000; // shorter duration for testing
 
 // Global Variables Definition
 let block_number = 0;
@@ -136,16 +139,6 @@ let planet_labels = ["Planet A", "Planet B", "Planet C"];
 
 //ship attack variable labels
 const win_100_text = "<img src='./assets/win_100_text.png'>";
-const ship_outcome_1_unshielded =
-  "<img src='./assets/ship_outcome_1_unshielded.png' height='31px'>";
-const ship_outcome_2_unshielded =
-  "<img src='./assets/ship_outcome_2_unshielded.png' height='31px'>";
-const ship_outcome_3_unshielded =
-  "<img src='./assets/ship_outcome_3_unshielded.png' height='32px'>";
-const ship_outcome_3_shielded =
-  "<img src='./assets/ship_outcome_3_shielded.png' height='84px'>";
-const ship_outcome_3_shielded_alt =
-  "<img src='./assets/ship_outcome_3_shielded_alt.png' height='84px'>";
 
 //Continious or discrete testing phases
 let continuousResp = true;
@@ -277,9 +270,9 @@ const valence_p1 = {
   prompt: valence_q,
   stimuli_and_text: [
     ["./assets/win100.png", "Winning $100"],
-    [ship_list[0], "Planet A (left)"],
-    [ship_list[1], "Planet B (middle)"],
-    [ship_list[2], "Planet C (right)"],
+    [planet_list[0], "Planet A (left)"],
+    [planet_list[1], "Planet B (middle)"],
+    [planet_list[2], "Planet C (right)"],
   ],
   labels: valence_labels,
   button_label: "Continue",
@@ -297,7 +290,7 @@ let blockNumber = 1;
 //p1 (planet A)
 var infer_p1_A = {
   type: "inference-check",
-  main_stimulus: ship_list[0],
+  main_stimulus: planet_list[0],
   main_stimulus_height: main_stim_height,
   prompt: inference_prompt[0],
   stimuli_and_text: [
@@ -317,7 +310,7 @@ var infer_p1_A = {
 // inference check p1 (planet B)
 var infer_p1_B = {
   type: "inference-check",
-  main_stimulus: ship_list[1],
+  main_stimulus: planet_list[1],
   main_stimulus_height: main_stim_height,
   prompt: inference_prompt[1],
   stimuli_and_text: [
@@ -337,7 +330,7 @@ var infer_p1_B = {
 // inference check p1 (planet C)
 var infer_p1_C = {
   type: "inference-check",
-  main_stimulus: ship_list[2],
+  main_stimulus: planet_list[2],
   main_stimulus_height: main_stim_height,
   prompt: inference_prompt[2],
   stimuli_and_text: [
@@ -442,15 +435,15 @@ const val_img_p2 = [
     text: "Losing $",
   },
   {
-    stimulus: ship_list[0],
+    stimulus: planet_list[0],
     text: "Planet A (left)",
   },
   {
-    stimulus: ship_list[1],
+    stimulus: planet_list[1],
     text: "Planet B (middle)",
   },
   {
-    stimulus: ship_list[2],
+    stimulus: planet_list[2],
     text: "Planet C (right)",
   },
   {
@@ -497,8 +490,9 @@ var valence_p2 = {
   prompt: valence_q,
   stimuli_and_text: [
     [win_100_text, null],
-    [ship_outcome_1_unshielded, null],
-    [ship_outcome_2_unshielded, null],
+    [indexed_constants[0].attack_img, null],
+    [indexed_constants[1].attack_img, null],
+    [indexed_constants[2].attack_img, null],
     [val_img_p2[2].stimulus, val_img_p2[2].text],
     [val_img_p2[3].stimulus, val_img_p2[3].text],
     [val_img_p2[4].stimulus, val_img_p2[4].text],
@@ -518,13 +512,14 @@ var valence_p2 = {
 
 var infer_p2_A = {
   type: "inference-check",
-  main_stimulus: ship_list[0],
+  main_stimulus: planet_list[0],
   main_stimulus_height: main_stim_height,
   prompt: inference_prompt[0],
   stimuli_and_text: [
     [win_100_text, ""],
-    [ship_outcome_1_unshielded, ""],
-    [ship_outcome_2_unshielded, ""],
+    [indexed_constants[0].attack_img, ""],
+    [indexed_constants[1].attack_img, ""],
+    [indexed_constants[2].attack_img, ""],
     [val_img_p2[5].stimulus, inf_img_p2_A[2].text],
     [val_img_p2[6].stimulus, inf_img_p2_A[3].text],
     [val_img_p2[7].stimulus, inf_img_p2_A[4].text],
@@ -541,13 +536,14 @@ var infer_p2_A = {
 };
 var infer_p2_B = {
   type: "inference-check",
-  main_stimulus: ship_list[1],
+  main_stimulus: planet_list[1],
   main_stimulus_height: main_stim_height,
   prompt: inference_prompt[1],
   stimuli_and_text: [
     [win_100_text, ""],
-    [ship_outcome_1_unshielded, ""],
-    [ship_outcome_2_unshielded, ""],
+    [indexed_constants[0].attack_img, ""],
+    [indexed_constants[1].attack_img, ""],
+    [indexed_constants[2].attack_img, ""],
     [val_img_p2[5].stimulus, inf_img_p2_A[2].text],
     [val_img_p2[6].stimulus, inf_img_p2_A[3].text],
     [val_img_p2[7].stimulus, inf_img_p2_A[4].text],
@@ -565,13 +561,14 @@ var infer_p2_B = {
 
 var infer_p2_C = {
   type: "inference-check",
-  main_stimulus: ship_list[2],
+  main_stimulus: planet_list[2],
   main_stimulus_height: main_stim_height,
   prompt: inference_prompt[2],
   stimuli_and_text: [
     [win_100_text, ""],
-    [ship_outcome_1_unshielded, ""],
-    [ship_outcome_2_unshielded, ""],
+    [indexed_constants[0].attack_img, ""],
+    [indexed_constants[1].attack_img, ""],
+    [indexed_constants[2].attack_img, ""],
     [inf_img_p2_A[2].stimulus, inf_img_p2_A[2].text],
     [inf_img_p2_A[3].stimulus, inf_img_p2_A[3].text],
     [inf_img_p2_A[4].stimulus, inf_img_p2_A[4].text],
@@ -593,8 +590,9 @@ var infer_p2_ship1 = {
   main_stimulus_height: main_stim_height,
   prompt: inference_prompt[3],
   stimuli_and_text: [
-    [ship_outcome_1_unshielded, ""],
-    [ship_outcome_2_unshielded, ""],
+    [indexed_constants[0].attack_img, ""],
+    [indexed_constants[1].attack_img, ""],
+    [indexed_constants[2].attack_img, ""],
   ],
   slider_text_top: contingency_q[3],
   slider_text_bottom: contingency_q[4],
@@ -616,8 +614,9 @@ var infer_p2_ship2 = {
   main_stimulus_height: main_stim_height,
   prompt: inference_prompt[4],
   stimuli_and_text: [
-    [ship_outcome_1_unshielded, ""],
-    [ship_outcome_2_unshielded, ""],
+    [indexed_constants[0].attack_img, ""],
+    [indexed_constants[1].attack_img, ""],
+    [indexed_constants[2].attack_img, ""],
   ],
   slider_text_top: contingency_q[4],
   slider_text_bottom: contingency_q[5],
@@ -639,8 +638,9 @@ var infer_p2_ship3 = {
   main_stimulus_height: main_stim_height,
   prompt: inference_prompt[5],
   stimuli_and_text: [
-    [ship_outcome_1_unshielded, ""],
-    [ship_outcome_2_unshielded, ""],
+    [indexed_constants[0].attack_img, ""],
+    [indexed_constants[1].attack_img, ""],
+    [indexed_constants[2].attack_img, ""],
   ],
   slider_text_top: contingency_q[5],
   slider_text_bottom: contingency_q[6],
@@ -664,7 +664,7 @@ var p1_q3_triangle = {
   type: "html-slider-triangle",
   prompt:
     "Reflecting back on what you did in the <b>most recent block</b>, <p>what proportion of your recent interactions were with each planet:",
-  stimulus_all: ship_list,
+  stimulus_all: planet_list,
   planetColors: planetColors,
   stimulus_height: 250,
   slider_width: 900,
@@ -688,7 +688,7 @@ var p1_q4_triangle = {
   type: "html-slider-triangle",
   prompt:
     "To maximise your points in the <b>previous block</b>, <p>what proportion of interactions would you allocate for each planet?",
-  stimulus_all: ship_list,
+  stimulus_all: planet_list,
   planetColors: planetColors,
   stimulus_height: 250,
   slider_width: 900, // Increased width to accommodate more space for labels
@@ -760,6 +760,8 @@ var p2_q4_triangle = {
 //----------------------------------------------------------------------------
 // --- Phase 3
 
+var question_order = jsPsych.randomization.shuffle([0,1,2]).filter((i) => indexed_constants[i].attack_img != null);
+
 var contingenciescorrect = false;
 
 var cont_catch = {
@@ -772,36 +774,36 @@ var cont_catch = {
       <div style="display: flex; flex-direction: column;">
         <div style="display: grid; grid-template-columns: 1fr; grid-gap: 20px;">
           <div style="display: flex; flex-direction: column; align-items: center;">
-            <p>Your signals to the <strong>left planet</strong> have been attracting <strong>neutral ships</strong>.</p>
+            <p>Your signals to the <strong>left planet</strong> have been attracting ${indexed_constants[0].contingency_long}</p>
             <div style="display: flex; flex-direction: row; align-items: center;">
-              <img src="${ship_list[1]}" style="width: 100px; height: 100px; object-fit: contain; margin-right: 10px;">
+              <img src="${planet_list[0]}" style="width: 100px; height: 100px; object-fit: contain; margin-right: 10px;">
               <p>Planet A<br>(left):</p>
               <img src="./assets/arrow.jpg" style="width: 100px; height: 100px; object-fit: contain; margin-right: 10px;">
-              <img src="${ship_list[1]}" style="width: 100px; height: 100px; object-fit: contain; margin-right: 10px;">
-              <img src="./assets/arrow.jpg" style="width: 100px; height: 100px; object-fit: contain; margin-right: 10px; visibility: hidden;">
-              <div style="margin-top: 5px; visibility: hidden;">${ship_outcome_1_unshielded}</div>
+              <img src="${ship_list[0]}" style="width: 100px; height: 100px; object-fit: contain; margin-right: 10px;">
+              <img src="./assets/arrow.jpg" style="width: 100px; height: 100px; object-fit: contain; margin-right: 10px; visibility: ${indexed_constants[0].attack_img ? 'visible' : 'hidden'};">
+              <div style="margin-top: 5px; visibility: ${indexed_constants[0].attack_img ? 'visible' : 'hidden'};">${indexed_constants[0].attack_img}</div>
             </div>
           </div>
           <div style="display: flex; flex-direction: column; align-items: center;">
-            <p>Your signals to the <strong>middle planet</strong> have been attracting <strong>pirate ships</strong>, that have been stealing <strong>lots of your points!</strong></p>
+            <p>Your signals to the <strong>middle planet</strong> have been attracting ${indexed_constants[1].contingency_long}</p>
             <div style="display: flex; flex-direction: row; align-items: center;">
-              <img src="${ship_list[0]}" style="width: 100px; height: 100px; object-fit: contain; margin-right: 10px;">
+              <img src="${planet_list[1]}" style="width: 100px; height: 100px; object-fit: contain; margin-right: 10px;">
               <p>Planet B<br>(middle):</p>
               <img src="./assets/arrow.jpg" style="width: 100px; height: 100px; object-fit: contain; margin-right: 10px;">
-              <img src="${ship_list[0]}" style="width: 100px; height: 100px; object-fit: contain; margin-right: 10px;">
-              <img src="./assets/arrow.jpg" style="width: 100px; height: 100px; object-fit: contain; margin-right: 10px;">
-              <div style="margin-top: 5px;">${ship_outcome_1_unshielded}</div>
+              <img src="${ship_list[1]}" style="width: 100px; height: 100px; object-fit: contain; margin-right: 10px;">
+              <img src="./assets/arrow.jpg" style="width: 100px; height: 100px; object-fit: contain; margin-right: 10px; visibility: ${indexed_constants[1].attack_img ? 'visible' : 'hidden'};">
+              <div style="margin-top: 5px; visibility: ${indexed_constants[1].attack_img ? 'visible' : 'hidden'};">${indexed_constants[1].attack_img}</div>
             </div>
           </div>
           <div style="display: flex; flex-direction: column; align-items: center;">
-            <p>Your signals to the <strong>right planet</strong> have been attracting <strong>pirate ships</strong>, that have been stealing <strong>some of your points!</strong></p>
+            <p>Your signals to the <strong>right planet</strong> have been attracting <strong>pirate ships</strong> that have been stealing <strong>some of your points!</strong></p>
             <div style="display: flex; flex-direction: row; align-items: center;">
-              <img src="${ship_list[2]}" style="width: 100px; height: 100px; object-fit: contain; margin-right: 10px;">
+              <img src="${planet_list[2]}" style="width: 100px; height: 100px; object-fit: contain; margin-right: 10px;">
               <p>Planet C<br>(right):</p>
               <img src="./assets/arrow.jpg" style="width: 100px; height: 100px; object-fit: contain; margin-right: 10px;">
               <img src="${ship_list[2]}" style="width: 100px; height: 100px; object-fit: contain; margin-right: 10px;">
-              <img src="./assets/arrow.jpg" style="width: 100px; height: 100px; object-fit: contain; margin-right: 10px;">
-              <div style="margin-top: 5px;">${ship_outcome_2_unshielded}</div>
+              <img src="./assets/arrow.jpg" style="width: 100px; height: 100px; object-fit: contain; margin-right: 10px; visibility: ${indexed_constants[2].attack_img ? 'visible' : 'hidden'};">
+              <div style="margin-top: 5px; visibility: ${indexed_constants[2].attack_img ? 'visible' : 'hidden'};">${indexed_constants[2].attack_img}</div>
             </div>
           </div>
         </div>
@@ -812,27 +814,21 @@ var cont_catch = {
 
   // Array of HTML strings representing the question prompts
   question_prompts: [
-    `Which planet leads to this attack?<br>${ship_outcome_1_unshielded}<br>
+    `Which planet leads to this attack?<br>${indexed_constants[question_order[0]].attack_img}<br>
       <p style="font-size:medium">Planet A (left) Planet B (middle) Planet C (right)</p>`,
-    `Which ship leads to this attack?<br>${ship_outcome_1_unshielded}`,
-    `Which planet leads to this attack?<br>${ship_outcome_2_unshielded}<br>
+    `Which ship leads to this attack?<br>${indexed_constants[question_order[0]].attack_img}`,
+    `Which planet leads to this attack?<br>${indexed_constants[question_order[1]].attack_img}<br>
       <p style="font-size:medium">Planet A (left) Planet B (middle) Planet C (right)</p>`,
-    `Which ship leads to this attack?<br>${ship_outcome_2_unshielded}`,
+    `Which ship leads to this attack?<br>${indexed_constants[question_order[1]].attack_img}`,
   ],
-  planet_options: ship_list_original,
+  planet_options: planet_list_original,
   ship_option_1: ship_list_original[0],
   ship_option_2: ship_list_original[1],
   ship_option_3: ship_list_original[2],
-  correct_answers: [ship_list[1], ship_list[1], ship_list[2], ship_list[2]],
+  correct_answers: [planet_list[question_order[0]], ship_list[question_order[0]], planet_list[question_order[1]], ship_list[question_order[1]]],
 
   // HTML-formatted string representing the text for winning 100 points
   win_text: win_100_text,
-
-  // HTML-formatted string representing the first attack text
-  attack_text_1: ship_outcome_1_unshielded,
-
-  // HTML-formatted string representing the second attack text
-  attack_text_2: ship_outcome_2_unshielded,
 
   // HTML-formatted string containing the instructions to display when an incorrect answer is given
   instructions:
@@ -1231,38 +1227,38 @@ let timeline = []; // This is the master timeline, the experiment runs sequentia
 
 // // Phase 1, no ships
 // addBlocksToTimeline(timeline, planet_noship, nBlocks_p1, nTrialspBlk);
-// timeline.push(valence_p1);
-// timeline.push(infer_p1_A);
-// timeline.push(infer_p1_B);
-// timeline.push(infer_p1_C);
+timeline.push(valence_p1);
+timeline.push(infer_p1_A);
+timeline.push(infer_p1_B);
+timeline.push(infer_p1_C);
 
-// timeline.push(p1_q3_triangle);
-// timeline.push(p1_q4_triangle);
+timeline.push(p1_q3_triangle);
+timeline.push(p1_q4_triangle);
 
 // // Phase2, ships
 // timeline.push(phaseTwoInstructions);
 addBlocksToTimeline(timeline, planet_ship, nBlocks_p2, nTrialspBlk);
-// timeline.push(valence_p2);
-// timeline.push(infer_p2_A);
-// timeline.push(infer_p2_B);
-// timeline.push(infer_p2_C);
-// timeline.push(infer_p2_ship1);
-// timeline.push(infer_p2_ship2);
-// timeline.push(infer_p2_ship3);
-// timeline.push(p1_q3_triangle);
-// timeline.push(p1_q4_triangle);
+timeline.push(valence_p2);
+timeline.push(infer_p2_A);
+timeline.push(infer_p2_B);
+timeline.push(infer_p2_C);
+timeline.push(infer_p2_ship1);
+timeline.push(infer_p2_ship2);
+timeline.push(infer_p2_ship3);
+timeline.push(p1_q3_triangle);
+timeline.push(p1_q4_triangle);
 
 // Phase3, contingencies
 timeline.push(cont_catch);
 
 // Phase3, ships
-// addBlocksToTimeline(timeline, planet_ship, nBlocks_p3, nTrialspBlk);
-// timeline.push(valence_p2);
-// timeline.push(infer_p2_A);
-// timeline.push(infer_p2_B);
-// timeline.push(infer_p2_C);
-// timeline.push(p1_q3_triangle);
-// timeline.push(p1_q4_triangle);
+addBlocksToTimeline(timeline, planet_ship, nBlocks_p3, nTrialspBlk);
+timeline.push(valence_p2);
+timeline.push(infer_p2_A);
+timeline.push(infer_p2_B);
+timeline.push(infer_p2_C);
+timeline.push(p1_q3_triangle);
+timeline.push(p1_q4_triangle);
 
 //Debrief
 // timeline.push(debrief_block);
