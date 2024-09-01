@@ -242,36 +242,20 @@ jsPsych.plugins["planet-response-command"] = (function () {
         description:
           "[disabled]Time between end of last ship outcome and ship disappearance.",
       },
-      ship_outcome_1_unshielded: {
-        type: jsPsych.plugins.parameterType.STRING,
-        pretty_name: "Ship outcome 1 unshielded",
-        default: "",
-        description: "The text for ship outcome 1 when unshielded.",
+      attack_images: {
+        type: jsPsych.plugins.parameterType.IMAGE,
+        array: true,
+        default: null
       },
-      ship_outcome_2_unshielded: {
-        type: jsPsych.plugins.parameterType.STRING,
-        pretty_name: "Ship outcome 2 unshielded",
-        default: "",
-        description: "The text for ship outcome 2 when unshielded.",
+      attack_text_colours: {
+        type: jsPsych.plugins.parameterType.TEXT,
+        array: true,
+        default: null
       },
-      ship_outcome_3_unshielded: {
-        type: jsPsych.plugins.parameterType.STRING,
-        pretty_name: "Ship outcome 3 unshielded",
-        default: "",
-        description: "The text for ship outcome 3 when unshielded.",
-      },
-      ship_outcome_3_shielded: {
-        type: jsPsych.plugins.parameterType.STRING,
-        pretty_name: "Ship outcome 3 shielded",
-        default: "",
-        description: "The text for ship outcome 3 when shielded.",
-      },
-      ship_outcome_3_shielded_alt: {
-        type: jsPsych.plugins.parameterType.STRING,
-        pretty_name: "Ship outcome 3 shielded (alternative)",
-        default: "",
-        description:
-          "Alternative version of the text for ship outcome 3 when shielded.",
+      attack_blocked_images: {
+        type: jsPsych.plugins.parameterType.IMAGE,
+        array: true,
+        default: null
       },
       show_whether_shield_blocked_attack_or_bonus: {
         type: jsPsych.plugins.parameterType.BOOL,
@@ -1100,45 +1084,19 @@ jsPsych.plugins["planet-response-command"] = (function () {
       console.log("Damage:", pointsLost);
 
       // Check if the applied damage is not equal to 0 before proceeding with the attack
-      if (pointsLost !== 0) {
+      if (pointsLost !== 0 || damageType == "percent") {
         // Apply points loss depending on the choice and the shield activation
         if (!shield_activated) {
           // Subtract the calculated damage from the points
           const initialPoints = trial.data.points; // Store the initial points before damage
-          trial.data.points -= pointsLost;
-          if (damageType == "percent") {
-            if (pointsLost >= 0) {
-              statusmsg = formatShipOutcomeText(
-                trial.ship_outcome_2_unshielded,
-                pointsLost,
-              );
-              statusclr = "darkorange";
-              console.log("INDEX 2, points lost:", pointsLost);
-            } else {
-              statusmsg = formatShipOutcomeText(
-                trial.ship_outcome_3_unshielded,
-                pointsLost,
-              );
-              statusclr = "yellow";
-              console.log("INDEX 2, points gained:", -pointsLost);
-            }
-          } else {
-            if (pointsLost >= 0) {
-              statusmsg = formatShipOutcomeText(
-                trial.ship_outcome_1_unshielded,
-                pointsLost,
-              );
-              statusclr = "red";
-              console.log("INDEX 1, damage:", pointsLost);
-            } else {
-              statusmsg = formatShipOutcomeText(
-                trial.ship_outcome_3_unshielded,
-                pointsLost,
-              );
-              statusclr = "yellow";
-              console.log("INDEX 2, bonus:", -pointsLost);
-            }
-          }
+          trial.data.points -= pointsLost; 
+
+          statusmsg = formatShipOutcomeText(
+            trial.attack_images[choice],
+            pointsLost,
+          );
+          statusclr = trial.attack_text_colours[choice];
+
           const pointsDifference = initialPoints - trial.data.points; // Calculate the points difference
           console.log("Initial points:", initialPoints);
           console.log("Updated points:", trial.data.points);
@@ -1149,18 +1107,9 @@ jsPsych.plugins["planet-response-command"] = (function () {
           updateScore(trial.data.points);
         } else if (shield_activated) {
           console.log("Shield activated, setting status message");
-          if (
-            damageValue > 0 ||
-            !trial.show_whether_shield_blocked_attack_or_bonus
-          ) {
-            statusmsg = trial.ship_outcome_3_shielded;
-            statusclr = "grey";
-          } else {
-            statusmsg = trial.ship_outcome_3_shielded_alt;
-            statusclr = "yellow";
-          }
+          statusmsg = trial.attack_blocked_images[choice];
+          statusmsg = statusmsg ? statusmsg : "";
           console.log("Status message:", statusmsg);
-          console.log("Status color:", statusclr);
         }
 
         console.log("Updating ship status");

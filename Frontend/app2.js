@@ -73,6 +73,7 @@ const indexed_constants = jsPsych.randomization.shuffle([
     probability_ship: 0.4, // used only if ship_outcome_set is null
     ship_attack_effect: [0, "points"],
     attack_img: null,
+    attack_text_colour: null,
     attack_blocked_img: null,
     probability_shield: 0.5,
     shield_available_set: null  // used only if probability_shield is null
@@ -84,8 +85,9 @@ const indexed_constants = jsPsych.randomization.shuffle([
     ship_emergence_set: null,
     probability_ship: 0.2, // used only if ship_outcome_set is null
     ship_attack_effect: [-200, "points"],
-    attack_img: "./assets/attack_text_orange.png",
-    attack_blocked_img: "./assets/shield_deflected_attack.png",
+    attack_img: "<img src='./assets/attack_text_orange.png' height='31px'>",
+    attack_text_colour: 'darkorange',
+    attack_blocked_img: "<img src='./assets/shield_deflected_attack.png' height='84px'>",
     probability_shield: 0.5,
     shield_available_set: null  // used only if probability_shield is null
   },
@@ -96,8 +98,9 @@ const indexed_constants = jsPsych.randomization.shuffle([
     ship_emergence_set: [1,0,0,0,0,0,0,0,0],
     probability_ship: 0.1, // used only if ship_outcome_set is null
     ship_attack_effect: [-20, "percent"],
-    attack_img: "./assets/attack_text_red.png",
-    attack_blocked_img: "./assets/shield_deflected_attack.png",
+    attack_img: "<img src='./assets/attack_text_red.png' height='31px'>",
+    attack_text_colour: 'red',
+    attack_blocked_img: "<img src='./assets/shield_deflected_attack.png' height='84px'>",
     probability_shield: 0.5,
     shield_available_set: null  // used only if probability_shield is null
   }
@@ -391,6 +394,7 @@ let planet_ship = {
   ship_outcomes: get_indexed_constant_array('ship_emergence_set'),
   shield_outcomes: get_indexed_constant_array('shield_available_set'),
   attack_images: get_indexed_constant_array('attack_img'),
+  attack_text_colours: get_indexed_constant_array('attack_text_colour'),
   attack_blocked_images: get_indexed_constant_array('attack_blocked_img'),
   win_100_text: win_100_text,
   data: {
