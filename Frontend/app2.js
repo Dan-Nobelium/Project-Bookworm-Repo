@@ -23,6 +23,7 @@ let sample = samples[0];
 const planet_list_original = [
   "./assets/planet_p.png",
   "./assets/planet_o.png",
+  "./assets/planet_p.png",
   "./assets/planet_b.png",
 ];
 const ship_list_original = [
@@ -771,32 +772,32 @@ var cont_catch = {
       <div style="display: flex; flex-direction: column;">
         <div style="display: grid; grid-template-columns: 1fr; grid-gap: 20px;">
           <div style="display: flex; flex-direction: column; align-items: center;">
-            <p>Your signals to the left planet have been attracting neutral ships.</p>
+            <p>Your signals to the <strong>left planet</strong> have been attracting <strong>neutral ships</strong>.</p>
             <div style="display: flex; flex-direction: row; align-items: center;">
-              <img src="${ship_list[0]}" style="width: 100px; height: 100px; object-fit: contain; margin-right: 10px;">
-              <p>Planet A:</p>
+              <img src="${ship_list[1]}" style="width: 100px; height: 100px; object-fit: contain; margin-right: 10px;">
+              <p>Planet A<br>(left):</p>
               <img src="./assets/arrow.jpg" style="width: 100px; height: 100px; object-fit: contain; margin-right: 10px;">
-              <img src="${ship_list[0]}" style="width: 100px; height: 100px; object-fit: contain; margin-right: 10px;">
+              <img src="${ship_list[1]}" style="width: 100px; height: 100px; object-fit: contain; margin-right: 10px;">
               <img src="./assets/arrow.jpg" style="width: 100px; height: 100px; object-fit: contain; margin-right: 10px; visibility: hidden;">
               <div style="margin-top: 5px; visibility: hidden;">${ship_outcome_1_unshielded}</div>
             </div>
           </div>
           <div style="display: flex; flex-direction: column; align-items: center;">
-            <p>Your signals to the middle planet have been attracting pirate ships, that have been stealing <b>lots of</b> your points!</p>
+            <p>Your signals to the <strong>middle planet</strong> have been attracting <strong>pirate ships</strong>, that have been stealing <strong>lots of your points!</strong></p>
             <div style="display: flex; flex-direction: row; align-items: center;">
-              <img src="${ship_list[1]}" style="width: 100px; height: 100px; object-fit: contain; margin-right: 10px;">
-              <p>Planet B:</p>
+              <img src="${ship_list[0]}" style="width: 100px; height: 100px; object-fit: contain; margin-right: 10px;">
+              <p>Planet B<br>(middle):</p>
               <img src="./assets/arrow.jpg" style="width: 100px; height: 100px; object-fit: contain; margin-right: 10px;">
-              <img src="${ship_list[1]}" style="width: 100px; height: 100px; object-fit: contain; margin-right: 10px;">
+              <img src="${ship_list[0]}" style="width: 100px; height: 100px; object-fit: contain; margin-right: 10px;">
               <img src="./assets/arrow.jpg" style="width: 100px; height: 100px; object-fit: contain; margin-right: 10px;">
               <div style="margin-top: 5px;">${ship_outcome_1_unshielded}</div>
             </div>
           </div>
           <div style="display: flex; flex-direction: column; align-items: center;">
-            <p>Your signals to the right planet have been attracting pirate ships, that have been stealing <b>some of</b> of your points!</p>
+            <p>Your signals to the <strong>right planet</strong> have been attracting <strong>pirate ships</strong>, that have been stealing <strong>some of your points!</strong></p>
             <div style="display: flex; flex-direction: row; align-items: center;">
               <img src="${ship_list[2]}" style="width: 100px; height: 100px; object-fit: contain; margin-right: 10px;">
-              <p>Planet C:</p>
+              <p>Planet C<br>(right):</p>
               <img src="./assets/arrow.jpg" style="width: 100px; height: 100px; object-fit: contain; margin-right: 10px;">
               <img src="${ship_list[2]}" style="width: 100px; height: 100px; object-fit: contain; margin-right: 10px;">
               <img src="./assets/arrow.jpg" style="width: 100px; height: 100px; object-fit: contain; margin-right: 10px;">
@@ -811,9 +812,11 @@ var cont_catch = {
 
   // Array of HTML strings representing the question prompts
   question_prompts: [
-    `Which planet leads to this attack?<br>${ship_outcome_1_unshielded}`,
+    `Which planet leads to this attack?<br>${ship_outcome_1_unshielded}<br>
+      <p style="font-size:medium">Planet A (left) Planet B (middle) Planet C (right)</p>`,
     `Which ship leads to this attack?<br>${ship_outcome_1_unshielded}`,
-    `Which planet leads to this attack?<br>${ship_outcome_2_unshielded}`,
+    `Which planet leads to this attack?<br>${ship_outcome_2_unshielded}<br>
+      <p style="font-size:medium">Planet A (left) Planet B (middle) Planet C (right)</p>`,
     `Which ship leads to this attack?<br>${ship_outcome_2_unshielded}`,
   ],
   planet_options: ship_list_original,
