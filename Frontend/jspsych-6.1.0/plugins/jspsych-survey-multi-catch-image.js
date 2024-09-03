@@ -106,11 +106,7 @@ jsPsych.plugins["survey-multi-catch-image"] = (function () {
     var failedSubmissionCount = 0;
 
     function createInstructionPage(pageContent) {
-      var pageHtml = `
-        <div class="jspsych-content">
-          ${pageContent}
-        </div>
-      `;
+      var pageHtml = pageContent;
       return pageHtml;
     }
     function createCatchQuestions() {
