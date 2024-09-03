@@ -170,6 +170,8 @@ jsPsych.plugins["inference-check"] = (function () {
       html += trial.prompt + "<br><br><br><br>";
     }
 
+    trial.stimuli_and_text = trial.stimuli_and_text.filter((pair) => {return pair[0] != null});
+
     // Loop through stimuli
     for (let pair of trial.stimuli_and_text) {
       let i = trial.stimuli_and_text.indexOf(pair) + 1;

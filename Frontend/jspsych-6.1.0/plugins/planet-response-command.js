@@ -100,12 +100,6 @@ jsPsych.plugins["planet-response-command"] = (function() {
         default: 10,
         description: "Blank space (padding) around signal image.",
       },
-      trade_balance: {
-        type: jsPsych.plugins.parameterType.BOOL,
-        pretty_name: "Balance trade success probabilities.",
-        default: true,
-        description: "Balance trade success probabilities.",
-      },
       probability_trade: {
         type: jsPsych.plugins.parameterType.FLOAT,
         pretty_name: "P(trade success)",
@@ -132,12 +126,6 @@ jsPsych.plugins["planet-response-command"] = (function() {
         default: 2000, //1000,
         description:
           "Duration between trade attempt mouseclick and appearance of ship.",
-      },
-      ship_balance: {
-        type: jsPsych.plugins.parameterType.BOOL,
-        pretty_name: "Balance ship probabilities.",
-        default: true,
-        description: "Balance ship appearance probabilities.",
       },
       probability_ship: {
         type: jsPsych.plugins.parameterType.FLOAT,
@@ -179,9 +167,9 @@ jsPsych.plugins["planet-response-command"] = (function() {
         default: 4000,
         description: "Duration between ship appearance and attack.",
       },
-      ship_attack_damage: {
+      ship_attack_effect: {
         type: jsPsych.plugins.parameterType.ARRAY,
-        pretty_name: "Ship damage",
+        pretty_name: "Ship attack effect (positive number for bonus, negative for damage)",
         array: true,
         default: [
           [0, "points"],
@@ -201,7 +189,7 @@ jsPsych.plugins["planet-response-command"] = (function() {
         type: jsPsych.plugins.parameterType.FLOAT,
         pretty_name: "Probability of shield",
         array: true,
-        default: [0.5, 0.5],
+        default: [0.5, 0.5, 0.5],
         description:
           "Probability of shield availability after charging for each ship.",
       },
@@ -211,13 +199,6 @@ jsPsych.plugins["planet-response-command"] = (function() {
         default: true,
         description: "Shield prevents trading when active.",
       },
-      shield_balance: {
-        type: jsPsych.plugins.parameterType.BOOL,
-        pretty_name: "Balance shield probabilities.",
-        default: true,
-        description: "Balance shield availability probabilities.",
-      },
-
       shield_cost_toggle: {
         type: jsPsych.plugins.parameterType.BOOL,
         pretty_name: "Toggle shield activation cost",
@@ -261,36 +242,20 @@ jsPsych.plugins["planet-response-command"] = (function() {
         description:
           "[disabled]Time between end of last ship outcome and ship disappearance.",
       },
-      ship_outcome_1_unshielded: {
-        type: jsPsych.plugins.parameterType.STRING,
-        pretty_name: "Ship outcome 1 unshielded",
-        default: "",
-        description: "The text for ship outcome 1 when unshielded.",
+      attack_images: {
+        type: jsPsych.plugins.parameterType.IMAGE,
+        array: true,
+        default: null
       },
-      ship_outcome_2_unshielded: {
-        type: jsPsych.plugins.parameterType.STRING,
-        pretty_name: "Ship outcome 2 unshielded",
-        default: "",
-        description: "The text for ship outcome 2 when unshielded.",
+      attack_text_colours: {
+        type: jsPsych.plugins.parameterType.TEXT,
+        array: true,
+        default: null
       },
-      ship_outcome_3_unshielded: {
-        type: jsPsych.plugins.parameterType.STRING,
-        pretty_name: "Ship outcome 3 unshielded",
-        default: "",
-        description: "The text for ship outcome 3 when unshielded.",
-      },
-      ship_outcome_3_shielded: {
-        type: jsPsych.plugins.parameterType.STRING,
-        pretty_name: "Ship outcome 3 shielded",
-        default: "",
-        description: "The text for ship outcome 3 when shielded.",
-      },
-      ship_outcome_3_shielded_alt: {
-        type: jsPsych.plugins.parameterType.STRING,
-        pretty_name: "Ship outcome 3 shielded (alternative)",
-        default: "",
-        description:
-          "Alternative version of the text for ship outcome 3 when shielded.",
+      attack_blocked_images: {
+        type: jsPsych.plugins.parameterType.IMAGE,
+        array: true,
+        default: null
       },
       show_whether_shield_blocked_attack_or_bonus: {
         type: jsPsych.plugins.parameterType.BOOL,
@@ -299,6 +264,21 @@ jsPsych.plugins["planet-response-command"] = (function() {
         description:
           "Toggle whether the user is told that the shield blocked a bonus (true), or is just told that it blocked an attack regardless of whether it was an attack or a bonus (false; default).",
       },
+      trade_outcomes: {
+        type: jsPsych.plugins.parameterType.INT,
+        default: null,
+        array: true
+      },
+      shield_outcomes: {
+        type: jsPsych.plugins.parameterType.INT,
+        default: null,
+        array: true
+      },
+      ship_outcomes: {
+        type: jsPsych.plugins.parameterType.INT,
+        default: null,
+        array: true
+      }
     },
   };
 
@@ -350,7 +330,46 @@ jsPsych.plugins["planet-response-command"] = (function() {
   styleElement.innerHTML = cssString;
   document.head.appendChild(styleElement);
 
-  plugin.trial = function(display_element, trial) {
+  plugin.trial = function (display_element, trial) {
+    let trade_outcomes = [[],[],[]];
+    let shield_outcomes = [[],[],[]];
+    let ship_outcomes = [[],[],[]];
+    for (let i = 0; i < 3; i++) {
+      trade_outcomes[i] = initialise_outcome_array(trial.trade_outcomes[i])
+      shield_outcomes[i] = initialise_outcome_array(trial.shield_outcomes[i]);
+      ship_outcomes[i] = initialise_outcome_array(trial.ship_outcomes[i]);
+    }
+
+    console.log('trade, shield, ship outcomes', trade_outcomes, shield_outcomes, ship_outcomes);
+
+    function initialise_outcome_array(in_array) {
+      console.log(in_array);
+      if (!in_array) return [];
+      if (in_array.length == 2 && (in_array[0] > 1 || in_array[1] > 1)) {
+        return generate_outcome_array(in_array[0], in_array[1]);
+      }
+      else {
+        for (let i = 0; i < in_array.length; i++) {
+          in_array[i] = Boolean(in_array[i]);
+        }
+        console.log(in_array);
+        return jsPsych.randomization.shuffle(in_array);
+      }
+    }
+
+    function generate_outcome_array(true_count, false_count) {
+      let out_array = [];
+      for (let i = 0; i < true_count; i++) {
+        out_array.push(true);
+      }
+      for (let i = 0; i < false_count; i++) {
+        out_array.push(false);
+      }
+      return jsPsych.randomization.shuffle(out_array);
+    }
+
+    
+
     var html = "";
     html += '<div id="game-container">';
     html += '<div><div class="clickid" id="total-score-box"></div>';
@@ -542,30 +561,6 @@ jsPsych.plugins["planet-response-command"] = (function() {
     var shipVisible = false; // Visibility state of ship img
     var shield_activated = null; //Shield state
 
-    //Define variables for balanced probability arrays
-    if (trial.trade_balance) {
-      var tradeProbArrs = initProbArray(trial.probability_trade);
-      var trade_orderbase = tradeProbArrs[0]; // Base set to randomise availability of trades
-      var trade_log = tradeProbArrs[1]; // Arr to read future trade success
-      var trade_read = tradeProbArrs[2]; // Arr to log trade success
-    }
-    if (trial.ship_balance) {
-      var shipProbArrs = initProbArray(trial.probability_ship);
-      var ship_orderbase = shipProbArrs[0];
-      var ship_log = shipProbArrs[1];
-      var ship_read = shipProbArrs[2];
-    }
-    if (trial.shield_balance) {
-      var shieldProbArrs = initProbArray(trial.probability_shield);
-      var shield_orderbase = shieldProbArrs[0];
-      var shield_log = shieldProbArrs[1];
-      var shield_read = shieldProbArrs[2];
-    }
-
-    console.log("Shield orderbase:", shield_orderbase);
-    console.log("Shield log:", shield_log);
-    console.log("Shield read:", shield_read);
-
     // Go through each choice and implement conditional mouseclick events, also mouseover, and select ring
     for (var i = 0; i < trial.stimulus.length; i++) {
       var element = display_element.querySelector("#planet-" + i);
@@ -741,18 +736,12 @@ jsPsych.plugins["planet-response-command"] = (function() {
         return outStr;
       }
       // Run trade
-      if (trial.trade_balance) {
-        var tradeBalOut = balanceSuccess(
-          trade_orderbase,
-          trade_log,
-          trade_read,
-          choice,
-          true,
-          "trade",
-        );
-        trade_success = tradeBalOut[0];
-        trade_log = tradeBalOut[1];
-        trade_read = tradeBalOut[2];
+      if (trial.trade_outcomes[choice]) {
+        if (trade_outcomes[choice].length == 0) {
+          trade_outcomes[choice] = initialise_outcome_array(trial.trade_outcomes[choice]);
+        }
+        console.log('trade_outcomes ', choice, trade_outcomes[choice]);
+        trade_success = trade_outcomes[choice].pop();
       } else {
         trade_success = Math.random() < trial.probability_trade[choice];
       }
@@ -814,18 +803,12 @@ jsPsych.plugins["planet-response-command"] = (function() {
       // Ship-related code
       var show_ship_check = false;
       var show_ship_samp = Math.random();
-      if (trial.ship_balance) {
-        var shipBalOut = balanceSuccess(
-          ship_orderbase,
-          ship_log,
-          ship_read,
-          choice,
-          true,
-          "ship",
-        );
-        show_ship_check = shipBalOut[0];
-        ship_log = shipBalOut[1];
-        ship_read = shipBalOut[2];
+      if (trial.ship_outcomes[choice]) {
+        if (ship_outcomes[choice].length == 0) {
+          ship_outcomes[choice] = initialise_outcome_array(trial.ship_outcomes[choice]);
+        }
+        show_ship_check = ship_outcomes[choice].pop();
+        console.log('ship_outcomes ', choice, ship_outcomes[choice]);
       } else {
         if (show_ship_samp < trial.probability_ship[choice]) {
           show_ship_check = true;
@@ -838,6 +821,7 @@ jsPsych.plugins["planet-response-command"] = (function() {
       if (show_ship_check) {
         setTimeout(function() {
           if (!shipVisible) {
+            console.log('showing ship');
             show_ship(choice);
           }
         }, trial.show_ship_delay);
@@ -877,26 +861,24 @@ jsPsych.plugins["planet-response-command"] = (function() {
 
     // Function to update the state of the shield
     var shield_start_time = null;
-    var shield_success = Math.random() > trial.probability_shield[0]; // Initialize based on the first element of trial.probability_shield
+    var shield_success;
 
     function proceed_shield(choice) {
-      if (trial.shield_balance) {
-        var shieldBalOut = balanceSuccess(
-          shield_orderbase,
-          shield_log,
-          shield_read,
-          choice,
-          true,
-          "shield",
-        );
-        shield_success = shieldBalOut[0];
-        shield_log = shieldBalOut[1];
-        shield_read = shieldBalOut[2];
+      console.log('proceed_shield called', choice)
+      if (trial.shield_outcomes[choice]) {
+        if (shield_outcomes[choice].length == 0) {
+          shield_outcomes[choice] = initialise_outcome_array(trial.shield_outcomes[choice]);
+          console.log('reinitialised shield outcomes:', shield_outcomes[choice]);
+        }
+        console.log('shield outcomes: ', shield_outcomes[choice]);
+        shield_success = shield_outcomes[choice].pop();
+        
       } else {
         // Run shield gamble
+        console.log('shield probability: ', trial.probability_shield[choice]);
         shield_success = Math.random() < trial.probability_shield[choice];
       }
-
+      console.log('shield_success', shield_success);
       // Update the shield UI based on shield availability
       updateShieldUI(shield_success);
 
@@ -1041,6 +1023,7 @@ jsPsych.plugins["planet-response-command"] = (function() {
       createShieldHTML();
 
       // Update the shield UI based on shield availability
+      proceed_shield(choice);
       updateShieldUI(shield_success);
 
       // Start timer for ship to attack and timeout
@@ -1081,11 +1064,11 @@ jsPsych.plugins["planet-response-command"] = (function() {
       response.ships.shield_activated.push(shield_activated);
       console.log("Shield activated:", shield_activated);
 
-      console.log(trial.ship_attack_damage[choice]);
+      console.log(trial.ship_attack_effect[choice]);
 
-      // Calculate damage based on the attacking ship's index and the ship_attack_damage parameter
-      const damageValue = trial.ship_attack_damage[choice][0];
-      const damageType = trial.ship_attack_damage[choice][1];
+      // Calculate damage based on the attacking ship's index and the ship_attack_effect parameter
+      const damageValue = -trial.ship_attack_effect[choice][0];
+      const damageType = trial.ship_attack_effect[choice][1];
       const pointsLost =
         damageType == "percent"
           ? Math.round(trial.data.points * (damageValue / 100))
@@ -1094,45 +1077,19 @@ jsPsych.plugins["planet-response-command"] = (function() {
       console.log("Damage:", pointsLost);
 
       // Check if the applied damage is not equal to 0 before proceeding with the attack
-      if (pointsLost !== 0) {
+      if (pointsLost !== 0 || damageType == "percent") {
         // Apply points loss depending on the choice and the shield activation
         if (!shield_activated) {
           // Subtract the calculated damage from the points
           const initialPoints = trial.data.points; // Store the initial points before damage
-          trial.data.points -= pointsLost;
-          if (damageType == "percent") {
-            if (pointsLost >= 0) {
-              statusmsg = formatShipOutcomeText(
-                trial.ship_outcome_2_unshielded,
-                pointsLost,
-              );
-              statusclr = "darkorange";
-              console.log("INDEX 2, points lost:", pointsLost);
-            } else {
-              statusmsg = formatShipOutcomeText(
-                trial.ship_outcome_3_unshielded,
-                pointsLost,
-              );
-              statusclr = "yellow";
-              console.log("INDEX 2, points gained:", -pointsLost);
-            }
-          } else {
-            if (pointsLost >= 0) {
-              statusmsg = formatShipOutcomeText(
-                trial.ship_outcome_1_unshielded,
-                pointsLost,
-              );
-              statusclr = "red";
-              console.log("INDEX 1, damage:", pointsLost);
-            } else {
-              statusmsg = formatShipOutcomeText(
-                trial.ship_outcome_3_unshielded,
-                pointsLost,
-              );
-              statusclr = "yellow";
-              console.log("INDEX 2, bonus:", -pointsLost);
-            }
-          }
+          trial.data.points -= pointsLost; 
+
+          statusmsg = formatShipOutcomeText(
+            trial.attack_images[choice],
+            pointsLost,
+          );
+          statusclr = trial.attack_text_colours[choice];
+
           const pointsDifference = initialPoints - trial.data.points; // Calculate the points difference
           console.log("Initial points:", initialPoints);
           console.log("Updated points:", trial.data.points);
@@ -1143,18 +1100,9 @@ jsPsych.plugins["planet-response-command"] = (function() {
           updateScore(trial.data.points);
         } else if (shield_activated) {
           console.log("Shield activated, setting status message");
-          if (
-            damageValue > 0 ||
-            !trial.show_whether_shield_blocked_attack_or_bonus
-          ) {
-            statusmsg = trial.ship_outcome_3_shielded;
-            statusclr = "grey";
-          } else {
-            statusmsg = trial.ship_outcome_3_shielded_alt;
-            statusclr = "yellow";
-          }
+          statusmsg = trial.attack_blocked_images[choice];
+          statusmsg = statusmsg ? statusmsg : "";
           console.log("Status message:", statusmsg);
-          console.log("Status color:", statusclr);
         }
 
         console.log("Updating ship status");
@@ -1227,7 +1175,6 @@ jsPsych.plugins["planet-response-command"] = (function() {
         var dpRect = display_element.getBoundingClientRect(),
           dpx = dpRect.left,
           dpy = dpRect.top;
-        proceed_shield;
         // gather the data to store for the trial
         var trial_data = {
           stimuli: { planets: trial.stimulus, ships: trial.ship_stimulus },
@@ -1251,7 +1198,7 @@ jsPsych.plugins["planet-response-command"] = (function() {
           probability_ship: trial.probability_ship,
           show_ship_delay: trial.show_ship_delay,
           ship_attack_time: trial.ship_attack_time,
-          ship_attack_damage: trial.ship_attack_damage,
+          ship_attack_effect: trial.ship_attack_effect,
           shield_charging_time: trial.shield_charging_time,
           shield_success: trial.shield_success,
           probability_shield: trial.probability_shield,
@@ -1635,55 +1582,6 @@ jsPsych.plugins["planet-response-command"] = (function() {
     return outarray;
   };
 
-  function balanceSuccess(
-    orderbase,
-    arr_log,
-    arr_read,
-    choice,
-    verbose = false,
-    vstr = "",
-  ) {
-    //Function to output single samples from semi-random series of booleans
-    // First, check shield arr_log
-    var baselength = orderbase[choice].length;
-    var arr_length = arr_log[choice].length;
-    var arr_next = arr_length;
-    // Multiples of shield appearances have shield availability sampled from uniform random
-    if (arr_length / baselength == Math.round(arr_length / baselength)) {
-      var arr_order = shuffleArray(orderbase[choice]);
-      for (var ii = 0; ii < arr_order.length; ii++) {
-        arr_read[choice].push(arr_order[ii]);
-      }
-    }
-    arr_success = Boolean(arr_read[choice][arr_next]);
-    if (verbose) {
-      // console.log(vstr + ' array read: ' + String(arr_read[0]) + '; ' + String(arr_read[1]))
-      // console.log(vstr + ' array log (before event): ' + String(arr_log[0]) + '; ' + String(arr_log[1]))
-    }
-
-    // Update log
-    arr_log[choice].push(Number(arr_success));
-    if (verbose) {
-      // console.log(vstr + ' array log (after event): ' + String(arr_log[0]) + '; ' + String(arr_log[1]))
-    }
-    //Return arguments
-    return [arr_success, arr_log, arr_read];
-  }
-
-  // initialise variables for balanced probability arrays
-  function initProbArray(probSuccess) {
-    var numOptions = 3; //determines number of planets 3 = 3 planets
-    var orderbase = [];
-    var arr_log = [];
-    var arr_read = [];
-    for (var i = 0; i < numOptions; i++) {
-      orderbase.push(genOrderBase(probSuccess[i]));
-      arr_log.push([]);
-      arr_read.push([]);
-    }
-    return [orderbase, arr_log, arr_read];
-  }
-
   // indexOf that returns all matches
   function indexOfAll(array, searchItem) {
     var i = array.indexOf(searchItem),
@@ -1694,21 +1592,5 @@ jsPsych.plugins["planet-response-command"] = (function() {
     }
     return indices;
   }
-
-  function shuffleArray(array) {
-    let curId = array.length;
-    // There remain elements to shuffle
-    while (0 !== curId) {
-      // Pick a remaining element
-      let randId = Math.floor(Math.random() * curId);
-      curId -= 1;
-      // Swap it with the current element.
-      let tmp = array[curId];
-      array[curId] = array[randId];
-      array[randId] = tmp;
-    }
-    return array;
-  }
-
   return plugin;
 })();

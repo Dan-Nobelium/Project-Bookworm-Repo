@@ -122,6 +122,8 @@ jsPsych.plugins["valence-check"] = (function () {
 
     console.log(trial.stimuli_and_text);
 
+    trial.stimuli_and_text = trial.stimuli_and_text.filter((pair) => {return pair[0] != null});
+
     // Loop through all stimuli
     for (let pair of trial.stimuli_and_text) {
       let i = trial.stimuli_and_text.indexOf(pair) + 1;
