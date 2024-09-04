@@ -57,6 +57,8 @@ const planetColors = {
   "./assets/planet_b.png": "blue",
 };
 
+const attack_image_width = 125; // width of 'Attack!' images in pixels
+
 // Planet and ship images in randomised order
 const planet_list = jsPsych.randomization.repeat(planet_list_original, 1);
 const ship_list = jsPsych.randomization.repeat(ship_list_original, 1);
@@ -772,39 +774,39 @@ var cont_catch = {
   pages: [
     "<p>Local intel has determined where the pirates are coming from!<br>Click Next to view this intel.</p>",
     `
-      <div style="display: flex; flex-direction: column;">
+      <div style="display: flex; flex-direction: column; width: 650px; margin-bottom: 25px;">
         <div style="display: grid; grid-template-columns: 1fr; grid-gap: 20px;">
           <div style="display: flex; flex-direction: column; align-items: center;">
-            <p>Your signals to the <strong>left planet</strong> have been attracting ${indexed_constants[0].contingency_long}</p>
+            <p style="width: 100%; text-align: centre">Your signals to the <strong>left planet</strong> have been attracting ${indexed_constants[0].contingency_long}</p>
             <div style="display: flex; flex-direction: row; align-items: center;">
               <img src="${planet_list[0]}" style="width: 100px; height: 100px; object-fit: contain; margin-right: 10px;">
-              <p>Planet A<br>(left):</p>
+              <p style="min-width: 74px;">Planet A<br>(left):</p>
               <img src="./assets/arrow.jpg" style="width: 100px; height: 100px; object-fit: contain; margin-right: 10px;">
               <img src="${ship_list[0]}" style="width: 100px; height: 100px; object-fit: contain; margin-right: 10px;">
               <img src="./assets/arrow.jpg" style="width: 100px; height: 100px; object-fit: contain; margin-right: 10px; visibility: ${indexed_constants[0].attack_img ? 'visible' : 'hidden'};">
-              <div style="margin-top: 5px; visibility: ${indexed_constants[0].attack_img ? 'visible' : 'hidden'};">${indexed_constants[0].attack_img}</div>
+              <div style="margin-top: 5px; width: ${attack_image_width}px; visibility: ${indexed_constants[0].attack_img ? 'visible' : 'hidden'};">${indexed_constants[0].attack_img}</div>
             </div>
           </div>
           <div style="display: flex; flex-direction: column; align-items: center;">
-            <p>Your signals to the <strong>middle planet</strong> have been attracting ${indexed_constants[1].contingency_long}</p>
+            <p style="width: 100%; text-align: centre">Your signals to the <strong>middle planet</strong> have been attracting ${indexed_constants[1].contingency_long}</p>
             <div style="display: flex; flex-direction: row; align-items: center;">
               <img src="${planet_list[1]}" style="width: 100px; height: 100px; object-fit: contain; margin-right: 10px;">
-              <p>Planet B<br>(middle):</p>
+              <p style="min-width: 74px;">Planet B<br>(middle):</p>
               <img src="./assets/arrow.jpg" style="width: 100px; height: 100px; object-fit: contain; margin-right: 10px;">
               <img src="${ship_list[1]}" style="width: 100px; height: 100px; object-fit: contain; margin-right: 10px;">
               <img src="./assets/arrow.jpg" style="width: 100px; height: 100px; object-fit: contain; margin-right: 10px; visibility: ${indexed_constants[1].attack_img ? 'visible' : 'hidden'};">
-              <div style="margin-top: 5px; visibility: ${indexed_constants[1].attack_img ? 'visible' : 'hidden'};">${indexed_constants[1].attack_img}</div>
+              <div style="margin-top: 5px; width: ${attack_image_width}px; visibility: ${indexed_constants[1].attack_img ? 'visible' : 'hidden'};">${indexed_constants[1].attack_img}</div>
             </div>
           </div>
           <div style="display: flex; flex-direction: column; align-items: center;">
-            <p>Your signals to the <strong>right planet</strong> have been attracting <strong>pirate ships</strong> that have been stealing <strong>some of your points!</strong></p>
+            <p style="width: 100%; text-align: centre">Your signals to the <strong>right planet</strong> have been attracting ${indexed_constants[2].contingency_long}</p>
             <div style="display: flex; flex-direction: row; align-items: center;">
               <img src="${planet_list[2]}" style="width: 100px; height: 100px; object-fit: contain; margin-right: 10px;">
-              <p>Planet C<br>(right):</p>
+              <p style="min-width: 74px;">Planet C<br>(right):</p>
               <img src="./assets/arrow.jpg" style="width: 100px; height: 100px; object-fit: contain; margin-right: 10px;">
               <img src="${ship_list[2]}" style="width: 100px; height: 100px; object-fit: contain; margin-right: 10px;">
               <img src="./assets/arrow.jpg" style="width: 100px; height: 100px; object-fit: contain; margin-right: 10px; visibility: ${indexed_constants[2].attack_img ? 'visible' : 'hidden'};">
-              <div style="margin-top: 5px; visibility: ${indexed_constants[2].attack_img ? 'visible' : 'hidden'};">${indexed_constants[2].attack_img}</div>
+              <div style="margin-top: 5px; width: ${attack_image_width}px; visibility: ${indexed_constants[2].attack_img ? 'visible' : 'hidden'};">${indexed_constants[2].attack_img}</div>
             </div>
           </div>
         </div>
