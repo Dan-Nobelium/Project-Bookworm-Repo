@@ -9,7 +9,7 @@
 
 jsPsych.plugins["planet-response-command"] = (function() {
   var plugin = {};
-  jsPsych.pluginAPI.registerPreload("planet-response", "stimulus", "image");
+  jsPsych.pluginAPI.registerPreload("planet-response-command", "image_paths_to_preload", "image");
   plugin.info = {
     name: "planet-response-command",
     description: "",
@@ -276,6 +276,11 @@ jsPsych.plugins["planet-response-command"] = (function() {
       },
       ship_outcomes: {
         type: jsPsych.plugins.parameterType.INT,
+        default: null,
+        array: true
+      },
+      image_paths_to_preload: {
+        type: jsPsych.plugins.parameterType.IMG,
         default: null,
         array: true
       }
@@ -1251,7 +1256,9 @@ jsPsych.plugins["planet-response-command"] = (function() {
       var statusDiv;
       if (choice == "ship") {
         statusDiv = display_element.querySelector("#ship-status-text");
+        console.log('updating status div from ', statusDiv.innerHTML);
         statusDiv.innerHTML = msg;
+        console.log('to ', statusDiv.innerHTML);
       } else {
         statusDiv = display_element.querySelector(
           "#planet-score-box-" + choice,
