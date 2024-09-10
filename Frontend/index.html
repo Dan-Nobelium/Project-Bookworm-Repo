@@ -1,33 +1,46 @@
 <!DOCTYPE html>
 <html>
-  <!-- This index.html documents calls libraries/plugins and then calls the main function app2.js which runs the program-->
-  <head>
-    <title>Planets and Pirates</title> 
-    <script src="jspsych-6.1.0/jspsych.js"></script>
-    <link href="jspsych-6.1.0/css/jspsych.css" rel="stylesheet" type="text/css"></link>
-    <script src="jspsych-6.1.0/plugins/jspsych-fullscreen.js"></script>
-    <script src="jspsych-6.1.0/plugins/jspsych-html-button-response.js"></script>
-    <script src="jspsych-6.1.0/plugins/jspsych-survey-html-form.js"></script>
-    <script src="jspsych-6.1.0/plugins/jspsych-survey-html-form-data-validation.js"></script>
-    <script src="jspsych-6.1.0/plugins/jspsych-instructions.js"></script>
-    <script src="jspsych-6.1.0/plugins/jspsych-instructions-advanced.js"></script>
-    <script src="jspsych-6.1.0/plugins/jspsych-survey-multi-catch.js"></script>
-    <script src="jspsych-6.1.0/plugins/jspsych-survey-multi-catch-image.js"></script>
-    <script src="jspsych-6.1.0/plugins/planet-response.js"></script>
-    <script src="jspsych-6.1.0/plugins/planet-response-command.js"></script>
-    <script src="jspsych-6.1.0/plugins/jspsych-inference-check.js"></script>
-    <script src="jspsych-6.1.0/plugins/jspsych-valence-check.js"></script>
-    <script src="jspsych-6.1.0/plugins/jspsych-html-slider-triangle.js"></script>
-    <script src="jspsych-6.1.0/plugins/jspsych-survey-likert-catch.js"></script>
-    <script src="jspsych-6.1.0/plugins/jspsych-survey-text.js"></script>
-    <script src="jspsych-6.1.0/plugins/jspsych-html-slider-response.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/paper.js/0.12.15/paper-full.min.js"></script>
-    <script src="text.js"></script>
+<!-- This index.html documents calls libraries/plugins and then calls the main function app2.js which runs the program-->
 
+<head>
+  <link href="jspsych-6.1.0/css/jspsych.css" rel="stylesheet" type="text/css" />
+  <script src="jatos.js"></script>
+  <script src="jspsych-6.1.0/jspsych.js"></script>
+  <script src="jspsych-6.1.0/plugins/jspsych-fullscreen.js"></script>
+  <script src="jspsych-6.1.0/plugins/jspsych-html-button-response.js"></script>
+  <script src="jspsych-6.1.0/plugins/jspsych-survey-html-form.js"></script>
+  <script src="jspsych-6.1.0/plugins/jspsych-survey-html-form-data-validation.js"></script>
+  <script src="jspsych-6.1.0/plugins/jspsych-instructions.js"></script>
+  <script src="jspsych-6.1.0/plugins/jspsych-instructions-advanced.js"></script>
+  <script src="jspsych-6.1.0/plugins/jspsych-survey-multi-catch.js"></script>
+  <script src="jspsych-6.1.0/plugins/jspsych-survey-multi-catch-image.js"></script>
+  <script src="jspsych-6.1.0/plugins/planet-response.js"></script>
+  <script src="jspsych-6.1.0/plugins/planet-response-command.js"></script>
+  <script src="jspsych-6.1.0/plugins/jspsych-inference-check.js"></script>
+  <script src="jspsych-6.1.0/plugins/jspsych-valence-check.js"></script>
+  <script src="jspsych-6.1.0/plugins/jspsych-html-slider-triangle.js"></script>
+  <script src="jspsych-6.1.0/plugins/jspsych-survey-likert-catch.js"></script>
+  <script src="jspsych-6.1.0/plugins/jspsych-survey-text.js"></script>
+  <script src="jspsych-6.1.0/plugins/jspsych-html-slider-response.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/paper.js/0.12.15/paper-full.min.js"></script>
+  <script src="text.js"></script>
   <!-- This app2.js is the main function of the program-->
-    <script src="app2.js"></script>
-    <head>
-  <body>
-     
-  </body>
-</html> 
+  <script src="app2.js"></script>
+  <title>Planets and Pirates</title>
+</head>
+
+<body>
+  <script>
+    jsPsych.init({
+      timeline: timeline,
+      preload_images: images,
+      on_finish: () => jatos.endStudy(jsPsych.data.get().json()),
+    });
+
+    jatos.onLoad(() => {
+      jsPsych.run(timeline);
+    });
+  </script>
+</body>
+
+</html>
