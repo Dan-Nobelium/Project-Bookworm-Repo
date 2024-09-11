@@ -67,44 +67,44 @@ const indexed_constants = jsPsych.randomization.shuffle([
   {
     contingency_label: "neutral",
     contingency_long: "<strong>neutral ships</strong>.",
-    trade_outcome_set: [1,0],
+    trade_outcome_set: [1, 0],
     probability_trade: 0.5, // used only if trade_outcome_set is null
-    ship_emergence_set: [0,0,0,1,1],
+    ship_emergence_set: [0, 0, 0, 1, 1],
     probability_ship: 0.4, // used only if ship_emergence_set is null
     ship_attack_effect: [0, "points"],
     attack_img_path: null,
     attack_text_colour: null,
     attack_blocked_img: null,
     probability_shield: 0.5, // used only if shield_available_set is null
-    shield_available_set: null  
+    shield_available_set: null
   },
   {
     contingency_label: "mild",
     contingency_long: "<strong>pirate ships</strong> that have been stealing <strong>some of your points!</strong>",
     trade_outcome_set: null,
     probability_trade: 0.4, // used only if trade_outcome_set is null
-    ship_emergence_set: [1,1,1,1,1,1,1,1,1,0],
+    ship_emergence_set: [1, 1, 1, 1, 1, 1, 1, 1, 1, 0],
     probability_ship: 0.9, // used only if ship_emergence_set is null
     ship_attack_effect: [-200, "points"],
-    attack_img_path: './assets/attack_text_orange.png', 
+    attack_img_path: './assets/attack_text_orange.png',
     attack_text_colour: 'darkorange',
     attack_blocked_img: "<img src='./assets/shield_deflected_attack.png' height='84px'>",
     probability_shield: 0.5, // used only if shield_available_set is null
-    shield_available_set: null  
+    shield_available_set: null
   },
   {
     contingency_label: "strong",
     contingency_long: "<strong>pirate ships</strong> that have been stealing <strong>lots of your points!</strong>",
     trade_outcome_set: null,
     probability_trade: 0.5, // used only if trade_outcome_set is null
-    ship_emergence_set: [1,1,1,1,1,1,1,0,0,0],
+    ship_emergence_set: [1, 1, 1, 1, 1, 1, 1, 0, 0, 0],
     probability_ship: 0.7, // used only if ship_emergence_set is null
     ship_attack_effect: [-20, "percent"],
-    attack_img_path: './assets/attack_text_red.png', 
+    attack_img_path: './assets/attack_text_red.png',
     attack_text_colour: 'red',
     attack_blocked_img: "<img src='./assets/shield_deflected_attack.png' height='84px'>",
     probability_shield: 0.5, // used only if shield_available_set is null
-    shield_available_set: null  
+    shield_available_set: null
   }
 ]);
 
@@ -763,7 +763,7 @@ var p2_q4_triangle = {
 //----------------------------------------------------------------------------
 // --- Phase 3
 
-var question_order = jsPsych.randomization.shuffle([0,1,2]).filter((i) => indexed_constants[i].attack_img != null);
+var question_order = jsPsych.randomization.shuffle([0, 1, 2]).filter((i) => indexed_constants[i].attack_img != null);
 
 var contingenciescorrect = false;
 
@@ -1286,13 +1286,5 @@ timeline.push(cont_catch);
     Planet_A_contingency: indexed_constants[0],
     Planet_B_contingency: indexed_constants[1],
     Planet_C_contingency: indexed_constants[2],
-  });
-
-  jsPsych.init({
-    timeline: timeline,
-    preload_images: images,
-    on_finish: function() {
-      jsPsych.data.displayData();
-    },
   });
 }
