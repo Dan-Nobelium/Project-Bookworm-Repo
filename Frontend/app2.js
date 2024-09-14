@@ -824,7 +824,7 @@ var cont_catch = {
       <p style="font-size:medium">Planet A (left) Planet B (middle) Planet C (right)</p>`,
     `Which ship leads to this attack?<br>${indexed_constants[question_order[1]].attack_img}`,
   ],
-  planet_options: planet_list_original,
+  planet_options: planet_list,
   ship_option_1: ship_list_original[0],
   ship_option_2: ship_list_original[1],
   ship_option_3: ship_list_original[2],
