@@ -72,9 +72,10 @@ const indexed_constants = jsPsych.randomization.shuffle([
     ship_emergence_set: [0, 0, 0, 1, 1],
     probability_ship: 0.4, // used only if ship_emergence_set is null
     ship_attack_effect: [0, "points"],
-    attack_img_path: null,
+    attack_img_path: "./assets/neutral_ship_passed.png",
+    attack_img_height: 84, // defaults to 31
     attack_text_colour: null,
-    attack_blocked_img: null,
+    attack_blocked_img: "<img src='./assets/neutral_ship_passed.png' height='84px'>",
     probability_shield: 0.5, // used only if shield_available_set is null
     shield_available_set: null
   },
@@ -109,7 +110,7 @@ const indexed_constants = jsPsych.randomization.shuffle([
 ]);
 
 for (c of indexed_constants) {
-  c.attack_img = c.attack_img_path ? `<img src='${c.attack_img_path}' height='31px'>` : null;
+  c.attack_img = c.attack_img_path ? `<img src='${c.attack_img_path}' height='${c.attack_img_height ? c.attack_img_height : 31}px'>` : null;
 }
 
 function get_indexed_constant_array(property_name) {

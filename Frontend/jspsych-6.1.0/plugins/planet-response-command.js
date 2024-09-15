@@ -1117,6 +1117,10 @@ jsPsych.plugins["planet-response-command"] = (function() {
         console.log("Updating ship status");
         updateStatus("ship", statusmsg, statusclr);
       }
+      else {
+        statusmsg = trial.attack_images[choice];
+        updateStatus("ship", statusmsg, "");
+      }
 
       // Log details
       var time_outcome = performance.now() - start_time;
