@@ -110,7 +110,7 @@ const indexed_constants = jsPsych.randomization.shuffle([
 ]);
 
 for (c of indexed_constants) {
-  c.attack_img = c.attack_img_path ? `<img src='${c.attack_img_path}' height='${c.attack_img_height ? c.attack_img_height : 31}px'>` : null;
+  c.attack_img = c.attack_img_path ? `<img src='${c.attack_img_path}' height='${c.attack_img_height || 31}px'>` : null;
 }
 
 function get_indexed_constant_array(property_name) {
