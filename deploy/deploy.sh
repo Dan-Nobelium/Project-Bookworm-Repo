@@ -10,6 +10,8 @@ ufw allow 80/tcp
 ufw allow 443/tcp
 ufw enable
 
+cd ~
+
 # config nginx
 mkdir data letsencrypt
 chmod 777 data letsencrypt
@@ -41,6 +43,7 @@ EOL
 cat >./compose.yaml <<EOL
 version: "3.8"
 
+name: researchproject
 services:
   proxy:
     image: jc21/nginx-proxy-manager:2.10.4
