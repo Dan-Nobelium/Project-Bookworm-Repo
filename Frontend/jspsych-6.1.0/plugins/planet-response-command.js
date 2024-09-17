@@ -741,6 +741,10 @@ jsPsych.plugins["planet-response-command"] = (function() {
         return outStr;
       }
       // Run trade
+
+      var statusclr = "white";
+      var statusmsg = "";
+
       if (trial.trade_outcomes[choice]) {
         if (trade_outcomes[choice].length == 0) {
           trade_outcomes[choice] = initialise_outcome_array(trial.trade_outcomes[choice]);
@@ -756,13 +760,13 @@ jsPsych.plugins["planet-response-command"] = (function() {
       if (trade_success) {
         //Add and display reward
         var displayScore = trial.rewards[choice];
-        var statusmsg = win_100_text; // + displayScore + ' points';
+        statusmsg = win_100_text; // + displayScore + ' points';
         console.log("Trade success message:", statusmsg);
       } else {
         //Display some fail state
         var displayScore = 0;
-        var statusmsg = "Trade attempt failed";
-        var statusclr = "yellow";
+        statusmsg = "Trade attempt failed";
+        statusclr = "yellow";
         console.log("Trade failure message:", statusmsg);
       }
 
