@@ -57,28 +57,22 @@ For our purposes, the cheapest instance should be fine to get an initial deploym
 Note: these instructions are correct as of the time of writing, however this process may be subject to change. This is the official Digital Ocean [instructions](https://docs.digitalocean.com/products/droplets/how-to/create/) should you need to look in to them.
 
 1.  From your main dashboard, click "Create" and select "Droplets" from the choices.
-**image**
-
+![](/assets/1.png)
 2. Choose the region closest to you. In this case, Australia only has one server, Sydney.
-**image**
-
+![](/assets/2.png)
 3. We need to choose an image which is essentially the operating system and any dependencies required to start your VM. For this purpose, we want to choose a VM with Linux and Docker installed.
 - Select "Marketplace"
 - Select "Docker preinstalled Ubuntu" (if you can't find it, search for Docker in the search bar).
-**image**
-
+![](/assets/3.png)
 4. Now we have to provision the resources for our VM.
 - Choose "Regular with SSD"
-- Scroll the options all the way to the start and pick the first (lowest cost) option. It should be $6USD per month.
-
+- In the billing window, scroll the options all the way to the left and pick the first (lowest cost) option. It should be $6USD per month (There may be a greyed out $4USD option, this is too small and won't allow you to select it).
+![](/assets/4.png)
 5. Set your password
 - This is option slightly less secure than using SSH keys, although the risk is minimal if you ensure good cybersecurity practices.
 - If you're comfortable with SSH keys, feel free to set them up. They are out of scope for this exercise.
-**image**
-
 6. Click the "Advanced Options" button and tick the "Add Initialization scripts" option.
-**image**
-
+![](/assets/5.png)
 7. In the textarea that appears, paste in the entire contents of the `deploy.sh` file.
 - This script will:
   - Download `ufw` (Uncomplicated Firewall)
@@ -88,10 +82,11 @@ Note: these instructions are correct as of the time of writing, however this pro
   - Create a `filebrowser` configuration file
   - Create a docker compose file
   - Deploy the docker services
-
 8. Click "Create Droplet" at the bottom of the screen and wait for your VM to be provisioned. This may take a few minutes while everything is set up, downloaded, and started.
-
+- This process may take around 15 minutes. The time between this and step 9 would be a good time to make sure your DNS is set up.
+![](/assets/6.png)
 9. Congratulations, your VM deployment should have been successful. You can test this by copying the IP address of your Droplet and pasting it into your browser's address bar. A success window should present from Nginx Proxy Manager.
+![](/assets/7.png)
 
 ## Configure your DNS Records
 Exact details on how to do this is out of scope for these instructions as the process can vary significantly between domain registrars.
@@ -108,7 +103,7 @@ All **A** records can point at the exact same IP address as we have a proxy mana
   - JATOS at *research.mydomain.com.au*
   - Filebrowser at *files.mydomain.com.au*
 
-We can simply create three *A* records all pointing to the same IP address (192.168.20.1) and change the subdomain from *www* to the respective subdomain you wish to use. Any requests will be handled and routed by Nginx Proxy Manager with some minor configurations.
+We can simply create three **A** records all pointing to the same IP address (192.168.20.1) and change the subdomain from *www* to the respective subdomain you wish to use. Any requests will be handled and routed by Nginx Proxy Manager with some minor configurations.
 
 **Important Note:**\
 These DNS records need to be implemented first before configuring Nginx Proxy Manager. DNS records need to be given time to propogate after configuring them. The time taken can range from immediate through to the heat death of the universe, although registrars typically advise anywhere from a few minutes to 24-hours.
@@ -124,6 +119,7 @@ Here we will configure Nginx Proxy Manager by adding entries for each service (J
   - **Password:** changeme
 3. Change the details and credentials of the primary admin user
   - Do **NOT** skip or cancel this step, your service is now publicly facing and you need to secure it properly
+![](/assets/8.png)
 
 The below instructions start from your Nginx Proxy Manager dashboard.
 
@@ -135,13 +131,14 @@ In this example, we will proxy the Nginx Proxy Manager admin interface to the do
 1. Click "Hosts" and select "Proxy Hosts" from the menu
 2. Click "Add Proxy Host"
 3. Enter your domain / subdomain into the "Domain Names" input and click the "Add" drop down or press enter
-4. In the "Forward Hostname / IP" input, type in **host.docker.internal**
+![](/assets/9.gif)
+4. In the "Forward Hostname / IP" input, type in **proxy**
 5. In the "Forward Port" input, type in **81**
-6. Toggle the switches to cache assets and block common exploits. This helps to improve the server efficiency and address any simple or common security concerns\
-**image**\
+6. Toggle the switches to cache assets and block common exploits. This helps to improve the server efficiency and address any simple or common security concerns
+![](/assets/10.png)
 7. Click "SSL" in the menu, click the input area and select "Request a new SSL Certificate"
-8. Toggle the switches to force SSL (redirect HTTP to HTTPS) and enable HTTP/2 support. Ensure the email is the correct one for the system administrator, read and accept the terms and conditions\
-**image**\
+8. Toggle the switches to force SSL (redirect HTTP to HTTPS) and enable HTTP/2 support. Ensure the email is the correct one for the system administrator, read and accept the terms and conditions
+![](/assets/11.png)
 9. Click "Save"
 10. Congratulations, you have just configured your first proxied service. It may take a few minutes for your SSL certificates to be aranged. Test it out by going to the domain or subdomain you used (e.g., admin.mydomain.com.au)
 
@@ -151,13 +148,11 @@ In this example, we will proxy the JATOS admin interface to the domain **researc
 1. Click "Hosts" and select "Proxy Hosts" from the menu
 2. Click "Add Proxy Host"
 3. Enter your domain / subdomain into the "Domain Names" input and click the "Add" drop down or press enter
-4. In the "Forward Hostname / IP" input, type in **host.docker.internal**
+4. In the "Forward Hostname / IP" input, type in **jatos**
 5. In the "Forward Port" input, type in **9000**
-6. Toggle the switches to cache assets and block common exploits. This helps to improve the server efficiency and address any simple or common security concerns\
-**image**\
+6. Toggle the switches to cache assets and block common exploits. This helps to improve the server efficiency and address any simple or common security concerns
 7. Click "SSL" in the menu, click the input area and select "Request a new SSL Certificate"
-8. Toggle the switches to force SSL (redirect HTTP to HTTPS) and enable HTTP/2 support. Ensure the email is the correct one for the system administrator, read and accept the terms and conditions\
-**image**\
+8. Toggle the switches to force SSL (redirect HTTP to HTTPS) and enable HTTP/2 support. Ensure the email is the correct one for the system administrator, read and accept the terms and conditions
 9. Click "Save"
 10. Congratulations, you've just set up another proxy. Test it out by going to the domain or subdomain you used (e.g., research.mydomain.com.au)
 
@@ -167,13 +162,11 @@ In this example, we will proxy the Filebrowser admin interface to the domain **f
 1. Click "Hosts" and select "Proxy Hosts" from the menu
 2. Click "Add Proxy Host"
 3. Enter your domain / subdomain into the "Domain Names" input and click the "Add" drop down or press enter
-4. In the "Forward Hostname / IP" input, type in **host.docker.internal**
+4. In the "Forward Hostname / IP" input, type in **filebrowser**
 5. In the "Forward Port" input, type in **8080**
-6. Toggle the switches to cache assets and block common exploits. This helps to improve the server efficiency and address any simple or common security concerns\
-**image**\
+6. Toggle the switches to cache assets and block common exploits. This helps to improve the server efficiency and address any simple or common security concerns
 7. Click "SSL" in the menu, click the input area and select "Request a new SSL Certificate"
-8. Toggle the switches to force SSL (redirect HTTP to HTTPS) and enable HTTP/2 support. Ensure the email is the correct one for the system administrator, read and accept the terms and conditions\
-**image**\
+8. Toggle the switches to force SSL (redirect HTTP to HTTPS) and enable HTTP/2 support. Ensure the email is the correct one for the system administrator, read and accept the terms and conditions
 9. Click "Save"
 10. Congratulations, you've just set up another proxy. Test it out by going to the domain or subdomain you used (e.g., files.mydomain.com.au)
 
