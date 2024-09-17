@@ -57,6 +57,8 @@ const planetColors = {
   "./assets/planet_b.png": "blue",
 };
 
+const neutral_ship_img = "./assets/neutral_ship_passed.png";
+
 const attack_image_width = 125; // width of 'Attack!' images in pixels
 
 // Planet and ship images in randomised order
@@ -72,7 +74,7 @@ const indexed_constants = jsPsych.randomization.shuffle([
     ship_emergence_set: [0, 0, 0, 1, 1],
     probability_ship: 1, // used only if ship_emergence_set is null
     ship_attack_effect: [0, "points"],
-    attack_img_path: "./assets/neutral_ship_passed.png",
+    attack_img_path: neutral_ship_img,
     attack_img_height: 84, // defaults to 31
     attack_text_colour: null,
     attack_blocked_img: "<img src='./assets/neutral_ship_passed.png' height='84px'>",
@@ -764,7 +766,7 @@ var p2_q4_triangle = {
 //----------------------------------------------------------------------------
 // --- Phase 3
 
-var question_order = jsPsych.randomization.shuffle([0, 1, 2]).filter((i) => indexed_constants[i].attack_img != null);
+var question_order = jsPsych.randomization.shuffle([0, 1, 2]).filter((i) => indexed_constants[i].attack_img_path != neutral_ship_img);
 
 var contingenciescorrect = false;
 
@@ -1265,7 +1267,7 @@ timeline.push(cont_catch);
 // timeline.push(p1_q4_triangle);
 
 //Debrief
-// timeline.push(debrief_block);
+timeline.push(debrief_block);
 
 //Disabled blocks
 //timeline.push(contact_block); // disabled
