@@ -640,6 +640,7 @@ jsPsych.plugins["planet-response-command"] = (function() {
 
     // function to show the signal, run trade, then show outcome
     function proceed_trade(choice) {
+      var statusclr = null;
       //Get planet position
       var signalPadding = trial.signal_padding;
       var planet = display_element.querySelector("#planet-" + choice);
@@ -742,7 +743,6 @@ jsPsych.plugins["planet-response-command"] = (function() {
       }
       // Run trade
 
-      var statusclr = "white";
       var statusmsg = "";
 
       if (trial.trade_outcomes[choice]) {
@@ -1063,6 +1063,7 @@ jsPsych.plugins["planet-response-command"] = (function() {
     }
 
     function ship_attack(choice) {
+      var statusclr = null;
       // Disable button if no response
       if (shield_activated == null) {
         shield_activated = false;
@@ -1115,6 +1116,10 @@ jsPsych.plugins["planet-response-command"] = (function() {
         }
 
         console.log("Updating ship status");
+        updateStatus("ship", statusmsg, statusclr);
+      }
+      else {
+        statusmsg = trial.attack_images[choice];
         updateStatus("ship", statusmsg, statusclr);
       }
 
@@ -1269,7 +1274,7 @@ jsPsych.plugins["planet-response-command"] = (function() {
         );
         statusDiv.innerHTML = msg;
       }
-      statusDiv.style.color = color;
+      if (color) statusDiv.style.color = color;
 
       console.log("Updated status:", msg, statusDiv.cloneNode(true));
     }
