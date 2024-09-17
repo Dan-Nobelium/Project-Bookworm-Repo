@@ -57,22 +57,22 @@ For our purposes, the cheapest instance should be fine to get an initial deploym
 Note: these instructions are correct as of the time of writing, however this process may be subject to change. This is the official Digital Ocean [instructions](https://docs.digitalocean.com/products/droplets/how-to/create/) should you need to look in to them.
 
 1.  From your main dashboard, click "Create" and select "Droplets" from the choices.
-![](/assets/1.png)
+![](./assets/1.png)
 2. Choose the region closest to you. In this case, Australia only has one server, Sydney.
-![](/assets/2.png)
+![](./assets/2.png)
 3. We need to choose an image which is essentially the operating system and any dependencies required to start your VM. For this purpose, we want to choose a VM with Linux and Docker installed.
 - Select "Marketplace"
 - Select "Docker preinstalled Ubuntu" (if you can't find it, search for Docker in the search bar).
-![](/assets/3.png)
+![](./assets/3.png)
 4. Now we have to provision the resources for our VM.
 - Choose "Regular with SSD"
 - In the billing window, scroll the options all the way to the left and pick the first (lowest cost) option. It should be $6USD per month (There may be a greyed out $4USD option, this is too small and won't allow you to select it).
-![](/assets/4.png)
+![](./assets/4.png)
 5. Set your password
 - This is option slightly less secure than using SSH keys, although the risk is minimal if you ensure good cybersecurity practices.
 - If you're comfortable with SSH keys, feel free to set them up. They are out of scope for this exercise.
 6. Click the "Advanced Options" button and tick the "Add Initialization scripts" option.
-![](/assets/5.png)
+![](./assets/5.png)
 7. In the textarea that appears, paste in the entire contents of the `deploy.sh` file.
 - This script will:
   - Download `ufw` (Uncomplicated Firewall)
@@ -84,9 +84,9 @@ Note: these instructions are correct as of the time of writing, however this pro
   - Deploy the docker services
 8. Click "Create Droplet" at the bottom of the screen and wait for your VM to be provisioned. This may take a few minutes while everything is set up, downloaded, and started.
 - This process may take around 15 minutes. The time between this and step 9 would be a good time to make sure your DNS is set up.
-![](/assets/6.png)
+![](./assets/6.png)
 9. Congratulations, your VM deployment should have been successful. You can test this by copying the IP address of your Droplet and pasting it into your browser's address bar. A success window should present from Nginx Proxy Manager.
-![](/assets/7.png)
+![](./assets/7.png)
 
 ## Configure your DNS Records
 Exact details on how to do this is out of scope for these instructions as the process can vary significantly between domain registrars.
@@ -131,14 +131,14 @@ In this example, we will proxy the Nginx Proxy Manager admin interface to the do
 1. Click "Hosts" and select "Proxy Hosts" from the menu
 2. Click "Add Proxy Host"
 3. Enter your domain / subdomain into the "Domain Names" input and click the "Add" drop down or press enter
-![](/assets/9.gif)
+![](./assets/9.gif)
 4. In the "Forward Hostname / IP" input, type in **proxy**
 5. In the "Forward Port" input, type in **81**
 6. Toggle the switches to cache assets and block common exploits. This helps to improve the server efficiency and address any simple or common security concerns
-![](/assets/10.png)
+![](./assets/10.png)
 7. Click "SSL" in the menu, click the input area and select "Request a new SSL Certificate"
 8. Toggle the switches to force SSL (redirect HTTP to HTTPS) and enable HTTP/2 support. Ensure the email is the correct one for the system administrator, read and accept the terms and conditions
-![](/assets/11.png)
+![](./assets/11.png)
 9. Click "Save"
 10. Congratulations, you have just configured your first proxied service. It may take a few minutes for your SSL certificates to be aranged. Test it out by going to the domain or subdomain you used (e.g., admin.mydomain.com.au)
 
