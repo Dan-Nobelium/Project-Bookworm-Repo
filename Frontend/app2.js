@@ -210,6 +210,16 @@ let planet_noship = {
   shield_charging_time: shield_charging_time_const,
   ship_attack_time: ship_attack_time_const,
   block_duration: block_duration,
+  probability_trade: get_indexed_constant_array('probability_trade'),
+  probability_ship: get_indexed_constant_array('probability_ship'),
+  probability_shield: get_indexed_constant_array('probability_shield'),
+  trade_outcomes: get_indexed_constant_array('trade_outcome_set'),
+  ship_outcomes: get_indexed_constant_array('ship_emergence_set'),
+  shield_outcomes: get_indexed_constant_array('shield_available_set'),
+  attack_images: get_indexed_constant_array('attack_img'),
+  image_paths_to_preload: get_indexed_constant_array('attack_img_path'),
+  attack_text_colours: get_indexed_constant_array('attack_text_colour'),
+  attack_blocked_images: get_indexed_constant_array('attack_blocked_img'),
   data: {
     phase: "phase1",
     block_type: "planet_noship",
@@ -1223,7 +1233,7 @@ let timeline = []; // This is the master timeline, the experiment runs sequentia
 // // Induction
 // timeline.push(fullscreen);
 // timeline.push(consent_block);
-timeline.push(demographics_block);
+// timeline.push(demographics_block);
 // timeline.push(instructionCheckWithFeedback);
 
 // // // Attention check
@@ -1232,18 +1242,18 @@ timeline.push(demographics_block);
 // timeline.push(audit_block);
 
 // // Phase 1, no ships
-// addBlocksToTimeline(timeline, planet_noship, nBlocks_p1, nTrialspBlk);
+addBlocksToTimeline(timeline, planet_noship, nBlocks_p1, nTrialspBlk);
 // timeline.push(valence_p1);
 // timeline.push(infer_p1_A);
 // timeline.push(infer_p1_B);
 // timeline.push(infer_p1_C);
 
-timeline.push(p1_q3_triangle);
+// timeline.push(p1_q3_triangle);
 // timeline.push(p1_q4_triangle);
 
 // // Phase2, ships
 // timeline.push(phaseTwoInstructions);
-addBlocksToTimeline(timeline, planet_ship, nBlocks_p2, nTrialspBlk);
+// addBlocksToTimeline(timeline, planet_ship, nBlocks_p2, nTrialspBlk);
 // timeline.push(valence_p2);
 // timeline.push(infer_p2_A);
 // timeline.push(infer_p2_B);
