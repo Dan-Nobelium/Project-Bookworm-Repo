@@ -57,6 +57,8 @@ const planetColors = {
   "./assets/planet_b.png": "blue",
 };
 
+const neutral_ship_img = "./assets/neutral_ship_passed.png";
+
 const attack_image_width = 125; // width of 'Attack!' images in pixels
 
 // Planet and ship images in randomised order
@@ -70,13 +72,13 @@ const indexed_constants = jsPsych.randomization.shuffle([
     trade_outcome_set: [1, 0],
     probability_trade: 0.5, // used only if trade_outcome_set is null
     ship_emergence_set: [0, 0, 0, 1, 1],
-    probability_ship: 0.4, // used only if ship_emergence_set is null
+    probability_ship: 1, // used only if ship_emergence_set is null
     ship_attack_effect: [0, "points"],
-    attack_img_path: "./assets/neutral_ship_passed.png",
+    attack_img_path: neutral_ship_img,
     attack_img_height: 84, // defaults to 31
     attack_text_colour: null,
     attack_blocked_img: "<img src='./assets/neutral_ship_passed.png' height='84px'>",
-    probability_shield: 0.5, // used only if shield_available_set is null
+    probability_shield: 1, // used only if shield_available_set is null
     shield_available_set: null
   },
   {
@@ -85,12 +87,12 @@ const indexed_constants = jsPsych.randomization.shuffle([
     trade_outcome_set: null,
     probability_trade: 0.4, // used only if trade_outcome_set is null
     ship_emergence_set: [1, 1, 1, 1, 1, 1, 1, 1, 1, 0],
-    probability_ship: 0.9, // used only if ship_emergence_set is null
+    probability_ship: 1, // used only if ship_emergence_set is null
     ship_attack_effect: [-200, "points"],
     attack_img_path: './assets/attack_text_orange.png',
     attack_text_colour: 'darkorange',
     attack_blocked_img: "<img src='./assets/shield_deflected_attack.png' height='84px'>",
-    probability_shield: 0.5, // used only if shield_available_set is null
+    probability_shield: 1, // used only if shield_available_set is null
     shield_available_set: null
   },
   {
@@ -99,12 +101,12 @@ const indexed_constants = jsPsych.randomization.shuffle([
     trade_outcome_set: null,
     probability_trade: 0.5, // used only if trade_outcome_set is null
     ship_emergence_set: [1, 1, 1, 1, 1, 1, 1, 0, 0, 0],
-    probability_ship: 0.7, // used only if ship_emergence_set is null
+    probability_ship: 1, // used only if ship_emergence_set is null
     ship_attack_effect: [-20, "percent"],
     attack_img_path: './assets/attack_text_red.png',
     attack_text_colour: 'red',
     attack_blocked_img: "<img src='./assets/shield_deflected_attack.png' height='84px'>",
-    probability_shield: 0.5, // used only if shield_available_set is null
+    probability_shield: 1, // used only if shield_available_set is null
     shield_available_set: null
   }
 ]);
@@ -119,7 +121,7 @@ function get_indexed_constant_array(property_name) {
 
 const show_whether_shield_blocked_attack_or_bonus = true; // for testing
 //const block_duration = 180 * 1000; // in milliseconds (3 mins) // sets the length of planet-response trials.
-const block_duration = 80 * 1000; // shorter duration for testing
+const block_duration = 30 * 1000; // shorter duration for testing
 
 // Global Variables Definition
 let block_number = 0;
@@ -208,6 +210,16 @@ let planet_noship = {
   shield_charging_time: shield_charging_time_const,
   ship_attack_time: ship_attack_time_const,
   block_duration: block_duration,
+  probability_trade: get_indexed_constant_array('probability_trade'),
+  probability_ship: get_indexed_constant_array('probability_ship'),
+  probability_shield: get_indexed_constant_array('probability_shield'),
+  trade_outcomes: get_indexed_constant_array('trade_outcome_set'),
+  ship_outcomes: get_indexed_constant_array('ship_emergence_set'),
+  shield_outcomes: get_indexed_constant_array('shield_available_set'),
+  attack_images: get_indexed_constant_array('attack_img'),
+  image_paths_to_preload: get_indexed_constant_array('attack_img_path'),
+  attack_text_colours: get_indexed_constant_array('attack_text_colour'),
+  attack_blocked_images: get_indexed_constant_array('attack_blocked_img'),
   data: {
     phase: "phase1",
     block_type: "planet_noship",
@@ -764,7 +776,7 @@ var p2_q4_triangle = {
 //----------------------------------------------------------------------------
 // --- Phase 3
 
-var question_order = jsPsych.randomization.shuffle([0, 1, 2]).filter((i) => indexed_constants[i].attack_img != null);
+var question_order = jsPsych.randomization.shuffle([0, 1, 2]).filter((i) => indexed_constants[i].attack_img_path != neutral_ship_img);
 
 var contingenciescorrect = false;
 
@@ -1230,7 +1242,7 @@ let timeline = []; // This is the master timeline, the experiment runs sequentia
 // timeline.push(audit_block);
 
 // // Phase 1, no ships
-// addBlocksToTimeline(timeline, planet_noship, nBlocks_p1, nTrialspBlk);
+addBlocksToTimeline(timeline, planet_noship, nBlocks_p1, nTrialspBlk);
 // timeline.push(valence_p1);
 // timeline.push(infer_p1_A);
 // timeline.push(infer_p1_B);
@@ -1241,7 +1253,7 @@ let timeline = []; // This is the master timeline, the experiment runs sequentia
 
 // // Phase2, ships
 // timeline.push(phaseTwoInstructions);
-addBlocksToTimeline(timeline, planet_ship, nBlocks_p2, nTrialspBlk);
+// addBlocksToTimeline(timeline, planet_ship, nBlocks_p2, nTrialspBlk);
 // timeline.push(valence_p2);
 // timeline.push(infer_p2_A);
 // timeline.push(infer_p2_B);
@@ -1265,7 +1277,7 @@ timeline.push(cont_catch);
 // timeline.push(p1_q4_triangle);
 
 //Debrief
-// timeline.push(debrief_block);
+timeline.push(debrief_block);
 
 //Disabled blocks
 //timeline.push(contact_block); // disabled
