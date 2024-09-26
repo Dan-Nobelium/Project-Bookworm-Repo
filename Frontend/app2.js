@@ -5,7 +5,7 @@
   Randomises the participant's group and sample. Also sets up the randomised
   position of the punished planet, left-right assignment of planets and ships,
   global variables, and the images list.  */
-  
+
 // Text/string based variables are imported through text.js via the global scope.
 
 // Participant Sample Selection
@@ -116,8 +116,8 @@ function get_indexed_constant_array(property_name) {
 }
 
 const show_whether_shield_blocked_attack_or_bonus = true; // for testing
-//const block_duration = 180 * 1000; // in milliseconds (3 mins) // sets the length of planet-response trials.
-const block_duration = 30 * 1000; // shorter duration for testing
+const block_duration = 180 * 1000; // in milliseconds (3 mins) // sets the length of planet-response trials.
+// const block_duration = 30 * 1000; // shorter duration for testing
 
 // Global Variables Definition
 let block_number = 0;
