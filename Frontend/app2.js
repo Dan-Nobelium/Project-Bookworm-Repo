@@ -116,8 +116,8 @@ function get_indexed_constant_array(property_name) {
 }
 
 const show_whether_shield_blocked_attack_or_bonus = true; // for testing
-const block_duration = 180 * 1000; // in milliseconds (3 mins) // sets the length of planet-response trials.
-// const block_duration = 30 * 1000; // shorter duration for testing
+// const block_duration = 180 * 1000; // in milliseconds (3 mins) // sets the length of planet-response trials.
+const block_duration = 60 * 1000; // shorter duration for testing
 
 // Global Variables Definition
 let block_number = 0;
@@ -1278,7 +1278,7 @@ timeline.push(debrief_block);
 //timeline.push(contact_block); // disabled
 
 //Exit experiment (uncomment to hide JSON data at program end)
-timeline.push(exit_experiment);
+// timeline.push(exit_experiment);
 
 // Run the experiment
 {
