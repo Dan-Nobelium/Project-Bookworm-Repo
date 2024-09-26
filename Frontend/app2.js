@@ -5,12 +5,8 @@
   Randomises the participant's group and sample. Also sets up the randomised
   position of the punished planet, left-right assignment of planets and ships,
   global variables, and the images list.  */
+  
 // Text/string based variables are imported through text.js via the global scope.
-
-
-
-
-
 
 // Participant Sample Selection
 let groups = ["early_0.1", "early_0.4", "late_0.1", "late_0.4"];
