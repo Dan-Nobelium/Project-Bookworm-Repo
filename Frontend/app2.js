@@ -1232,7 +1232,7 @@ timeline.push(consent_block);
 timeline.push(demographics_block);
 timeline.push(instructionCheckWithFeedback);
 
-// Attention check
+// Psychometric questionnaires
 timeline.push(cfi_block);
 timeline.push(htq_block);
 timeline.push(audit_block);
