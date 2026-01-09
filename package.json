@@ -1,0 +1,23 @@
+{
+  "name": "project-bookworm",
+  "version": "1.0.0",
+  "description": "Psychological research experiment platform with Supabase backend",
+  "main": "index.js",
+  "scripts": {
+    "dev": "vercel dev",
+    "deploy": "vercel"
+  },
+  "keywords": [
+    "jspsych",
+    "psychology",
+    "experiment",
+    "research"
+  ],
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "@supabase/supabase-js": "^2.39.0"
+  },
+  "devDependencies": {}
+}
+
