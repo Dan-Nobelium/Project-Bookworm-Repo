@@ -22,7 +22,7 @@ var consent_block = {
   type: "html-button-response",
   stimulus:
     '<img src= "./assets/logo.png"></img>' +
-    "<p>Welcome to the experiment!</p>" +
+    "<p>Welcome to the experiment!  HELLOWORD</p>" +
     "<p>Before you begin, please read the information sheet carefully.</p>" +
     "<br>" +
     "<p><b>PARTICIPANT INFORMATION STATEMENT AND CONSENT</b></p>" +
