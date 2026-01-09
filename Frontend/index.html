@@ -4,7 +4,7 @@
 
 <head>
   <link href="jspsych-6.1.0/css/jspsych.css" rel="stylesheet" type="text/css" />
-  <script src="jatos.js"></script>
+  <!-- Removed jatos.js - using new backend API instead -->
   <script src="jspsych-6.1.0/jspsych.js"></script>
   <script src="jspsych-6.1.0/plugins/jspsych-fullscreen.js"></script>
   <script src="jspsych-6.1.0/plugins/jspsych-html-button-response.js"></script>
@@ -24,6 +24,7 @@
   <script src="jspsych-6.1.0/plugins/jspsych-html-slider-response.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/paper.js/0.12.15/paper-full.min.js"></script>
   <script src="text.js"></script>
+  <script src="api-client.js"></script>
   <!-- This app2.js is the main function of the program-->
   <script src="app2.js"></script>
   <title>Planets and Pirates</title>
@@ -34,12 +35,18 @@
     jsPsych.init({
       timeline: timeline,
       preload_images: images,
-      on_finish: () => jatos.endStudy(jsPsych.data.get().json()),
+      on_finish: async () => {
+        try {
+          await submitExperimentData();
+          console.log('Experiment data submitted successfully');
+        } catch (error) {
+          console.error('Failed to submit data:', error);
+          // Optional: Show error message to participant
+          alert('There was an error saving your data. Please contact the researcher if this persists.');
+        }
+      },
     });
-
-    jatos.onLoad(() => {
-      jsPsych.run(timeline);
-    });
+    // Removed jatos.onLoad() - jsPsych.init() already runs the timeline automatically
   </script>
 </body>
 
